@@ -98,7 +98,7 @@
         {
           "type": "double",
           "attributes": {},
-          "value": [10]
+          "value": [64]
         },
         {
           "type": "double",
