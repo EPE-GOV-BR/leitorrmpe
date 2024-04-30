@@ -28,7 +28,7 @@
         {
           "type": "character",
           "attributes": {},
-          "value": ["DGER.DAT", "SISTEMA.DAT", "CONFHD.DAT", "MODIF.DAT", "CONFT.DAT", "TERM.DAT", "CLAST.DAT", "EXPH.DAT", "EXPT.DAT", "PATAMAR.DAT", "CORTES.DAT", "CORTESH.DAT", "PMO.DAT", "PARP.DAT", "FORWARD.DAT", "FORWARH.DAT", "SHIST.DAT", "MANUTT.DAT", "NEWDESP.DAT", "VAZPAST.DAT", "ITAIPU.DAT", "BID.DAT", "C_ADIC.DAT", "LOSS.DAT", "GTMINPAT.DAT", "ELNINO.DAT", "ENSOAUX.DAT", "DSVAGUA.DAT", "PENALID.DAT", "CURVA.DAT", "AGRINT.DAT", "ADTERM.DAT", "GHMIN.DAT", "SAR.DAT", "CVAR.DAT", "REE.DAT", "RE.DAT", "tecno.dat", "abertura.dat", "gee.dat", "clasgas.dat", "simfinal.dat", "cortes-pos.dat", "cortesh-pos.dat"]
+          "value": ["dger.dat", "sistema.dat", "confhd.dat", "modif.dat", "conft.dat", "term.dat", "clast.dat", "exph.dat", "expt.dat", "patamar.dat", "cortes.dat", "cortesh.dat", "pmo.dat", "parp.dat", "forward.dat", "forwarh.dat", "shist.dat", "manutt.dat", "newdesp.dat", "vazpast.dat", "itaipu.dat", "bid.dat", "c_adic.dat", "loss.dat", "gtminpat.dat", "elnino.dat", "ensoaux.dat", "dsvagua.dat", "penalid.dat", "curva.dat", "agrint.dat", "adterm.dat", "ghmin.dat", "sar.dat", "cvar.dat", "ree.dat", "re.dat", "tecno.dat", "abertura.dat", "gee.dat", "clasgas.dat", "simfinal.dat", "cortes-pos.d", "cortesh-pos."]
         }
       ]
     }
