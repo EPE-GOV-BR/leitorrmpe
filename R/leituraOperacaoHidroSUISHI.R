@@ -35,7 +35,7 @@ leituraOperacaoHidroSUISHI <- function(pasta) {
   df.operacaoHidroSUISHI <- data.frame()
   
   df.operacaoHidroSUISHI <- purrr::map_df(arquivos, function(andaArquivos) {
-    arquivo <- paste0(pasta, "\\", andaArquivos)
+    arquivo <- paste0(pasta, "/", andaArquivos)
     # limpa eventuais , no fim das linhas para nao dar mensagem de aviso
     df.operacaoHidroSUISHIUsina <- readr::read_lines(stringi::stri_enc_toutf8(arquivo)) %>% 
       stringr::str_remove(",$|,.$") %>% 
