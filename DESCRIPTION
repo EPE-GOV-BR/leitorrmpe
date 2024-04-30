@@ -10,8 +10,7 @@ Author: Gustavo Haydt [aut, cre],
   Matheus Cardozo [ctb],
   Empresa de Pesquisa Energética - EPE [cph]
 Maintainer: Modelos EPE-DEE-SGR <modelos.sgr@epe.gov.br>
-Description: Pacote com funções para leitura de arquivos de entrada e saida dos modelos do CEPEL.
-    Também há funções que montam arquivos para serem usados nos modelos.
+Description: Pacote com funções para leitura de arquivos de entrada e saida dos modelos de Planejamento Energético do CEPEL.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
