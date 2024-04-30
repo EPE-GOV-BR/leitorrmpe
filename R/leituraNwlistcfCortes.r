@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' leituraNwlistcfCortes("C:/PDE2027_Caso080/arquivo.rel")}
+#' leituraNwlistcfCortes("C:/PDE2027_Caso080/nwlistcf.rel")}
 #'
 leituraNwlistcfCortes <- function(arquivo) {
   if (missing(arquivo)) {
