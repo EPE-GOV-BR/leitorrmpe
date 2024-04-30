@@ -24,35 +24,45 @@
 #'
 #' @examples
 #' \dontrun{
-#' leituraConfiguracaoHidro("C:/PDE2027_Caso080")}
+#' leituraConfiguracaoHidro("C:/PDE2027_Caso080")
+#' }
 #'
 #' @export
 leituraConfiguracaoHidro <- function(pastaCaso) {
   if (missing(pastaCaso)) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
-  
+
   # encontra o nome do arquivo de dados gerais de acordo com a ordem informada no manual do NEWAVE para o arquivos.dat
-  arquivo <- leituraArquivos(pastaCaso) %>% dplyr::slice(3) %>% dplyr::pull(arquivo)
-  
+  arquivo <- leituraArquivos(pastaCaso) %>%
+    dplyr::slice(3) %>%
+    dplyr::pull(arquivo)
+
   # verifica existencia do arquivo
   if (!file.exists(paste(pastaCaso, arquivo, sep = "/"))) {
     stop(paste0(arquivo, " n\u00E3o encontrado em ", pastaCaso))
   }
-  
+
   # posicoes e nomes de acordo com manual do NEWAVE
   df.dadosConfiguracaoHidro <- readr::read_fwf(paste(pastaCaso, arquivo, sep = "/"),
-                                               col_positions = readr::fwf_positions(c(2, 7, 20, 26, 31, 36, 45, 50, 59, 68, 74), # vetor com as posicoes iniciais de cada campo
-                                                                                    c(5, 18, 23, 29, 34, 41, 46, 53, 62, 71, 76), # vetor com as posicoes finais de cada campo
-                                                                                    c("codUsina", "nomeUsina", "posto", "codUsinaJusante", "codREE", "volumeInical",
-                                                                                      "idUsinaExistente", "idModificacaoUsina", "inicioHistorico", "fimHistorico", "tecnologia")),
-                                               col_types = readr::cols(codUsina = readr::col_double(), nomeUsina = readr::col_character(), posto = readr::col_double(), codUsinaJusante = readr::col_double(),
-                                                                       codREE = readr::col_double(), volumeInical = readr::col_double(), idUsinaExistente = readr::col_character(),
-                                                                       idModificacaoUsina = readr::col_double(), inicioHistorico = readr::col_double(), fimHistorico = readr::col_double(),
-                                                                       tecnologia = readr::col_character()),
-                                               skip = 2, 
-                                               trim_ws = T) %>% 
+    col_positions = readr::fwf_positions(
+      c(2, 7, 20, 26, 31, 36, 45, 50, 59, 68, 74), # vetor com as posicoes iniciais de cada campo
+      c(5, 18, 23, 29, 34, 41, 46, 53, 62, 71, 76), # vetor com as posicoes finais de cada campo
+      c(
+        "codUsina", "nomeUsina", "posto", "codUsinaJusante", "codREE", "volumeInical",
+        "idUsinaExistente", "idModificacaoUsina", "inicioHistorico", "fimHistorico", "tecnologia"
+      )
+    ),
+    col_types = readr::cols(
+      codUsina = readr::col_double(), nomeUsina = readr::col_character(), posto = readr::col_double(), codUsinaJusante = readr::col_double(),
+      codREE = readr::col_double(), volumeInical = readr::col_double(), idUsinaExistente = readr::col_character(),
+      idModificacaoUsina = readr::col_double(), inicioHistorico = readr::col_double(), fimHistorico = readr::col_double(),
+      tecnologia = readr::col_character()
+    ),
+    skip = 2,
+    trim_ws = T
+  ) %>%
     dplyr::filter(!is.na(codUsina))
-  
+
   return(df.dadosConfiguracaoHidro)
 }

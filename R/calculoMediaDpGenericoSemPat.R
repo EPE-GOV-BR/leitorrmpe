@@ -17,7 +17,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' calculoMediaDpGenericoSemPat("C:/PDE2027_Caso080", "efiol", 9, 7)}
+#' calculoMediaDpGenericoSemPat("C:/PDE2027_Caso080", "efiol", 9, 7)
+#' }
 #'
 #' @export
 calculoMediaDpGenericoSemPat <- function(pasta, nomeTabela, passo, colunaInicialJaneiro) {
@@ -33,20 +34,20 @@ calculoMediaDpGenericoSemPat <- function(pasta, nomeTabela, passo, colunaInicial
   if (missing(colunaInicialJaneiro)) {
     stop("favor indicar a coluna inicial de janeiro, logo apos o patamar")
   }
-  
+
   # leitura dos valores
   df.dados <- leituraNwlistopGenericaSemPatamares(pasta, nomeTabela, passo, colunaInicialJaneiro)
-  
+
   # pega dados gerais do NEWAVE
   df.dadosGerais <- leituraDadosGerais(pasta)
-  
+
   # pega dados de configuracao hidro
   df.configuracaoHidro <- leituraConfiguracaoHidro(pasta)
-  
+
   # define inicio e fim de caso
   inicioCaso <- df.dadosGerais$anoInicio * 100 + df.dadosGerais$mesInicio
   fimCaso <- (df.dadosGerais$anoInicio + df.dadosGerais$duracaoEstudo - 1) * 100 + 12
-  
+
   # define o numero de series utilizadas no estudo
   if (df.dadosGerais$tipoSimulacao == 1) {
     seriesHidro <- df.dadosGerais$seriesSinteticas
@@ -58,34 +59,40 @@ calculoMediaDpGenericoSemPat <- function(pasta, nomeTabela, passo, colunaInicial
     if (seriesHidro$media != seriesHidro$minimo | seriesHidro$media != seriesHidro$maximo | seriesHidro$minimo != seriesHidro$maximo) {
       stop("Series hidro nao possuem mesmo horizonte cadastrado no arquivo confhd")
     }
-    fimHistorico <- df.configuracaoHidro %>% dplyr::pull(fimHistorico) %>% max()
+    fimHistorico <- df.configuracaoHidro %>%
+      dplyr::pull(fimHistorico) %>%
+      max()
     # resgata o valor de inicio de varredura da serie historica para contabilizar quantidade de series
-    inicioSimulacaoHistorico <- leituraSeriesHistoricasSimulacaoFinal(pastaCaso) %>% magrittr::extract2("df.varredura") %>% dplyr::pull(anoInicio)
+    inicioSimulacaoHistorico <- leituraSeriesHistoricasSimulacaoFinal(pastaCaso) %>%
+      magrittr::extract2("df.varredura") %>%
+      dplyr::pull(anoInicio)
     seriesHidro <- fimHistorico - inicioSimulacaoHistorico + 1
   } else {
     stop("Simulacao final apos convergencia PDDE do NEWAVE deve ser com series sinteticas ou historicas")
   }
-  
+
   # calculo dos valores medios e desvio padrao
-  df.valoresMedios <- df.dados %>% 
-    dplyr::filter(anoMes >= inicioCaso) %>% 
-    dplyr::mutate(ano = anoMes%/%100) %>% 
-    dplyr::group_by(codREE, serie, ano) %>% 
-    dplyr::summarise(valorMedio = mean(dados)) %>% 
-    dplyr::group_by(codREE, ano) %>% 
-    dplyr::summarise(media = round(mean(valorMedio), 2), dp = round(stats::sd(valorMedio)/(sqrt(seriesHidro - 1)), 2)) %>% 
+  df.valoresMedios <- df.dados %>%
+    dplyr::filter(anoMes >= inicioCaso) %>%
+    dplyr::mutate(ano = anoMes %/% 100) %>%
+    dplyr::group_by(codREE, serie, ano) %>%
+    dplyr::summarise(valorMedio = mean(dados)) %>%
+    dplyr::group_by(codREE, ano) %>%
+    dplyr::summarise(media = round(mean(valorMedio), 2), dp = round(stats::sd(valorMedio) / (sqrt(seriesHidro - 1)), 2)) %>%
     dplyr::mutate(ano = as.character(ano))
-  
-  df.valoresMediosPeriodoPlanej <- df.dados %>% 
-    dplyr::filter(anoMes >= inicioCaso,
-                  anoMes <= fimCaso) %>% 
-    dplyr::group_by(codREE, serie) %>% 
-    dplyr::summarise(valorMedio = mean(dados)) %>% 
-    dplyr::group_by(codREE) %>% 
-    dplyr::summarise(media = round(mean(valorMedio), 2), dp = round(stats::sd(valorMedio)/(sqrt(seriesHidro - 1)), 2)) %>% 
+
+  df.valoresMediosPeriodoPlanej <- df.dados %>%
+    dplyr::filter(
+      anoMes >= inicioCaso,
+      anoMes <= fimCaso
+    ) %>%
+    dplyr::group_by(codREE, serie) %>%
+    dplyr::summarise(valorMedio = mean(dados)) %>%
+    dplyr::group_by(codREE) %>%
+    dplyr::summarise(media = round(mean(valorMedio), 2), dp = round(stats::sd(valorMedio) / (sqrt(seriesHidro - 1)), 2)) %>%
     dplyr::mutate(ano = "Periodo de Planejamento")
-  
+
   df.valoresMedios <- rbind(df.valoresMedios, df.valoresMediosPeriodoPlanej)
-  
+
   return(df.valoresMedios)
 }

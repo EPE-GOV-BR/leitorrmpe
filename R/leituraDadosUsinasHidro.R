@@ -1,7 +1,7 @@
 #' Leitor de dados das usinas hidroeletricas
 #'
 #' Faz a leitura do arquivo do NEWAVE com dados das usinas hidroeletricas (hidr.dat).
-#' O arquivo de dados das usinas hidroelrtricas corresponde ao arquivo de cadastro com os dados das usinas hidroeletricas. 
+#' O arquivo de dados das usinas hidroelrtricas corresponde ao arquivo de cadastro com os dados das usinas hidroeletricas.
 #' Arquivo de acesso direto, nao formatado, com 320/600 registros, cada registro correspondendo a uma usina.
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos NEWAVE
@@ -87,28 +87,31 @@
 #'
 #' @examples
 #' \dontrun{
-#' leituraDadosUsinasHidro("C:/PDE2027_Caso080")}
+#' leituraDadosUsinasHidro("C:/PDE2027_Caso080")
+#' }
 #'
 #' @export
-leituraDadosUsinasHidro <- function(pastaCaso){
+leituraDadosUsinasHidro <- function(pastaCaso) {
   # verifica existencia do arquivo hidr.dat
   if (!file.exists(paste(pastaCaso, "hidr.dat", sep = "/"))) {
     stop(paste0("hidr.dat n\u00E3o encontrado em ", pastaCaso))
   }
-  
-  # o arquivo hidr possui usinas do codigo 1 ate o maior cadastrado. O arquivo nao possui buracos. 
+
+  # o arquivo hidr possui usinas do codigo 1 ate o maior cadastrado. O arquivo nao possui buracos.
   # logo quando nao existir um determinado codigo, existira uma linha com seus dados mas com valores zerados.
-  maiorCodUsina <- leituraConfiguracaoHidro(pastaCaso) %>% dplyr::pull(codUsina) %>% max()
-  
+  maiorCodUsina <- leituraConfiguracaoHidro(pastaCaso) %>%
+    dplyr::pull(codUsina) %>%
+    max()
+
   # abre conexao com o arquivo binario.
   conexaoArquivoBinario <- file(paste(pastaCaso, "hidr.dat", sep = "/"), "rb")
-  
+
   # data frames de saida
   df.dadosUsinasHidroeletricas <- tidyr::tibble()
   df.evaporacaoMensal <- tidyr::tibble()
   df.dadosConfiguracao <- tidyr::tibble()
   df.polinomiosVazaoNivelJusante <- tidyr::tibble()
-  
+
   for (andaUsina in 1:maiorCodUsina) {
     # a cada leitura feita no arquivo binario, o ponteiro com a posicao sera atualizado para posicao logo apos o fim dos dados lidos
     nomeUsina <- readBin(conexaoArquivoBinario, raw(), 12) %>% rawToChar()
@@ -155,107 +158,117 @@ leituraDadosUsinasHidro <- function(pastaCaso){
     observacao <- readBin(conexaoArquivoBinario, raw(), 43) %>% rawToChar()
     volumeReferencia <- readBin(conexaoArquivoBinario, numeric(), size = 4) %>% round(2)
     regulacao <- readBin(conexaoArquivoBinario, raw(), 1) %>% rawToChar()
-    
+
     # data frame auxiliar com dados de evaporacao mensal
-    df.evaporacaoMensalAux <- data.frame(codUsina = andaUsina,
-                                         nomeUsina = stringr::str_trim(nomeUsina),
-                                         codSubsistema = codSubsistema,
-                                         mes = 1:12,
-                                         evaporacao = evaporacaoMensal,
-                                         stringsAsFactors = F)
-    
+    df.evaporacaoMensalAux <- data.frame(
+      codUsina = andaUsina,
+      nomeUsina = stringr::str_trim(nomeUsina),
+      codSubsistema = codSubsistema,
+      mes = 1:12,
+      evaporacao = evaporacaoMensal,
+      stringsAsFactors = F
+    )
+
     # data frame auxiliar com dados de configuracao das usinas
-    df.dadosConfiguracaoAux <- data.frame(codUsina = andaUsina,
-                                          nomeUsina = stringr::str_trim(nomeUsina),
-                                          codSubsistema = codSubsistema,
-                                          numeroConjuntos = numeroConjuntos,
-                                          conjunto = 1:5,
-                                          numeroMaquinas = numeroMaquinas,
-                                          potenciaUnitaria = potenciaUnitaria,
-                                          quedaEfetiva = quedaEfetiva,
-                                          vazaoEfetiva = vazaoEfetiva,
-                                          stringsAsFactors = F)
-    
+    df.dadosConfiguracaoAux <- data.frame(
+      codUsina = andaUsina,
+      nomeUsina = stringr::str_trim(nomeUsina),
+      codSubsistema = codSubsistema,
+      numeroConjuntos = numeroConjuntos,
+      conjunto = 1:5,
+      numeroMaquinas = numeroMaquinas,
+      potenciaUnitaria = potenciaUnitaria,
+      quedaEfetiva = quedaEfetiva,
+      vazaoEfetiva = vazaoEfetiva,
+      stringsAsFactors = F
+    )
+
     # data frame auxiliar com dados dos polinomios de vazao de nivel jusante
-    df.polinomiosVazaoNivelJusanteAux <- data.frame(codUsina = andaUsina,
-                                                    nomeUsina = stringr::str_trim(nomeUsina),
-                                                    codSubsistema = codSubsistema,
-                                                    numPoliVazaoNivelJusante = numPoliVazaoNivelJusante,
-                                                    polinomio = 1:6,
-                                                    coeficienteA0 = poliVazaoNivelJusante[seq(1,30,5)],
-                                                    coeficienteA1 = poliVazaoNivelJusante[seq(2,30,5)],
-                                                    coeficienteA2 = poliVazaoNivelJusante[seq(3,30,5)],
-                                                    coeficienteA3 = poliVazaoNivelJusante[seq(4,30,5)],
-                                                    coeficienteA4 = poliVazaoNivelJusante[seq(5,30,5)],
-                                                    alturaReferencia = naref,
-                                                    stringsAsFactors = F)
-    
+    df.polinomiosVazaoNivelJusanteAux <- data.frame(
+      codUsina = andaUsina,
+      nomeUsina = stringr::str_trim(nomeUsina),
+      codSubsistema = codSubsistema,
+      numPoliVazaoNivelJusante = numPoliVazaoNivelJusante,
+      polinomio = 1:6,
+      coeficienteA0 = poliVazaoNivelJusante[seq(1, 30, 5)],
+      coeficienteA1 = poliVazaoNivelJusante[seq(2, 30, 5)],
+      coeficienteA2 = poliVazaoNivelJusante[seq(3, 30, 5)],
+      coeficienteA3 = poliVazaoNivelJusante[seq(4, 30, 5)],
+      coeficienteA4 = poliVazaoNivelJusante[seq(5, 30, 5)],
+      alturaReferencia = naref,
+      stringsAsFactors = F
+    )
+
     # data frame auxiliar com dados gerais das usinas hidroeletricas
-    df.dadosUsinasHidroeletricasAux <- data.frame(codUsina = andaUsina, 
-                                                  nomeUsina = stringr::str_trim(nomeUsina),
-                                                  posto = posto,
-                                                  postoBDH = postoBDH,
-                                                  codSubsistema = codSubsistema,
-                                                  codEmpresa = codEmpresa,
-                                                  codUsinaJusante = codUsinaJusante,
-                                                  codUsinaDesvio = codUsinaDesvio,
-                                                  volumeMinimo = volumeMinimo,
-                                                  volumeMaximo = volumeMaximo,
-                                                  volumeVertedouro = volumeVertedouro,
-                                                  volumeDesvio = volumeDesvio,
-                                                  volumeReferencia = volumeReferencia,
-                                                  cotaMinima = cotaMinima,
-                                                  cotaMaxima = cotaMaxima,
-                                                  poliCotaVolumeA0 = poliCotaVolume[1],
-                                                  poliCotaVolumeA1 = poliCotaVolume[2],
-                                                  poliCotaVolumeA2 = poliCotaVolume[3],
-                                                  poliCotaVolumeA3 = poliCotaVolume[4],
-                                                  poliCotaVolumeA4 = poliCotaVolume[5],
-                                                  poliAreaCotaA0 = poliAreaCota[1],
-                                                  poliAreaCotaA1 = poliAreaCota[2],
-                                                  poliAreaCotaA2 = poliAreaCota[3],
-                                                  poliAreaCotaA3 = poliAreaCota[4],
-                                                  poliAreaCotaA4 = poliAreaCota[5],
-                                                  numeroConjuntos = numeroConjuntos,
-                                                  produtibilidade = produtibilidade,
-                                                  perda = perda,
-                                                  numPoliVazaoNivelJusante = numPoliVazaoNivelJusante,
-                                                  canalFugaMedio = canalFugaMedio,
-                                                  vazaoMinimaHistorico = vazaoMinimaHistorico,
-                                                  numUnidadesBase = numUnidadesBase,
-                                                  tipoTurbina = tipoTurbina,
-                                                  representacaoConjunto = representacaoConjunto,
-                                                  TEIF = TEIF,
-                                                  IP = IP,
-                                                  tipoPerda = tipoPerda,
-                                                  data = data,
-                                                  observacao = observacao, 
-                                                  regulacao = regulacao, 
-                                                  stringsAsFactors = F)
-    
+    df.dadosUsinasHidroeletricasAux <- data.frame(
+      codUsina = andaUsina,
+      nomeUsina = stringr::str_trim(nomeUsina),
+      posto = posto,
+      postoBDH = postoBDH,
+      codSubsistema = codSubsistema,
+      codEmpresa = codEmpresa,
+      codUsinaJusante = codUsinaJusante,
+      codUsinaDesvio = codUsinaDesvio,
+      volumeMinimo = volumeMinimo,
+      volumeMaximo = volumeMaximo,
+      volumeVertedouro = volumeVertedouro,
+      volumeDesvio = volumeDesvio,
+      volumeReferencia = volumeReferencia,
+      cotaMinima = cotaMinima,
+      cotaMaxima = cotaMaxima,
+      poliCotaVolumeA0 = poliCotaVolume[1],
+      poliCotaVolumeA1 = poliCotaVolume[2],
+      poliCotaVolumeA2 = poliCotaVolume[3],
+      poliCotaVolumeA3 = poliCotaVolume[4],
+      poliCotaVolumeA4 = poliCotaVolume[5],
+      poliAreaCotaA0 = poliAreaCota[1],
+      poliAreaCotaA1 = poliAreaCota[2],
+      poliAreaCotaA2 = poliAreaCota[3],
+      poliAreaCotaA3 = poliAreaCota[4],
+      poliAreaCotaA4 = poliAreaCota[5],
+      numeroConjuntos = numeroConjuntos,
+      produtibilidade = produtibilidade,
+      perda = perda,
+      numPoliVazaoNivelJusante = numPoliVazaoNivelJusante,
+      canalFugaMedio = canalFugaMedio,
+      vazaoMinimaHistorico = vazaoMinimaHistorico,
+      numUnidadesBase = numUnidadesBase,
+      tipoTurbina = tipoTurbina,
+      representacaoConjunto = representacaoConjunto,
+      TEIF = TEIF,
+      IP = IP,
+      tipoPerda = tipoPerda,
+      data = data,
+      observacao = observacao,
+      regulacao = regulacao,
+      stringsAsFactors = F
+    )
+
     # junta data frames
     df.dadosUsinasHidroeletricas <- rbind(df.dadosUsinasHidroeletricas, df.dadosUsinasHidroeletricasAux)
     df.evaporacaoMensal <- rbind(df.evaporacaoMensal, df.evaporacaoMensalAux)
     df.dadosConfiguracao <- rbind(df.dadosConfiguracao, df.dadosConfiguracaoAux)
     df.polinomiosVazaoNivelJusante <- rbind(df.polinomiosVazaoNivelJusante, df.polinomiosVazaoNivelJusanteAux)
   }
-  
+
   # fecha conexao com arquivo binario
   close(conexaoArquivoBinario)
-  
+
   # limpa cadastros inexistentes
   df.dadosUsinasHidroeletricas <- dplyr::filter(df.dadosUsinasHidroeletricas, nomeUsina != "")
   df.evaporacaoMensal <- dplyr::filter(df.evaporacaoMensal, nomeUsina != "")
-  df.dadosConfiguracao <- dplyr::filter(df.dadosConfiguracao, nomeUsina != "", conjunto <= numeroConjuntos) %>% 
+  df.dadosConfiguracao <- dplyr::filter(df.dadosConfiguracao, nomeUsina != "", conjunto <= numeroConjuntos) %>%
     dplyr::select(-numeroConjuntos)
-  df.polinomiosVazaoNivelJusante <- dplyr::filter(df.polinomiosVazaoNivelJusante, nomeUsina != "", polinomio <= numPoliVazaoNivelJusante) %>% 
+  df.polinomiosVazaoNivelJusante <- dplyr::filter(df.polinomiosVazaoNivelJusante, nomeUsina != "", polinomio <= numPoliVazaoNivelJusante) %>%
     dplyr::select(-numPoliVazaoNivelJusante)
-  
+
   # cria lista com todos os data frames criados
-  lt.dadosUsinasHidroeletricas <- list(df.dadosUsinasHidroeletricas = df.dadosUsinasHidroeletricas,
-                                       df.evaporacaoMensal = df.evaporacaoMensal,
-                                       df.dadosConfiguracao = df.dadosConfiguracao,
-                                       df.polinomiosVazaoNivelJusante = df.polinomiosVazaoNivelJusante)
-  
+  lt.dadosUsinasHidroeletricas <- list(
+    df.dadosUsinasHidroeletricas = df.dadosUsinasHidroeletricas,
+    df.evaporacaoMensal = df.evaporacaoMensal,
+    df.dadosConfiguracao = df.dadosConfiguracao,
+    df.polinomiosVazaoNivelJusante = df.polinomiosVazaoNivelJusante
+  )
+
   return(lt.dadosUsinasHidroeletricas)
 }

@@ -14,25 +14,25 @@
 #'
 #' @examples
 #' \dontrun{
-#' leituraMercadoEnergiaPatamar("C:/PDE2027_Caso080")}
+#' leituraMercadoEnergiaPatamar("C:/PDE2027_Caso080")
+#' }
 #'
 #' @export
-leituraMercadoEnergiaPatamar <- function(pastaCaso){
+leituraMercadoEnergiaPatamar <- function(pastaCaso) {
   if (missing(pastaCaso)) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
-  
+
   # le o arquivo sistema
   dadosMercadoEnergia <- leituraMercadoEnergia(pastaCaso)
   # le o arquivo patamar
   dadosPatamar <- leituraDadosProfundidadePatamarCarga(pastaCaso)
-  
+
   # cria o df com os dados por patamar
-  df.mercadoEnergiaPatamar <- dplyr::inner_join(dadosPatamar, dadosMercadoEnergia, by = c("codSubsistema", "anoMes")) %>% 
-    dplyr::mutate(energiaMercado = energiaMercado*profundidadeCarga) %>% 
+  df.mercadoEnergiaPatamar <- dplyr::inner_join(dadosPatamar, dadosMercadoEnergia, by = c("codSubsistema", "anoMes")) %>%
+    dplyr::mutate(energiaMercado = energiaMercado * profundidadeCarga) %>%
     dplyr::select(-profundidadeCarga)
-  
-  
+
+
   return(df.mercadoEnergiaPatamar)
 }
-

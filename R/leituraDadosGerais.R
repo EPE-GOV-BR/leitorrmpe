@@ -20,11 +20,11 @@
 #' \item controle de impressao das carcteristicas das usinas (0 nao imprime; 1 imprime) (\code{$dados})
 #' \item controle de impressao dos dados de mercado de energia (0 nao imprime; 1 imprime) (\code{$mercados})
 #' \item controle de impressao das energias hitoricas afluentes (0 nao imprime; 1 imprime) (\code{$energias})
-#' \item controle de impressao dos parametros do modelo estocastico (0 nao imprime; 1 imprime) (\code{$modeloEstocastico}) 
+#' \item controle de impressao dos parametros do modelo estocastico (0 nao imprime; 1 imprime) (\code{$modeloEstocastico})
 #' \item controle de impressao dos parametros dos reservatorios equivalentes de energia (0 nao imprime; 1 imprime) (\code{$subsistema})
 #' \item numero maximo de iteracoes (\code{$maximoIteracoes})
 #' \item numero de simulacoes forward (\code{$simulacoesForward})
-#' \item numero de aberturas para a simulacao backward (\code{$aberturasSimulacaoBackward}) 
+#' \item numero de aberturas para a simulacao backward (\code{$aberturasSimulacaoBackward})
 #' \item numero de aberturas variavel por periodo (0 nao sera considerado; 1 sera considerado) (\code{$aberturasVariavel})
 #' \item numero de series sinteticas (\code{$seriesSinteticas})
 #' \item ordem maxima do modelo estocastico PAR(p) (\code{$ordemMaximaParP})
@@ -34,7 +34,7 @@
 #' \item probabilidade associada ao intervalo de confianca para convergencia do algoritmo (%) (\code{$tolerancia})
 #' \item taxa de desconto anual (\code{$taxaDesconto})
 #' \item simulacao final apos convergencia PDDE (0 nao simula; 1 series sinteticas; 2 serie historica; 3 consistencia de dados) (\code{$tipoSimulacao})
-#' \item controle de impressao dos resultados da simulacao final e do calculo da politica (0 sinopse; 1 op. detalhada) (\code{$impressaoSimulacao}) 
+#' \item controle de impressao dos resultados da simulacao final e do calculo da politica (0 sinopse; 1 op. detalhada) (\code{$impressaoSimulacao})
 #' \item controle de impressao dos riscos de deficit e valor esperado da ENS (0 convergencia final apenas; 1 total as iteracoes) (\code{$impressaoConvergencia})
 #' \item de quantas em quantas series sera gravado o relatorio detalhado da simulacao final (\code{$intervaloGravar})
 #' \item numero minimo de iteracoes para a convergencia da politica (\code{$minimoIteracoes})
@@ -54,31 +54,31 @@
 #' \item controle da curva de seguranca (0 sem car d VMINP; 1 car e/ou VMINP) (\code{$controleCurvaSeguranca})
 #' \item controle da geracao de cenario de afluencias para as simulacoes backward e forward (0 ruidos fw sorteados da bw e compensacao correlacao espacial; 1 compensacao bw; 2 compensacao bw e fw) (\code{$tipoGeracao})
 #' \item profundidade para calculo do risco de deficit (%) - primeiro valor (\code{$riscoDeficitPrimeiro})
-#' \item profundidade para calculo do risco de deficit (%) - segundo valor (\code{$riscoDeficitSegundo}) 
+#' \item profundidade para calculo do risco de deficit (%) - segundo valor (\code{$riscoDeficitSegundo})
 #' \item funcionalidade pseudo-partida quente: numero de iteracoes a ser considerada para a simulacao final (0 considera todas as iteracoes) (\code{$pseudoPartidaQuente})
 #' \item consideracao de agrupamento livre de intercambios (0 nao considera; 1 considera) (\code{$agrupamentoIntercambio})
-#' \item consideracao de equalizacao de penalidades de intercambio (\code{$equalizacaoIntercambio}) 
+#' \item consideracao de equalizacao de penalidades de intercambio (\code{$equalizacaoIntercambio})
 #' \item consideracao da representacao da submortizacao (0 nao considera; 1 subsistema; 2 usina) (\code{$submortizacao})
 #' \item consideracao da ordenacao automatica de subsistemas/submercados e classes termicas (0 nao considera; 1 considera) (\code{$ordenacaoAutomatica})
 #' \item consideracao do arquivo de cargas adicionais (0 nao considera; 1 considera) (\code{$cargaAdicional})
-#' \item valor percentual de ZSUP a ser subtraido de LINF para o criterio de parada estatistico (%) (\code{$deltaZsup}) 
-#' \item valor maximo percentual para delta de ZINF no criterio de parada nao estatistico (%) (\code{$deltaZinf})  
-#' \item numero de deltas de ZINF consecutivos a serem considerados no criterio nao estatistico (\code{$iteracoesDeltaZinf}) 
+#' \item valor percentual de ZSUP a ser subtraido de LINF para o criterio de parada estatistico (%) (\code{$deltaZsup})
+#' \item valor maximo percentual para delta de ZINF no criterio de parada nao estatistico (%) (\code{$deltaZinf})
+#' \item numero de deltas de ZINF consecutivos a serem considerados no criterio nao estatistico (\code{$iteracoesDeltaZinf})
 #' \item consideracao de despacho antecipado de usinas termicas a gas natural liquefeito (GNL) (0 nao considera; 1 considera) (\code{$despachoAntecipado})
 #' \item modificacao automatica do montante de antecipacao de despacho de uma usina GNL quando a capacidade de geracao maxima desta usina for inferior a este valor (0 nao considera; 1 considera) (\code{$modificacaoAuto})
-#' \item consideracao de restricoes de geracao hidraulica minima (0 nao considera; 1 considera) (\code{$geracaoHidraulica}) 
-#' \item mes de inicio para o calculo da simulacao final (\code{$mesSimulacao}) 
+#' \item consideracao de restricoes de geracao hidraulica minima (0 nao considera; 1 considera) (\code{$geracaoHidraulica})
+#' \item mes de inicio para o calculo da simulacao final (\code{$mesSimulacao})
 #' \item ano de inicio para o calculo da simulacao final (\code{$anoSimulacao})
 #' \item volume armazenado inicial (%) por REE para calculo da simulacao final (\code{$volumeSimulacao})
-#' \item utilizacao do gerenciador externo de processos (0 nao considera; 1 considera) (\code{$gerenciadorExterno}) 
-#' \item utilizacao da comunicacao em dois niveis (0 nao considera; 1 considera) (\code{$comunicaDoisNiveis}) 
+#' \item utilizacao do gerenciador externo de processos (0 nao considera; 1 considera) (\code{$gerenciadorExterno})
+#' \item utilizacao da comunicacao em dois niveis (0 nao considera; 1 considera) (\code{$comunicaDoisNiveis})
 #' \item utilizacao de armazenamento local de arquivos temporarios (0 nao considera; 1 considera) (\code{$arquivoTemporario})
 #' \item utilizacao de alocacao em memoria da energia natural afluente (0 nao considera; 1 considera) (\code{$energiaAfluente})
 #' \item utilizacao de alocacao em memoria dos cortes da funcao de custo futuro (0 nao considera; 1 considera) (\code{$cortesCustoFuturo})
 #' \item utilizacao de mecanismo de aversao a risco: SAR (0 nao considera; 1 considera) (\code{$riscoSar})
 #' \item utilizacao de mecanismo de aversao a risco: CVaR (0 nao considera; 1 considera constante; 2 considera variavel) (\code{$riscoCvar})
-#' \item consideracao do criterio de minimo ZSUP para convergencia (0 nao considera; 1 considera) (\code{$zsup}) 
-#' \item consideracao do requisito de vazao minima (0 nao considera; 1 considera) (\code{$vazaoMinima}) 
+#' \item consideracao do criterio de minimo ZSUP para convergencia (0 nao considera; 1 considera) (\code{$zsup})
+#' \item consideracao do requisito de vazao minima (0 nao considera; 1 considera) (\code{$vazaoMinima})
 #' \item consideracao de restricoes eletricas internas aos REEs (0 nao considera; 1 considera) (\code{$restricaoEletrica})
 #' \item consideracao do procedimento de Selecao de Cortes de Benders (0 nao considera; 1 considera) (\code{$selecaoCortes})
 #' \item consideracao de Janela de Cortes de Benders (0 nao considera; 1 considera) (\code{$janelaCortes})
@@ -95,30 +95,33 @@
 #' \item momento de realizacao da reamostragem (0 backward; 1 forward) (\code{$momentoReamostragem})
 #' \item manutencao dos arquivos de ENA gerados para reamostragem apos a execucao do programa (0 apaga; 1 mantem) (\code{$arquivosEna})
 #' \item teste da convergencia somente apos iteracao minima (inclusive) (0 primeira iteracao; 1 iteracao minima) (\code{$iteracaoMinima})
-#' 
+#'
 #' }
 #'
 #' @examples
 #' \dontrun{
-#' leituraDadosGerais("C:/PDE2027_Caso080")}
+#' leituraDadosGerais("C:/PDE2027_Caso080")
+#' }
 #'
 #' @export
 leituraDadosGerais <- function(pastaCaso) {
   if (missing(pastaCaso)) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
-  
+
   # encontra o nome do arquivo de dados gerais de acordo com a ordem informada no manual do NEWAVE para o arquivos.dat
-  arquivo <- leituraArquivos(pastaCaso) %>% dplyr::slice(1) %>% dplyr::pull(arquivo)
-  
+  arquivo <- leituraArquivos(pastaCaso) %>%
+    dplyr::slice(1) %>%
+    dplyr::pull(arquivo)
+
   # verifica existencia do arquivo
   if (!file.exists(paste(pastaCaso, arquivo, sep = "/"))) {
     stop(paste0(arquivo, " n\u00E3o encontrado em ", pastaCaso))
   }
-  
+
   # le o arquivo dger como um vetor de caracteres nx1
   dadosBrutos <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), locale = readr::locale(encoding = "latin1"), n_max = 100)
-  
+
   # data frame dados gerais
   df.dadosGerais <- data.frame(duracaoEstudo = 0)
   df.dadosGerais$tipoExecucao <- stringr::str_sub(dadosBrutos[2], 22, 25) %>% as.numeric()
@@ -208,8 +211,8 @@ leituraDadosGerais <- function(pastaCaso) {
   df.dadosGerais$momentoReamostragem <- stringr::str_sub(dadosBrutos[75], 22, 25) %>% as.numeric()
   df.dadosGerais$arquivosEna <- stringr::str_sub(dadosBrutos[76], 22, 25) %>% as.numeric()
   df.dadosGerais$iteracaoMinima <- stringr::str_sub(dadosBrutos[77], 22, 25) %>% as.numeric()
-  
-  
-  
+
+
+
   return(df.dadosGerais)
 }
