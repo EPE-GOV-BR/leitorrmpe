@@ -141,7 +141,7 @@ leituraMercadoEnergia <- function(pastaCaso) {
       # encontra o fim da informacao
       fimCAdic <- which(stringr::str_detect(dadosCAdic, "999"))
       # filtra somente a parte do vetor que tem os dados de interesse
-      dadosCAdicTXT <- dadosCAdic[(3):(fimCAdic - 2)]
+      dadosCAdicTXT <- dadosCAdic[(3):(fimCAdic - 1)]
 
       # filtra linhas de POS
       filtro <- readr::read_fwf(I(dadosCAdicTXT),
