@@ -24,6 +24,7 @@ reproduzindo o calculo que e encontrado ao final do relatorio de saida do NEWAVE
 }
 \examples{
 \dontrun{
-calculoMediaDpCMO("C:/PDE2030_Caso080")}
+calculoMediaDpCMO("C:/PDE2030_Caso080")
+}
 
 }

@@ -10,7 +10,7 @@ leituraGeracaoTermicaTotal(pasta)
 \item{pasta}{localizacao dos arquivos do NEWAVE com dados de geracao termica total}
 }
 \value{
-\code{df.geracaoTermicaTotal} data frame com os valores de geracao termica total 
+\code{df.geracaoTermicaTotal} data frame com os valores de geracao termica total
 \itemize{
 \item codigo do submercado (\code{$codSubmercado})
 \item serie (\code{$serie})
@@ -21,12 +21,13 @@ leituraGeracaoTermicaTotal(pasta)
 }
 \description{
 Faz a leitura dos arquivos do NEWAVE com dados de geracao termica total por submercado  (gttotxxx.*) e recupera esses valores por ano, mes, patamar e serie.
-Nao retorna os valores de total, media, desvio e etc. do arquivo de origem. 
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas. 
+Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
+Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
 Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
-leituraGeracaoTermicaTotal("C:/PDE2027_Caso080")}
+leituraGeracaoTermicaTotal("C:/PDE2027_Caso080")
+}
 
 }

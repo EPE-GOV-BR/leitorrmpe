@@ -20,14 +20,15 @@ leituraHLiqUsina(pasta)
 }
 }
 \description{
-Faz a leitura dos arquivos do NEWAVE com dados de altura de queda liquida por usina  (hliqxxx.*) e 
+Faz a leitura dos arquivos do NEWAVE com dados de altura de queda liquida por usina  (hliqxxx.*) e
 recupera esses valores por codigo da usina, ano, mes, patamar e serie.
-Nao retorna os valores de total, media, desvio e etc. do arquivo de origem. 
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas. 
+Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
+Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
 Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
-leituraHLiqUsina("C:/PDE2027_Caso080")}
+leituraHLiqUsina("C:/PDE2027_Caso080")
+}
 
 }

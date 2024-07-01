@@ -1,5 +1,6 @@
 test_that("leituraNwlistopGenericaComPatamares works", {
   expect_snapshot_value(leituraNwlistopGenericaComPatamares("testData", "ghtot", 9, 12), style = "json2")
+  expect_snapshot_value(leituraNwlistopGenericaComPatamares("testData", "ghtot", NA, 12), style = "json2")
 })
 
 test_that("leituraNwlistopGenericaComPatamares error", {

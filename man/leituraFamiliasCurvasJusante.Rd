@@ -34,11 +34,12 @@ leituraFamiliasCurvasJusante(arquivo)
 }
 }
 \description{
-Faz a leitura dos arquivos com dados do cadastro das familias de curvas de jusante e 
+Faz a leitura dos arquivos com dados do cadastro das familias de curvas de jusante e
 do cadastro dos coeficientes dos polinomios por partes das curvas de jusante.
 }
 \examples{
 \dontrun{
-leituraFamiliasCurvasJusante("C:/PDE2027_Caso080/polinjus.dat")}
+leituraFamiliasCurvasJusante("C:/PDE2027_Caso080/polinjus.dat")
+}
 
 }

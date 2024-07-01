@@ -23,6 +23,7 @@ Utiliza os leitores de mercado de energia e profundidade de patamar de carga par
 }
 \examples{
 \dontrun{
-leituraMercadoEnergiaPatamar("C:/PDE2027_Caso080")}
+leituraMercadoEnergiaPatamar("C:/PDE2027_Caso080")
+}
 
 }

@@ -12,19 +12,20 @@ leituraDadosSubsistema(pastaCaso)
 \value{
 \code{df.subsistema} data frame com os dados dos subsistemas/submercados
 \itemize{
-\item numero do subsistema/submercado (\code{$codSubsistema}) 
+\item numero do subsistema/submercado (\code{$codSubsistema})
 \item nome do subsistema/submercado (\code{$nomeSubsistema})
 \item tipo de subsistema: ficticio [1], ou real [0] (\code{$tipoFicticio})
 \item custo de deficit em $/MWh (\code{$deficit})
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados dos subsistemas/submercados (sistema.*) 
+Faz a leitura do arquivo do NEWAVE com dados dos subsistemas/submercados (sistema.*)
 Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
 Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{
-leituraSubsistema("C:/PDE2027_Caso080") }
+leituraSubsistema("C:/PDE2027_Caso080")
+}
 
 }

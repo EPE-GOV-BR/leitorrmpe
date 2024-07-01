@@ -10,7 +10,7 @@ leituraIntercambioEnergia(pasta)
 \item{pasta}{localizacao dos arquivos do NEWAVE com dados de intercambio de energia}
 }
 \value{
-\code{df.intercambioEnergia} data frame com os valores de intercambio de energia 
+\code{df.intercambioEnergia} data frame com os valores de intercambio de energia
 \itemize{
 \item subsistema/submercado de origem do intercambio (\code{$codSubsistemaOrigem})
 \item subsistema/submercado de destino do intercambio (\code{$codSubsistemaDestino})
@@ -21,14 +21,15 @@ leituraIntercambioEnergia(pasta)
 }
 }
 \description{
-Faz a leitura dos arquivos do NEWAVE com dados de intercambio de energia (intXXXXXX.*) e 
+Faz a leitura dos arquivos do NEWAVE com dados de intercambio de energia (intXXXXXX.*) e
 recupera esses valores por origem/destino, ano, mes, patamar e serie.
-Nao retorna os valores de total, media, desvio e etc. do arquivo de origem. 
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas. 
+Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
+Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
 Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
-leituraIntercambioEnergia("C:/PDE2027_Caso080")}
+leituraIntercambioEnergia("C:/PDE2027_Caso080")
+}
 
 }

@@ -23,6 +23,7 @@ Faz a leitura dos dados de configuracao hidroeletrica do DECOMP no arquivo (dadg
 }
 \examples{
 \dontrun{
-leituraConfiguracaoHidroDC("C:/Pasta_Deck_DECOMP")}
+leituraConfiguracaoHidroDC("C:/Pasta_Deck_DECOMP")
+}
 
 }

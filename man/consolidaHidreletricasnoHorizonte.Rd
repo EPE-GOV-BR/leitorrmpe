@@ -14,13 +14,13 @@ consolidaHidreletricasnoHorizonte(pastaCaso)
 \itemize{
 \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 \item nome da usina (\code{$nomeUsina})
-\item ano e mes de entrada em operacao da unidade hidroeletrica (\code{$anoMes}) 
+\item ano e mes de entrada em operacao da unidade hidroeletrica (\code{$anoMes})
 \item codigo do REE (\code{$codREE})
 \item canal de fuga medio [m] (\code{$canalFugaMedio})
 \item volume Maximo [hm3] (\code{$volumeMaximoFinal})
 \item volume Minimo [hm3] (\code{$volumeMinimoFinal})
 \item vazao minima do historico [m3/s] (\code{$vazaoMinimaFinal})
-\item numero de conjuntos de maquinas (\code{$numeroConjuntos}) 
+\item numero de conjuntos de maquinas (\code{$numeroConjuntos})
 \item taxa esperada de indisponibilidade forcada (TEIF) [\%] (\code{$TEIF})
 \item indisponibilidade programada (IP) [\%] (\code{$IP})
 \item potencia efetiva da usina [MW] (\code{$potenciaEfetivaUsina})
@@ -33,6 +33,7 @@ Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto
 }
 \examples{
 \dontrun{
-consolidaHidreletricasnoHorizonte(pastaCaso)}
+consolidaHidreletricasnoHorizonte(pastaCaso)
+}
 
 }

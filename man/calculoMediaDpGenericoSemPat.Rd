@@ -4,14 +4,19 @@
 \alias{calculoMediaDpGenericoSemPat}
 \title{Calculo da media e desvio padrao de tabela Nwlistop SEM patamar}
 \usage{
-calculoMediaDpGenericoSemPat(pasta, nomeTabela, passo, colunaInicialJaneiro)
+calculoMediaDpGenericoSemPat(
+  pasta,
+  nomeTabela,
+  passo = NA,
+  colunaInicialJaneiro
+)
 }
 \arguments{
 \item{pasta}{localizacao dos arquivos do NEWAVE com as tabelas do Nwlistop}
 
 \item{nomeTabela}{nome da tabela do Nwlistop ex (efiol)}
 
-\item{passo}{tamanho do campo}
+\item{passo}{tamanho do campo (opcional). Caso seja vazio ou NA, o passo será calculado pelo cabeçalho}
 
 \item{colunaInicialJaneiro}{coluna em que inicia a impressao dos dados (coluna posterior ao final da impressao do patamar)}
 }
@@ -29,6 +34,7 @@ Faz o calculo da media e do desvio padrao da variavel de interesse por submercad
 }
 \examples{
 \dontrun{
-calculoMediaDpGenericoSemPat("C:/PDE2027_Caso080", "efiol", 9, 7)}
+calculoMediaDpGenericoSemPat("C:/PDE2027_Caso080", "efiol", 9, 7)
+}
 
 }

@@ -21,11 +21,12 @@ leituraEnergiaArmazenadaFinalSubmercado(pasta)
 \description{
 Faz a leitura do arquivo do NEWAVE com informacao de energia armazenada final por Submercado (earmfMXXX.out) e recupera esses valores por ano, mes e serie.
 Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas. 
+Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
 Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
-leituraEnergiArmazenadaFinalSubmercado("C:/PDE2027_Caso080")}
+leituraEnergiArmazenadaFinalSubmercado("C:/PDE2027_Caso080")
+}
 
 }

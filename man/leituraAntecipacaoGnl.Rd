@@ -12,7 +12,7 @@ leituraAntecipacaoGnl(pastaCaso)
 \value{
 \code{df.antecipacaoDespachoGnl} data frame com os dados de antecipação de despacho de usinas térmicas GNL
 \itemize{
-\item numero da usina térmica (\code{$codUsina}) 
+\item numero da usina térmica (\code{$codUsina})
 \item numero do mês para despacho antecipado (\code{$numMes})
 \item patamar de carga (\code{$patamar})
 \item despacho antecipado [MWmes] (\code{$despacho})
@@ -25,6 +25,7 @@ Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto
 }
 \examples{
 \dontrun{
-leituraAntecipacaoGnl("C:/PDE2027_Caso080")}
+leituraAntecipacaoGnl("C:/PDE2027_Caso080")
+}
 
 }

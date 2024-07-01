@@ -30,6 +30,7 @@ Modelo de planejamento da operacao de sistemas hidrotermicos interligados de lon
 }
 \examples{
 \dontrun{
-leituraPenalidades("C:/PDE2027_Caso080")}
+leituraPenalidades("C:/PDE2027_Caso080")
+}
 
 }

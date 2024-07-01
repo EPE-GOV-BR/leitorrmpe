@@ -30,6 +30,7 @@ Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto
 }
 \examples{
 \dontrun{
-leituraSeriesHistoricasSimulacaoFinal("C:/PDE2027_Caso080")}
+leituraSeriesHistoricasSimulacaoFinal("C:/PDE2027_Caso080")
+}
 
 }

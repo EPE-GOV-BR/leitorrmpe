@@ -21,7 +21,7 @@ consolidaTermeletricasnoHorizonte(pastaCaso)
 \item TEIF da usina termica (\%) (\code{$TEIF})
 \item geracao termica minima (MWmes) (\code{$GTMin})
 \item indisponibilidade programada (IP) da usina termica para os demais anos do estudo (\%) (\code{$IP})
-\item potencia disponivel maxima (MW) (\code{$PDISP}) 
+\item potencia disponivel maxima (MW) (\code{$PDISP})
 \item tipo de combustivel da classe termica (\code{$tipoComb})
 \item custo de operacao da classe termica ($/MWh) (\code{$CVU})
 }
@@ -33,6 +33,7 @@ Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto
 }
 \examples{
 \dontrun{
-consolidaTermeletricasnoHorizonte(pastaCaso)}
+consolidaTermeletricasnoHorizonte(pastaCaso)
+}
 
 }

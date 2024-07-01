@@ -1,5 +1,6 @@
 test_that("leituraNwlistopIndivGenericaSemPatamares works", {
   expect_snapshot_value(leituraNwlistopIndivGenericaSemPatamares("testData", "hmont", 15, 8), style = "json2")
+  expect_snapshot_value(leituraNwlistopIndivGenericaSemPatamares("testData", "hmont", NA, 8), style = "json2")
 })
 
 test_that("leituraNwlistopIndivGenericaSemPatamares error", {

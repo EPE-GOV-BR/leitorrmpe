@@ -25,7 +25,7 @@ leituraAlteracaoDadosUsinasHidro(pastaCaso)
 \item volume maximo operativo no tempo [hm3] (\code{$volumeMaximo}) - como e no tempo este campo representa tanto VOLMAX e VMAXT
 \item volume maximo operativo no tempo [p.u.] do volume util (\code{$volumeMaximoPU}) - como e no tempo este campo representa tanto VOLMAX e VMAXT
 \item numero de unidades de base (\code{$numeroUnidadeBase})
-\item total de conjuntos de maquinas (considerados apenas os n primeiros conjuntos, de acordo com a ordem destes conjuntos no cadastro) 
+\item total de conjuntos de maquinas (considerados apenas os n primeiros conjuntos, de acordo com a ordem destes conjuntos no cadastro)
 (\code{$numeroConjuntos})
 \item produtibilidade especifica [MW/m3/s/m] (\code{$produtibilidade})
 \item taxa esperada de indisponibilidade forcada (TEIF) [\%] (\code{$TEIF})
@@ -42,7 +42,7 @@ leituraAlteracaoDadosUsinasHidro(pastaCaso)
 }}
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados de alteracao de configuracao hidroeletrica (modif.*). Usa as funcoes internas \code{\link{leituraArquivos}}, 
+Faz a leitura do arquivo do NEWAVE com dados de alteracao de configuracao hidroeletrica (modif.*). Usa as funcoes internas \code{\link{leituraArquivos}},
 \code{\link{definePeriodo}}, \code{\link{leituraDadosUsinasHidro}}.
 Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
 Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
@@ -50,6 +50,7 @@ Retorna as ateracoes no tempo (por todos os meses e anos do horizonte mesmo que 
 }
 \examples{
 \dontrun{
-leituraAlteracaoDadosUsinasHidro("C:/PDE2027_Caso080")}
+leituraAlteracaoDadosUsinasHidro("C:/PDE2027_Caso080")
+}
 
 }

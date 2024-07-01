@@ -21,11 +21,12 @@ leituraEnergiaAfluenteTotalBrutaMercado(pasta)
 \description{
 Faz a leitura do arquivo do NEWAVE com informacao de energia afluente total bruta por submercado (eafbmXXX.out) e recupera esses valores por ano, mes e serie.
 Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas. 
+Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
 Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
-leituraEnergiaAfluenteTotalBrutMercado("C:/PDE2027_Caso080")}
+leituraEnergiaAfluenteTotalBrutMercado("C:/PDE2027_Caso080")
+}
 
 }

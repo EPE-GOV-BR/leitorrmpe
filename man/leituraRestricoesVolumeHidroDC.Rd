@@ -27,6 +27,7 @@ Utiliza as informacoes do BLOCO 35 do DADGER
 }
 \examples{
 \dontrun{
-leituraRestricoesVolumeHidroDC("C:/Pasta_Deck_DECOMP")}
+leituraRestricoesVolumeHidroDC("C:/Pasta_Deck_DECOMP")
+}
 
 }

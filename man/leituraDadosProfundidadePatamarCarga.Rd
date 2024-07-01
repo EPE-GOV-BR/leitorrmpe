@@ -10,9 +10,9 @@ leituraDadosProfundidadePatamarCarga(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE.}
 }
 \value{
-\code{df.dadosProfundidadePatamarCarga} data frame com dados de profundidade de patamares de carga 
+\code{df.dadosProfundidadePatamarCarga} data frame com dados de profundidade de patamares de carga
 \itemize{
-\item sistema (\code{$codSubsistema}) 
+\item sistema (\code{$codSubsistema})
 \item numero do patamar (\code{$patamar})
 \item ano e mes do dado (\code{$anoMes})
 \item profundidade de patamar de carga (\code{$profundidadeCarga})
@@ -25,6 +25,7 @@ Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto
 }
 \examples{
 \dontrun{
-leituraDadosProfundidadePatamarCarga("C:/PDE2027_Caso080")}
+leituraDadosProfundidadePatamarCarga("C:/PDE2027_Caso080")
+}
 
 }

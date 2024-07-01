@@ -7,7 +7,7 @@
 #'
 #' @param pasta localizacao dos arquivos do NEWAVE com as tabelas do Nwlistop
 #' @param nomeTabela Nome da tabela do Nwlistop ex (efiol)
-#' @param passo tamanho do campo
+#' @param passo tamanho do campo (opcional). Caso seja vazio ou NA, o passo será calculado pelo cabeçalho
 #' @param colunaInicialJaneiro coluna em que inicia a impressao dos dados (coluna posterior ao final da impressao da serie)
 #'
 #'
@@ -26,7 +26,7 @@
 #' }
 #'
 #' @export
-leituraNwlistopIndivGenericaComPatamares <- function(pasta, nomeTabela, passo, colunaInicialJaneiro) {
+leituraNwlistopIndivGenericaComPatamares <- function(pasta, nomeTabela, passo = NA, colunaInicialJaneiro) {
   if (missing(pasta)) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
@@ -48,6 +48,14 @@ leituraNwlistopIndivGenericaComPatamares <- function(pasta, nomeTabela, passo, c
 
   if (length(arquivos) == 0) {
     stop(paste0("N\u00E3o foram encontrados os arquivos ", nomeTabela, "XXX.out em ", pasta))
+  }
+  
+  # se o passo nao for informado, encontra pelo espacamento da linha 5 do arquivo
+  if(is.na(passo)){
+    linha <- readr::read_lines(paste(pasta, arquivos[1], sep = "/"), n_max = 5)[5]
+    posicoes <- gregexpr("[0-9]", linha)[[1]]  
+    espacamento <- diff(posicoes)  
+    passo <- as.numeric(names(sort(-table(espacamento)))[1])
   }
 
   # Encontra as colunas
@@ -74,11 +82,7 @@ leituraNwlistopIndivGenericaComPatamares <- function(pasta, nomeTabela, passo, c
     }
 
     # pega informacao da usina no nome do arquivo
-    inicioUsina <- stringr::str_locate(arquivo, nomeTabela) %>%
-      {
-        .[1, 2] + 1
-      } %>%
-      unname()
+    inicioUsina <- stringr::str_locate(arquivo, nomeTabela) %>% {.[1, 2] + 1} %>% unname()
     codUsina <- stringr::str_sub(arquivo, inicioUsina, inicioUsina + 2) %>% as.integer()
 
     purrr::map_df(1:length(anos), function(andaAnos) {

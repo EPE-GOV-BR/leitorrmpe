@@ -22,6 +22,7 @@ Com o auxilio da funcao \code{\link{leituraDadosGerais}} cria um data frame com 
 }
 \examples{
 \dontrun{
-definePeriodo("C:/PDE2027_Caso080")}
+definePeriodo("C:/PDE2027_Caso080")
+}
 
 }

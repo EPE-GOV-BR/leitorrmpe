@@ -24,6 +24,7 @@ Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto
 }
 \examples{
 \dontrun{
-leituraDadosDuracaoPatamar("C:/PDE2027_Caso080")}
+leituraDadosDuracaoPatamar("C:/PDE2027_Caso080")
+}
 
 }

@@ -4,7 +4,7 @@
 #'
 #' @param pasta localizacao dos arquivos do NEWAVE com as tabelas do Nwlistop
 #' @param nomeTabela nome da tabela do Nwlistop ex (efiol)
-#' @param passo tamanho do campo
+#' @param passo tamanho do campo (opcional). Caso seja vazio ou NA, o passo será calculado pelo cabeçalho
 #' @param colunaInicialJaneiro coluna em que inicia a impressao dos dados (coluna posterior ao final da impressao do patamar)
 #'
 #' @return \code{df.cmoMedio} data frame com os valores de custo marginal de demanda
@@ -21,15 +21,12 @@
 #' }
 #'
 #' @export
-calculoMediaDpGenericoSemPat <- function(pasta, nomeTabela, passo, colunaInicialJaneiro) {
+calculoMediaDpGenericoSemPat <- function(pasta, nomeTabela, passo = NA, colunaInicialJaneiro) {
   if (missing(pasta)) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
   if (missing(nomeTabela)) {
     stop("favor indicar a tabela do Nwlistop a ser lida")
-  }
-  if (missing(passo)) {
-    stop("favor indicar o passo entre colunas da tabela")
   }
   if (missing(colunaInicialJaneiro)) {
     stop("favor indicar a coluna inicial de janeiro, logo apos o patamar")

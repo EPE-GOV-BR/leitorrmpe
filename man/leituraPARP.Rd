@@ -48,7 +48,7 @@ leituraPARP(pasta)
 \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP com parcela anual, lag3 (\code{$coefLag3})
 \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP com parcela anual, lag4 (\code{$coefLag4})
 \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP com parcela anual, lag5 (\code{$coefLag5})
-\item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP com parcela anual, lag6 (\code{$coefLag6}) 
+\item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP com parcela anual, lag6 (\code{$coefLag6})
 }
 }
 }
@@ -57,6 +57,7 @@ Faz a leitura do arquivo do NEWAVE com memoria de calculo do modelo autorregress
 }
 \examples{
 \dontrun{
-leituraPARP("C:/PDE2027_Caso080")}
+leituraPARP("C:/PDE2027_Caso080")
+}
 
 }

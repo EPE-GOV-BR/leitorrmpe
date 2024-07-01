@@ -7,7 +7,7 @@
 #'
 #' @param pasta localizacao dos arquivos do NEWAVE com as tabelas do Nwlistop
 #' @param nomeTabela nome da tabela do Nwlistop ex (efiol)
-#' @param passo tamanho do campo
+#' @param passo tamanho do campo (opcional). Caso seja vazio ou NA, o passo será calculado pelo cabeçalho
 #' @param colunaInicialJaneiro coluna em que inicia a impressao dos dados (coluna posterior ao final da impressao do patamar)
 #'
 #'
@@ -26,15 +26,12 @@
 #' }
 #'
 #' @export
-leituraNwlistopGenericaComPatamares <- function(pasta, nomeTabela, passo, colunaInicialJaneiro) {
+leituraNwlistopGenericaComPatamares <- function(pasta, nomeTabela, passo = NA, colunaInicialJaneiro) {
   if (missing(pasta)) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
   if (missing(nomeTabela)) {
     stop("favor indicar a tabela do Nwlistop a ser lida")
-  }
-  if (missing(passo)) {
-    stop("favor indicar o passo entre colunas da tabela")
   }
   if (missing(colunaInicialJaneiro)) {
     stop("favor indicar a coluna inicial de janeiro, logo apos o patamar")
@@ -62,16 +59,19 @@ leituraNwlistopGenericaComPatamares <- function(pasta, nomeTabela, passo, coluna
     # localiza a posicao do fim de dados pela informacao de desvio padrao
     fimAnos <- which(stringr::str_detect(dadosBrutos, "DPADRAO"))
     # pega informacao de ree no nome do arquivo
-    inicioREE <- stringr::str_locate(arquivo, nomeTabela) %>%
-      {
-        .[1, 2] + 1
-      } %>%
-      unname()
+    inicioREE <- stringr::str_locate(arquivo, nomeTabela) %>% {.[1, 2] + 1} %>% unname()
     codREE <- stringr::str_sub(arquivo, inicioREE, inicioREE + 2) %>% as.integer()
+    
+    # se o passo nao for informado, encontra pelo espacamento da linha 5 do arquivo
+    if(is.na(passo)){
+      posicoes <- gregexpr("[0-9]", dadosBrutos[5])[[1]]  
+      espacamento <- diff(posicoes)  
+      passo <- as.numeric(names(sort(-table(espacamento)))[1])
+    }
+    
     # Encontra as colunas
     posicaoColunasInicio <- c(3, 10, seq.int(colunaInicialJaneiro, colunaInicialJaneiro + passo * 11, passo))
     posicaoColunasFim <- c(6, 11, seq.int(colunaInicialJaneiro + passo - 1, colunaInicialJaneiro + passo * 12 - 1, passo))
-
 
     dados <- crossmap::map_vec(1:length(anos), function(andaAnos) {
       # posicoes e nomes de acordo com manual do NEWAVE

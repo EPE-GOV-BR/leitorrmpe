@@ -25,6 +25,7 @@ Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto
 }
 \examples{
 \dontrun{
-leituraMercadoEnergia("C:/PDE2027_Caso080")}
+leituraMercadoEnergia("C:/PDE2027_Caso080")
+}
 
 }

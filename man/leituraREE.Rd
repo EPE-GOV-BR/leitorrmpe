@@ -24,6 +24,7 @@ Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto
 }
 \examples{
 \dontrun{
-leituraREE("C:/PDE2027_Caso080") }
+leituraREE("C:/PDE2027_Caso080")
+}
 
 }

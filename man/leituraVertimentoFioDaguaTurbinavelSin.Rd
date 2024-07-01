@@ -19,12 +19,13 @@ leituraVertimentoFioDaguaTurbinavelSin(pasta)
 }
 \description{
 Faz a leitura dos arquivos do NEWAVE com dados de vertimento fio dagua turbinavel para o Sistema Interligado Nacional  (verturbsin.*) e recupera esses valores por ano, mes e serie.
-Nao retorna os valores de media, desvio e etc. do arquivo de origem. 
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas. 
+Nao retorna os valores de media, desvio e etc. do arquivo de origem.
+Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
 Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
-leituraVertimentoFioDaguaTurbinavelSin("C:/PDE2027_Caso080")}
+leituraVertimentoFioDaguaTurbinavelSin("C:/PDE2027_Caso080")
+}
 
 }

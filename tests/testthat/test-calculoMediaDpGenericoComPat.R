@@ -1,5 +1,7 @@
 test_that("calculoMediaDpCMO works", {
   expect_snapshot_value(calculoMediaDpGenericoComPat("testData", "ghtot", 9, 12), style = "json2")
+  expect_snapshot_value(calculoMediaDpGenericoComPat("testData", "ghtot", NA, 12), style = "json2")
+  expect_snapshot_value(calculoMediaDpGenericoComPat("testData", "ghtot", , 12), style = "json2")
 })
 
 test_that("calculoMediaDpCMO error", {

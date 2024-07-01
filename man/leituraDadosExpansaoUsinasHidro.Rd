@@ -25,7 +25,7 @@ leituraDadosExpansaoUsinasHidro(pastaCaso)
 \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 \item nome da usina (\code{$nomeUsina})
 \item conjunto de maquinas (\code{$conjunto})
-\item ano e mes de entrada em operacao da unidade hidroeletrica (\code{$anoMes})  
+\item ano e mes de entrada em operacao da unidade hidroeletrica (\code{$anoMes})
 \item potencia unitaria da unidade adicionada (\code{$potenciaUnitaria})
 \item numero da unidade a ser adicionada (\code{$unidadeAdicionada})
 }
@@ -34,14 +34,14 @@ leituraDadosExpansaoUsinasHidro(pastaCaso)
 \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 \item nome da usina (\code{$nomeUsina})
 \item conjunto de maquinas (\code{$conjunto})
-\item ano e mes de entrada em operacao da unidade hidroeletrica (\code{$anoMes})  
+\item ano e mes de entrada em operacao da unidade hidroeletrica (\code{$anoMes})
 \item potencia unitaria da unidade adicionada (\code{$potenciaUnitaria})
 \item numero de maquinas (\code{$numeroMaquinas})
 }
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados de expansao de usinas hidroeletricas (exph.*). Usa as funcoes internas \code{\link{leituraArquivos}}, 
+Faz a leitura do arquivo do NEWAVE com dados de expansao de usinas hidroeletricas (exph.*). Usa as funcoes internas \code{\link{leituraArquivos}},
 \code{\link{definePeriodo}}.
 Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
 Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
@@ -49,6 +49,7 @@ Retorna as ateracoes no tempo (por todos os meses e anos do horizonte mesmo que 
 }
 \examples{
 \dontrun{
-leituraDadosExpansaoUsinasHidro("C:/PDE2027_Caso080")}
+leituraDadosExpansaoUsinasHidro("C:/PDE2027_Caso080")
+}
 
 }

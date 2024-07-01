@@ -27,6 +27,7 @@ OBS: O leitor desconsidera os dados para periodos PRE e POS.
 }
 \examples{
 \dontrun{
-leituraGeracaoHidraulicaMinima("C:/PDE2027_Caso080")}
+leituraGeracaoHidraulicaMinima("C:/PDE2027_Caso080")
+}
 
 }

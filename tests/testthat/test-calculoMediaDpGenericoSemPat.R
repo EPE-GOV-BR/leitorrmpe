@@ -1,5 +1,7 @@
 test_that("calculoMediaDpCMO works", {
   expect_snapshot_value(calculoMediaDpGenericoSemPat("testData", "earmf", 9, 7), style = "json2")
+  expect_snapshot_value(calculoMediaDpGenericoSemPat("testData", "earmf", NA, 7), style = "json2")
+  expect_snapshot_value(calculoMediaDpGenericoSemPat("testData", "earmf", , 7), style = "json2")
 })
 
 test_that("calculoMediaDpCMO error", {

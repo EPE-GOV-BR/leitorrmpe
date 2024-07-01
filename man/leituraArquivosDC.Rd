@@ -21,6 +21,7 @@ indicado nele (geralmente rvX) para recuperar a lista de arquivos de entrada uti
 }
 \examples{
 \dontrun{
-leituraArquivosDC("C:/Pasta_Deck_DECOMP")}
+leituraArquivosDC("C:/Pasta_Deck_DECOMP")
+}
 
 }

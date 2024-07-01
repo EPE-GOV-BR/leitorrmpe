@@ -25,6 +25,7 @@ Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto
 }
 \examples{
 \dontrun{
-leituraLimiteInterligacoes("C:/PDE2027_Caso080")}
+leituraLimiteInterligacoes("C:/PDE2027_Caso080")
+}
 
 }

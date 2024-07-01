@@ -33,6 +33,7 @@ Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto
 }
 \examples{
 \dontrun{
-leituraCurvaAversaoRisco("C:/PDE2027_Caso080")}
+leituraCurvaAversaoRisco("C:/PDE2027_Caso080")
+}
 
 }

@@ -22,6 +22,7 @@ indicado nele (geralmente arquivos.dat) para recuperar a lista de arquivos de en
 }
 \examples{
 \dontrun{
-leituraArquivos("C:/PDE2027_Caso080")}
+leituraArquivos("C:/PDE2027_Caso080")
+}
 
 }

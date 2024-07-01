@@ -12,7 +12,7 @@ leituraUsinasNaoSimuladas(pastaCaso)
 \value{
 \code{df.UsinasNaoSimuladas} data frame com os dados das usinas nao simuladas
 \itemize{
-\item numero do subsistema/submercado (\code{$codSubsistema}) 
+\item numero do subsistema/submercado (\code{$codSubsistema})
 \item numero do bloco de usinas nao simuladas (\code{$codBlocoUNS})
 \item nome do bloco de usinas nao simuladas (\code{$nomeBlocoUNS})
 \item ano e mes do dado (\code{$anoMes})
@@ -20,12 +20,13 @@ leituraUsinasNaoSimuladas(pastaCaso)
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados das usinas nao simuladas por subsistema/submercado (sistema.*) 
+Faz a leitura do arquivo do NEWAVE com dados das usinas nao simuladas por subsistema/submercado (sistema.*)
 Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
 Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{
-leituraUsinasNaoSimuladas("C:/PDE2027_Caso080")}
+leituraUsinasNaoSimuladas("C:/PDE2027_Caso080")
+}
 
 }

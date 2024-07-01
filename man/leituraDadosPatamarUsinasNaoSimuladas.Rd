@@ -10,7 +10,7 @@ leituraDadosPatamarUsinasNaoSimuladas(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE.}
 }
 \value{
-\code{df.dadosPatamarUsinasNaoSimuladas} data frame com dados de patamares de usinas nao simuladas 
+\code{df.dadosPatamarUsinasNaoSimuladas} data frame com dados de patamares de usinas nao simuladas
 \itemize{
 \item numero do subsistema/submercado  (\code{$codSubsistema})
 \item numero do bloco de usinas nao simuladas  (\code{$codBlocoUNS})
@@ -26,6 +26,7 @@ Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto
 }
 \examples{
 \dontrun{
-leituraDadosPatamarUsinasNaoSimuladas("C:/PDE2027_Caso080")}
+leituraDadosPatamarUsinasNaoSimuladas("C:/PDE2027_Caso080")
+}
 
 }

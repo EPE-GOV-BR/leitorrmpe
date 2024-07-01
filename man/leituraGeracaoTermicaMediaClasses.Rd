@@ -19,11 +19,12 @@ leituraGeracaoTermicaMediaClasses(pasta)
 }
 }
 \description{
-Faz a leitura dos arquivos do NEWAVE com dados de geracao termica por classes e total do submercado  (gtertxxx.*) e 
+Faz a leitura dos arquivos do NEWAVE com dados de geracao termica por classes e total do submercado  (gtertxxx.*) e
 recupera os valores medios por codigo da usina, ano e mes, na media de todas as series da politica.
 }
 \examples{
 \dontrun{
-leituraGeracaoTermicaMediaClasses("C:/PDE2027_Caso080")}
+leituraGeracaoTermicaMediaClasses("C:/PDE2027_Caso080")
+}
 
 }

@@ -91,11 +91,12 @@ leituraDadosUsinasHidro(pastaCaso)
 }
 \description{
 Faz a leitura do arquivo do NEWAVE com dados das usinas hidroeletricas (hidr.dat).
-O arquivo de dados das usinas hidroelrtricas corresponde ao arquivo de cadastro com os dados das usinas hidroeletricas. 
+O arquivo de dados das usinas hidroelrtricas corresponde ao arquivo de cadastro com os dados das usinas hidroeletricas.
 Arquivo de acesso direto, nao formatado, com 320/600 registros, cada registro correspondendo a uma usina.
 }
 \examples{
 \dontrun{
-leituraDadosUsinasHidro("C:/PDE2027_Caso080")}
+leituraDadosUsinasHidro("C:/PDE2027_Caso080")
+}
 
 }
