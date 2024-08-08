@@ -241,6 +241,14 @@ leituraAlteracaoDadosUsinasHidro <- function(pastaCaso) {
     dplyr::select(-c("dataFato")) %>%
     tidyr::pivot_wider(names_from = chave, values_from = valor) %>%
     dplyr::arrange(codUsina, anoMes)
+  
+  # adiciona as colunas TEIF e IP caso nao existam
+  if (!"TEIF" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(TEIF = NA)
+  }
+  if (!"IP" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(IP = NA)
+  }
 
   lt.alteracaoDadosUsinasHidro <- list(df.alteracaoHidro = df.alteracaoHidro, df.alteracaoConjunto = df.alteracaoConjunto)
 

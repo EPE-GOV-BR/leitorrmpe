@@ -1,7 +1,7 @@
 Package: leitorrmpe
 Type: Package
 Title: Leitor dos arquivos de entrada e saída dos Modelos de Planejamento Energético do CEPEL
-Version: 0.13.3
+Version: 0.13.4
 Date: 01-07-2024
 Author: Gustavo Haydt [aut, cre],
   Caio Leocadio [aut, cre],

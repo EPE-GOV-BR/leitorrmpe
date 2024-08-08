@@ -44,7 +44,7 @@ consolidaHidreletricasnoHorizonte <- function(pastaCaso) {
 
   lt.alteracaoDadosUsinasHidro <- leituraAlteracaoDadosUsinasHidro(pastaCaso)
   df.alteracaoConjunto <- lt.alteracaoDadosUsinasHidro$df.alteracaoConjunto %>% dplyr::rename(potenciaUnitaria = potenciaEfetiva)
-  df.alteracaoHidro <- lt.alteracaoDadosUsinasHidro$df.alteracaoHidro %>% dplyr::select(codUsina, anoMes, canalFuga, volumeMaximo, volumeMinimo, vazaoMinima)
+  df.alteracaoHidro <- lt.alteracaoDadosUsinasHidro$df.alteracaoHidro %>% dplyr::select(codUsina, anoMes, canalFuga, TEIF, IP, volumeMaximo, volumeMinimo, vazaoMinima)
 
   lt.dadosExpansaoHidro <- leituraDadosExpansaoUsinasHidro(pastaCaso)
   df.dadosExpansaoHidroTempo <- lt.dadosExpansaoHidro$df.dadosExpansaoHidroTempo %>% dplyr::select(-nomeUsina)
@@ -125,7 +125,8 @@ consolidaHidreletricasnoHorizonte <- function(pastaCaso) {
       volumeMinimoFinal = ifelse(!is.na(volumeMinimo.y) & idModificacaoUsina == 1, volumeMinimo.y, volumeMinimo.x),
       vazaoMinimaFinal = ifelse(!is.na(vazaoMinima) & idModificacaoUsina == 1, vazaoMinima, vazaoMinimaHistorico),
       canalFugaFinal = ifelse(!is.na(canalFuga) & idModificacaoUsina == 1, canalFuga, canalFugaMedio),
-      TEIF = TEIF / 100, IP = IP / 100
+      TEIF = ifelse(!is.na(TEIF.y) & idModificacaoUsina == 1, TEIF.y/100, TEIF.x/100),
+      IP = ifelse(!is.na(IP.y) & idModificacaoUsina == 1, IP.y/100, IP.x/100)
     ) %>%
     dplyr::inner_join(df.potef, by = c("codUsina", "anoMes")) %>%
     dplyr::select(
@@ -133,7 +134,6 @@ consolidaHidreletricasnoHorizonte <- function(pastaCaso) {
       vazaoMinimaFinal, numeroConjuntos, TEIF, IP, potenciaEfetivaUsina
     ) %>%
     dplyr::distinct(.keep_all = TRUE)
-
 
   return(df.consolidadoUHEnoHorizonte)
 }
