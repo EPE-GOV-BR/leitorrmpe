@@ -1,12 +1,13 @@
 Package: leitorrmpe
 Type: Package
 Title: Leitor dos arquivos de entrada e saída dos Modelos de Planejamento Energético do CEPEL
-Version: 0.13.4
+Version: 0.13.5
 Authors@R: c(person("Gustavo", "Haydt", role = c("aut")),
     person("Caio", "Leocadio", role = c("aut")),
     person("Saulo", "Silva", role = c("cre", "aut"), email = "modelos.sgr@epe.gov.br"),
     person("Juliane", "Santos", role = c("aut")),
-    person("Matheus", "Cardozo", role = c("aut")))
+    person("Matheus", "Cardozo", role = c("aut")),
+    person("Empresa de Pesquisa Energética - EPE", role = c("cph", "fnd")))
 Description: Pacote com funções para leitura de arquivos de entrada e saida dos modelos de Planejamento Energético do CEPEL.
 URL: https://github.com/EPE-GOV-BR/leitorrmpe
 License: GPL (>= 3)

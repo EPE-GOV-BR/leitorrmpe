@@ -92,9 +92,17 @@
 #'
 #' @export
 leituraDadosUsinasHidro <- function(pastaCaso) {
+  arquivos <- list.files(pastaCaso)
+  
   # verifica existencia do arquivo hidr.dat
-  if (!file.exists(paste(pastaCaso, "hidr.dat", sep = "/"))) {
+  if (!any(stringr::str_detect(arquivos, "(?i)hidr.dat"))) {
     stop(paste0("hidr.dat n\u00E3o encontrado em ", pastaCaso))
+  }else{
+    if(sum(stringr::str_detect(arquivos, "(?i)hidr.dat"))>1){
+      stop(paste0("mais de um arquivo hidr.dat encontrado em ", pastaCaso))
+    }else{
+      hidr <- arquivos[stringr::str_detect(arquivos, "(?i)hidr.dat")]
+    }
   }
 
   # o arquivo hidr possui usinas do codigo 1 ate o maior cadastrado. O arquivo nao possui buracos.
@@ -104,7 +112,7 @@ leituraDadosUsinasHidro <- function(pastaCaso) {
     max()
 
   # abre conexao com o arquivo binario.
-  conexaoArquivoBinario <- file(paste(pastaCaso, "hidr.dat", sep = "/"), "rb")
+  conexaoArquivoBinario <- file(paste(pastaCaso, hidr, sep = "/"), "rb")
 
   # data frames de saida
   df.dadosUsinasHidroeletricas <- tidyr::tibble()
