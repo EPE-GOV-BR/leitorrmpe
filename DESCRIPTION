@@ -1,7 +1,7 @@
 Package: leitorrmpe
 Type: Package
 Title: Leitor dos arquivos de entrada e saída dos Modelos de Planejamento Energético do CEPEL
-Version: 0.13.5
+Version: 0.13.6
 Authors@R: c(person("Gustavo", "Haydt", role = c("aut")),
     person("Caio", "Leocadio", role = c("aut")),
     person("Saulo", "Silva", role = c("cre", "aut"), email = "modelos.sgr@epe.gov.br"),

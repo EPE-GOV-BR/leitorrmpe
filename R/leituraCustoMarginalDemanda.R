@@ -57,13 +57,21 @@ leituraCustoMarginalDemanda <- function(pasta) {
       } %>%
       unname()
     codSubmercado <- stringr::str_sub(arquivos, inicioSubmercado, inicioSubmercado + 2) %>% as.integer()
+    
+    # leitura do tamanho dos campos de acordo com o cabecalho
+    posicoes <- gregexpr("[0-9]", dadosBrutos[5])[[1]]  
+    espacamento <- diff(posicoes)  
+    passo <- as.numeric(names(sort(-table(espacamento)))[1])
+    
+    posicaoColunasInicio <- c(3, 10, seq.int(15, 15 + passo * 11, passo))
+    posicaoColunasFim <- c(6, 11, seq.int(15 + passo - 1, 15 + passo * 12 - 1, passo))
 
     purrr::map_df(1:length(anos), function(andaAnos) {
       df.custoMarginalDemandaAnual <- readr::read_fwf(I(dadosBrutos[inicioAnos[andaAnos]:(fimAnos[andaAnos] - 2)]),
         col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
-          c(3, 10, 13, 25, 34, 43, 52, 61, 70, 79, 88, 97, 106, 115),
+          posicaoColunasInicio,
           # vetor com as posicoes finais de cada campo
-          c(6, 11, 23, 32, 41, 50, 59, 68, 77, 86, 95, 104, 113, 122),
+          posicaoColunasFim,
           # nome colunas
           c("serie", "patamar", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
         ),
