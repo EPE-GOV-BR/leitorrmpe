@@ -217,8 +217,12 @@ leituraAlteracaoDadosUsinasHidro <- function(pastaCaso) {
     df.alteracaoConjunto <- dplyr::inner_join(dplyr::mutate(df.alteracaoConjunto, aux = 1), dplyr::mutate(definePeriodo(pastaCaso), aux = 1), by = c("aux"), relationship = "many-to-many") %>%
       dplyr::select(codUsina, anoMes, conjunto, everything(), -ano, -mes, -aux)
     # se nao houver a coluna potenciaEfetiva, adiciona com NA
-    if (!"PotenciaEfetiva" %in% df.alteracaoConjunto) {
+    if (!"potenciaEfetiva" %in% colnames(df.alteracaoConjunto)) {
       df.alteracaoConjunto <- df.alteracaoConjunto %>% dplyr::mutate(potenciaEfetiva = NA)
+    }
+    # se nao houver a coluna potenciaEfetiva, adiciona com NA
+    if (!"numeroMaquinas" %in% colnames(df.alteracaoConjunto)) {
+      df.alteracaoConjunto <- df.alteracaoConjunto %>% dplyr::mutate(numeroMaquinas = NA)
     }
   } else {
     df.alteracaoConjunto <- data.frame(codUsina = 999, anoMes = 999999, conjunto = 99, numeroMaquinas = NA, potenciaEfetiva = NA)
