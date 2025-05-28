@@ -239,6 +239,7 @@ leituraDadosUsinasHidro <- function(pastaCaso) {
       perda = perda,
       numPoliVazaoNivelJusante = numPoliVazaoNivelJusante,
       canalFugaMedio = canalFugaMedio,
+      influenciaVertimentoCanalFuga = influenciaVertimentoCanalFuga,
       vazaoMinimaHistorico = vazaoMinimaHistorico,
       numUnidadesBase = numUnidadesBase,
       tipoTurbina = tipoTurbina,
