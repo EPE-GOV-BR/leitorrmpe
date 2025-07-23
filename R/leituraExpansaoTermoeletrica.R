@@ -87,6 +87,9 @@ leituraExpansaoTermoeletrica <- function(pastaCaso) {
       dplyr::select(-c("aux")) %>%
       dplyr::mutate(validadeExpt = ifelse(((anoMes >= datainc) & (anoMes <= datafim)), "sim", "nao")) %>%
       dplyr::filter(validadeExpt != "nao") %>%
+      dplyr::group_by(codUsinaTermica, anoMes, parametros, validadeExpt) %>%
+      dplyr::slice_tail() %>%
+      dplyr::ungroup() %>%
       dplyr::select(-c("validadeExpt", "datainc", "datafim", "ano", "mes")) %>%
       dplyr::group_by_at(dplyr::vars(-valornew)) %>%
       dplyr::mutate(row_id = 1:dplyr::n()) %>%
