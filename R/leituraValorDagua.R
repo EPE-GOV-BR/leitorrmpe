@@ -1,6 +1,6 @@
 #' Leitor de dados do valor dagua por REE
 #'
-#' Faz a leitura dos arquivos do NEWAVE com dados do valor dagua por REE  (vaguaxxx.*) e recupera esses valores por ano, mes e serie.
+#' Faz a leitura dos arquivos do NEWAVE com dados do valor dagua por REE  (valor_aguaxxx.*) e recupera esses valores por ano, mes e serie.
 #' Nao retorna os valores de media, desvio e etc. do arquivo de origem.
 #' Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
 #' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
@@ -31,9 +31,9 @@ leituraValorDagua <- function(pasta) {
   df.valorDagua <- tidyr::tibble(codREE = numeric(), serie = numeric(), anoMes = numeric(), valorDagua = numeric())
 
   # seleciona somente os arquivos vagua
-  arquivos <- setdiff(list.files(pasta, pattern = "^vagua"), list.files(pasta, pattern = "^vagua[pms]"))
+  arquivos <- setdiff(list.files(pasta, pattern = "^valor_agua"), list.files(pasta, pattern = "^valor_agua[pms]"))
   if (length(arquivos) == 0) {
-    stop(paste0("N\u00E3o foram encontrados os arquivos vaguaXXX.out em ", pasta))
+    stop(paste0("N\u00E3o foram encontrados os arquivos valor_aguaXXX.out em ", pasta))
   }
 
   df.valorDagua <- purrr::map_df(arquivos, function(arquivo) {
