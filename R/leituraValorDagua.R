@@ -50,7 +50,7 @@ leituraValorDagua <- function(pasta) {
     fimAnos <- which(stringr::str_detect(dadosBrutos, "DPADRAO"))
 
     # pega informacao de ree no nome do arquivo
-    inicioREE <- stringr::str_locate(arquivo, "vagua") %>%
+    inicioREE <- stringr::str_locate(arquivo, "valor_agua") %>%
       {
         .[1, 2] + 1
       } %>%
