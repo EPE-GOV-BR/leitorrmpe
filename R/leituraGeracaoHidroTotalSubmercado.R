@@ -33,6 +33,7 @@ leituraGeracaoHidroTotalSubmercado <- function(pasta) {
 
   # seleciona somente os arquivos ghtotm
   arquivos <- list.files(pasta, pattern = "^ghtotm")
+  arquivos <- arquivos[stringr::str_detect(arquivos, "\\.out\\.*$")]
   if (length(arquivos) == 0) {
     stop(paste0("N\u00E3o foram encontrados os arquivos ghtotmXXX.out em ", pasta))
   }

@@ -32,6 +32,7 @@ leituraVolArmPercentualUsina <- function(pasta) {
 
   # seleciona somente os arquivos varmpuh
   arquivos <- list.files(pasta, pattern = "^varmpuh[0-9]")
+  arquivos <- arquivos[stringr::str_detect(arquivos, "\\.out\\.*$")]
   if (length(arquivos) == 0) {
     stop(paste0("N\u00E3o foram encontrados os arquivos varmpuhXXX.out em ", pasta))
   }

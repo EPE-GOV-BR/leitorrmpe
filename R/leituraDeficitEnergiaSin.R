@@ -33,6 +33,7 @@ leituraDeficitEnergiaSin <- function(pasta) {
 
   # seleciona somente os arquivos defsin
   arquivos <- list.files(pasta, pattern = "^defsinp[0-9]")
+  arquivos <- arquivos[stringr::str_detect(arquivos, "\\.out\\.*$")]
   if (length(arquivos) == 0) {
     stop(paste0("N\u00E3o foram encontrados os arquivos defsinpXXX.out em ", pasta))
   }

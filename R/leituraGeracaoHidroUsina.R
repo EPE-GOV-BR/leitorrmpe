@@ -33,6 +33,7 @@ leituraGeracaoHidroUsina <- function(pasta) {
 
   # seleciona somente os arquivos ghiduh
   arquivos <- list.files(pasta, pattern = "^ghiduh[0-9]")
+  arquivos <- arquivos[stringr::str_detect(arquivos, "\\.out\\.*$")]
   if (length(arquivos) == 0) {
     stop(paste0("N\u00E3o foram encontrados os arquivos ghiduhXXX.out em ", pasta))
   }

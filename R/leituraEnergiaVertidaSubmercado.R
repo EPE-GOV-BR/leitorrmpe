@@ -32,6 +32,7 @@ leituraEnergiaVertidaSubmercado <- function(pasta) {
 
   # seleciona somente os arquivos evertm
   arquivos <- list.files(pasta, pattern = "^evertm")
+  arquivos <- arquivos[stringr::str_detect(arquivos, "\\.out\\.*$")]
   if (length(arquivos) == 0) {
     stop(paste0("N\u00E3o foram encontrados os arquivos evertmXXX.out em ", pasta))
   }

@@ -32,6 +32,7 @@ leituraVertimentoFioDaguaTurbinavelSubmercado <- function(pasta) {
 
   # seleciona somente os arquivos verturbm
   arquivos <- list.files(pasta, pattern = "^verturbm")
+  arquivos <- arquivos[stringr::str_detect(arquivos, "\\.out\\.*$")]
   if (length(arquivos) == 0) {
     stop(paste0("N\u00E3o foram encontrados os arquivos verturbmXXX.out em ", pasta))
   }

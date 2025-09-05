@@ -32,6 +32,7 @@ leituraCotaMontanteUsina <- function(pasta) {
 
   # seleciona somente os arquivos hmont
   arquivos <- list.files(pasta, pattern = "^hmont[0-9]")
+  arquivos <- arquivos[stringr::str_detect(arquivos, "\\.out\\.*$")]
   if (length(arquivos) == 0) {
     stop(paste0("N\u00E3o foram encontrados os arquivos hmontXXX.out em ", pasta))
   }

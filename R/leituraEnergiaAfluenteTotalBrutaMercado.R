@@ -31,6 +31,7 @@ leituraEnergiaAfluenteTotalBrutaMercado <- function(pasta) {
 
   # seleciona somente os arquivos earmf
   arquivos <- list.files(pasta, pattern = "^eafbm")
+  arquivos <- arquivos[stringr::str_detect(arquivos, "\\.out\\.*$")]
   if (length(arquivos) == 0) {
     stop(paste0("N\u00E3o foram encontrados os arquivos eafbmXXX.out em ", pasta))
   }
