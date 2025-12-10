@@ -90,6 +90,9 @@ leituraAlteracaoDadosUsinasHidro <- function(pastaCaso) {
       valor = as.double(valor)
     ) %>%
     dplyr::select(codUsina, dataFato, chave, valor) %>%
+    dplyr::group_by(codUsina, chave) %>%
+    dplyr::slice_tail() %>% # em caso de multiplas alteracoes, pega a ultima
+    dplyr::ungroup() %>%
     tidyr::pivot_wider(names_from = chave, values_from = valor) # faz pivot para criar campos existentes em outas unidades
 
   if (!"volumeMaximo" %in% names(df.volume)) {
@@ -139,6 +142,9 @@ leituraAlteracaoDadosUsinasHidro <- function(pastaCaso) {
     dplyr::filter(!is.na(ano)) %>% # remove anos de pre e pos
     dplyr::mutate(dataFato = ano * 100 + as.numeric(mes)) %>%
     dplyr::select(codUsina, dataFato, chave, valor) %>%
+    dplyr::group_by(codUsina, dataFato, chave) %>%
+    dplyr::slice_tail() %>% # em caso de multiplas alteracoes, pega a ultima
+    dplyr::ungroup() %>%
     tidyr::pivot_wider(names_from = chave, values_from = valor) # faz pivot para criar campos existentes em outas unidades
 
   if (!"volumeMaximo" %in% names(df.volumeTempo)) {
@@ -181,7 +187,10 @@ leituraAlteracaoDadosUsinasHidro <- function(pastaCaso) {
     ) %>%
     dplyr::filter(!is.na(ano)) %>% # remove anos de pre e pos
     dplyr::mutate(dataFato = ano * 100 + as.numeric(mes)) %>%
-    dplyr::select(codUsina, dataFato, chave, valor)
+    dplyr::select(codUsina, dataFato, chave, valor) %>% 
+    dplyr::group_by(codUsina, dataFato, chave) %>%
+    dplyr::slice_tail() %>% # em caso de multiplas alteracoes, pega a ultima
+    dplyr::ungroup()
 
   # dados com estrutura de valor
   # numero de unidades de base, total de conjuntos de maquinas, vazao maxima e minima
@@ -199,7 +208,10 @@ leituraAlteracaoDadosUsinasHidro <- function(pastaCaso) {
       chave = stringr::str_replace(chave, "PERDHIDR", "perda"),
       valor = as.double(valores)
     ) %>%
-    dplyr::select(codUsina, dataFato, chave, valor)
+    dplyr::select(codUsina, dataFato, chave, valor) %>% 
+    dplyr::group_by(codUsina, chave) %>%
+    dplyr::slice_tail() %>% # em caso de multiplas alteracoes, pega a ultima
+    dplyr::ungroup()
 
   # dados com estrutura de valor e por conjunto
   # numero de maquinas e valor da potencia efetiva de um determinado conjunto
@@ -213,6 +225,9 @@ leituraAlteracaoDadosUsinasHidro <- function(pastaCaso) {
         valor = as.double(valor),
         conjunto = as.integer(conjunto)
       ) %>%
+      dplyr::group_by(codUsina, conjunto, chave) %>%
+      dplyr::slice_tail() %>% # em caso de multiplas alteracoes, pega a ultima
+      dplyr::ungroup() %>% 
       tidyr::pivot_wider(names_from = chave, values_from = valor)
     df.alteracaoConjunto <- dplyr::inner_join(dplyr::mutate(df.alteracaoConjunto, aux = 1), dplyr::mutate(definePeriodo(pastaCaso), aux = 1), by = c("aux"), relationship = "many-to-many") %>%
       dplyr::select(codUsina, anoMes, conjunto, everything(), -ano, -mes, -aux)
@@ -246,13 +261,54 @@ leituraAlteracaoDadosUsinasHidro <- function(pastaCaso) {
     tidyr::pivot_wider(names_from = chave, values_from = valor) %>%
     dplyr::arrange(codUsina, anoMes)
   
-  # adiciona as colunas TEIF e IP caso nao existam
+  # adiciona as colunas caso nao existam
+  if (!"canalFuga" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(canalFuga = NA)
+  }
+  if (!"nivelMontante" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(nivelMontante = NA)
+  }
+  if (!"vazaoMinima" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(vazaoMinima = NA)
+  }
+  if (!"vazaoMaxima" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(vazaoMaxima = NA)
+  }
+  if (!"volumeMinimo" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(volumeMinimo = NA)
+  }
+  if (!"volumeMinimoPU" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(volumeMinimoPU = NA)
+  }
+  if (!"volumeMaximo" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr  ::mutate(volumeMaximo = NA)
+  }
+  if (!"volumeMaximoPU" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(volumeMaximoPU = NA)
+  }
+  if (!"numeroUnidadeBase" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(numeroUnidadeBase = NA)
+  }
+  if (!"numeroConjuntos" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(numeroConjuntos = NA)
+  }
+  if (!"produtibilidade" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(produtibilidade = NA)
+  }
   if (!"TEIF" %in% names(df.alteracaoHidro)) {
     df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(TEIF = NA)
   }
   if (!"IP" %in% names(df.alteracaoHidro)) {
     df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(IP = NA)
   }
+  if (!"perda" %in% names(df.alteracaoHidro)) {
+    df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::mutate(perda = NA)
+  }
+  
+  df.alteracaoHidro <- df.alteracaoHidro %>% dplyr::select(codUsina, anoMes, canalFuga, nivelMontante, 
+                                                           vazaoMinima, vazaoMaxima, volumeMinimo, volumeMinimoPU, 
+                                                           volumeMaximo, volumeMaximoPU, numeroUnidadeBase, 
+                                                           numeroConjuntos, produtibilidade, TEIF, IP, perda)
 
   lt.alteracaoDadosUsinasHidro <- list(df.alteracaoHidro = df.alteracaoHidro, df.alteracaoConjunto = df.alteracaoConjunto)
 
