@@ -10,20 +10,27 @@ leituraConfiguracaoTermoeletrica(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE.}
 }
 \value{
-\code{df.configuracaoTermoeletrica} data frame com dados de configuracao termoeletrica
+\code{df.configuracaoTermoeletrica} data frame com dados de 
+configuracao termoeletrica
 \itemize{
 \item numero da usina termica (\code{$codUsinaTermica})
 \item nome da usina (\code{$nomeUsina})
-\item numero do subsistema/submercado a que pertence a usina (\code{$codSubsistema})
-\item indicador de usina termica existente (EX = usina existente; EE = existente, com expansao; NE = nao existente, com expansao; NC = usina nao considerada) (\code{$status})
+\item numero do subsistema/submercado a que pertence a usina 
+(\code{$codSubsistema})
+\item indicador de usina termica existente 
+(EX = usina existente; EE = existente, com expansao; NE = nao existente, 
+com expansao; NC = usina nao considerada) (\code{$status})
 \item numero da classe termica da usina (\code{$codClasseTermica})
-\item tecnologia da usina para efeito de calculo de emissoes de GEE (\code{$tecnologia})
+\item tecnologia da usina para efeito de calculo de emissoes de GEE 
+(\code{$tecnologia})
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados de configuracao termoeletrica (conft.*).
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Faz a leitura do arquivo do NEWAVE com dados de configuracao termoeletrica 
+(conft.*).
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{

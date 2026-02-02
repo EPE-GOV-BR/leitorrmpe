@@ -18,9 +18,12 @@ leituraREE(pastaCaso)
   }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com informacao dos REE (ree.dat) e recupera o codigo, nome e sistema de cada REE cadastrada. Usa a funcao \code{\link{leituraArquivos}}
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Faz a leitura do arquivo do NEWAVE com informacao dos REE (ree.dat) e 
+recupera o codigo, nome e sistema de cada REE cadastrada. 
+Usa a funcao \code{\link{leituraArquivos}}
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{

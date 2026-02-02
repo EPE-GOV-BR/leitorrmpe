@@ -4,13 +4,18 @@
 \alias{leituraCotaMontanteUsina}
 \title{Leitor de dados de cota de montante por usina}
 \usage{
-leituraCotaMontanteUsina(pasta)
+leituraCotaMontanteUsina(pasta, paralelo = FALSE)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE com dados de geracao hidro por usina}
+\item{pasta}{localizacao dos arquivos do NWLISTOP com dados de cota de 
+montante por usina}
+
+\item{paralelo}{booleano que indica se a leitura dos arquivos sera realizada
+de forma serial ou em paralelo (Default: FASLE)}
 }
 \value{
-\code{df.CotaMontanteUsina} data frame com os valores de geracao termica por classes e total
+\code{df.CotaMontanteUsina} data frame com os valores de cota de  
+montante por usina
 \itemize{
 \item codigo da usina (\code{$codUsina})
 \item serie (\code{$serie})
@@ -19,15 +24,18 @@ leituraCotaMontanteUsina(pasta)
 }
 }
 \description{
-Faz a leitura dos arquivos do NEWAVE com dados de cota de montante por usina  (hmontxxx.*) e
-recupera esses valores por codigo da usina, ano, mes e serie.
+Faz a leitura dos arquivos do NEWAVE com dados de cota de montante por usina  
+(hmontxxx.*) e recupera esses valores por codigo da usina, ano, mes e serie.
 Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz uma modificacao no numero da serie para garantir compatibilidade da 
+sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
 leituraCotaMontanteUsina("C:/PDE2027_Caso080")
+leituraCotaMontanteUsina("C:/PDE2027_Caso080", paralelo = TRUE)
 }
 
 }

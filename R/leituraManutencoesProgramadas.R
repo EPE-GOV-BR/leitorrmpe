@@ -39,7 +39,8 @@ leituraManutencoesProgramadas <- function(pastaCaso) {
 
   df.dadosManutencao <- readr::read_fwf(paste(pastaCaso, arquivo, sep = "/"),
     locale = readr::locale(encoding = "latin1"),
-    col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+    col_positions = readr::fwf_positions( 
+      # vetor com as posicoes iniciais de cada campo
       c(18, 38, 41, 50, 56),
       # vetor com as posicoes finais de cada campo
       c(20, 39, 48, 52, 62),

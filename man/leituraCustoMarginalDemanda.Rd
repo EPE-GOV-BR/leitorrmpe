@@ -4,13 +4,18 @@
 \alias{leituraCustoMarginalDemanda}
 \title{Leitor de dados de custo marginal de demanda do submercado}
 \usage{
-leituraCustoMarginalDemanda(pasta)
+leituraCustoMarginalDemanda(pasta, paralelo = FALSE)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE com dados de custo marginal de demanda}
+\item{pasta}{localizacao dos arquivos do NWLISTOP com dados de custo marginal 
+de demanda}
+
+\item{paralelo}{booleano que indica se a leitura dos arquivos sera realizada
+de forma serial ou em paralelo (Default: FASLE)}
 }
 \value{
-\code{df.custoMarginalDemanda} data frame com os valores de custo marginal de demanda
+\code{df.custoMarginalDemanda} data frame com os valores de custo 
+marginal de demanda
 \itemize{
 \item codigo do submercado (\code{$codSubmercado})
 \item serie (\code{$serie})
@@ -20,15 +25,19 @@ leituraCustoMarginalDemanda(pasta)
 }
 }
 \description{
-Faz a leitura dos arquivos do NEWAVE com dados de custo marginal de demanda do submercado  (cmargxxx.*) e
-recupera esses valores por ano, mes, patamar e serie.
+Faz a leitura dos arquivos do NEWAVE com dados de custo marginal de demanda 
+do submercado  (cmargxxx.*) e recupera esses valores por ano, mes, patamar e 
+serie.
 Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz uma modificacao no numero da serie para garantir compatibilidade da 
+sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
 leituraCustoMarginalDemanda("C:/PDE2027_Caso080")
+leituraCustoMarginalDemanda("C:/PDE2027_Caso080", paralelo = TRUE)
 }
 
 }

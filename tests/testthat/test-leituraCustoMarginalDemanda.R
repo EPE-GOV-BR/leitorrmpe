@@ -1,5 +1,6 @@
 test_that("leituraCustoMarginalDemanda works", {
   expect_snapshot_value(leituraCustoMarginalDemanda("testData"), style = "json2")
+  expect_snapshot_value(leituraCustoMarginalDemanda("testData", paralelo = TRUE), style = "json2")
 })
 
 test_that("leituraCustoMarginalDemanda error", {

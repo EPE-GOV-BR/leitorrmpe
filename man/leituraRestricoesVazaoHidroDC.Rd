@@ -26,7 +26,8 @@ leituraRestricoesVazaoHidroDC(pastaCaso)
 }
 }
 \description{
-Faz a leitura dos dados de restricao de vazao defluente do DECOMP no arquivo (dadger.*).
+Faz a leitura dos dados de restricao de vazao defluente do DECOMP no arquivo 
+(dadger.*).
 Utiliza as informacoes do BLOCO 36 do DADGER
 }
 \examples{

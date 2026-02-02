@@ -1,5 +1,6 @@
 test_that("leituraEnergiaAfluenteTotalBruta works", {
   expect_snapshot_value(leituraEnergiaAfluenteTotalBruta("testData"), style = "json2")
+  expect_snapshot_value(leituraEnergiaAfluenteTotalBruta("testData", paralelo = TRUE), style = "json2")
 })
 
 test_that("leituraEnergiaAfluenteTotalBruta error", {

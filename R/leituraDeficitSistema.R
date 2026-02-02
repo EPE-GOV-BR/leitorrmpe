@@ -1,8 +1,10 @@
-#' Leitor dos dados de deficit de sistema
+#' Leitor dos dados de custo de deficit
 #'
-#' Faz a leitura do arquivo do NEWAVE com informacao de deficit do sistema (sistema.d**). Usa a funcao \code{\link{leituraArquivos}}
-#' Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-#' Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+#' Faz a leitura do arquivo do NEWAVE com informacao do custo de deficit por 
+#' subsistema (sistema.d**). Usa a funcao \code{\link{leituraArquivos}}
+#' Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+#' do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+#' equivalentes do Projeto NEWAVE
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos NEWAVE
 #'
@@ -10,7 +12,8 @@
 #' \itemize{
 #'   \item codigo do subsistema/submercado (\code{$codSubsistema})
 #'   \item nome do subsistema/submercado (\code{$nomeSubsistema})
-#'   \item tipo de subsistema/submercado (\code{$tipoFicticio}) - pode assumir 1 para ficticio, ou 0 para real
+#'   \item tipo de subsistema/submercado (\code{$tipoFicticio}) - pode assumir 1 
+#'   para ficticio, ou 0 para real
 #'   \item patamar de carga (\code{$patamar})
 #'   \item custo de deficit em R$/MWh (\code{$custoDeficit})
 #'   \item profundidade de deficit em p.u. (\code{$profundidadeDefict})
@@ -27,7 +30,8 @@ leituraDeficitSistema <- function(pastaCaso) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
 
-  # encontra o nome do arquivo de dados gerais de acordo com a ordem informada no manual do NEWAVE para o arquivos.dat
+  # encontra o nome do arquivo de dados gerais de acordo com a ordem informada 
+  # no manual do NEWAVE para o arquivos.dat
   arquivo <- leituraArquivos(pastaCaso) %>%
     dplyr::slice(2) %>%
     dplyr::pull(arquivo)
@@ -38,7 +42,8 @@ leituraDeficitSistema <- function(pastaCaso) {
   }
 
   # le o arquivo sistema como um vetor de caracteres nx1
-  sistema <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), locale = readr::locale(encoding = "latin1"), n_max = 1000)
+  sistema <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), 
+                               locale = readr::locale(encoding = "latin1"), n_max = 1000)
   # encontra o inicio da informacao
   inicioSistema <- which(stringr::str_detect(sistema, "CUSTO DO DEFICIT"))
   # encontra o fim da informacao
@@ -50,11 +55,13 @@ leituraDeficitSistema <- function(pastaCaso) {
   # recupera os tipos de sistema - 0 real, 1 ficticio
   tipoSistema <- stringr::str_sub(sistemaTXT, 16, 18) %>% as.numeric()
 
-  # como os dados estao extendidos pelas colunas e representam informacao por patamar, temos que fazer duas leituras com dois pivoteamentos.
+  # como os dados estao extendidos pelas colunas e representam informacao por 
+  # patamar, temos que fazer duas leituras com dois pivoteamentos.
   # um pivot por custo e outro por profundidade de defict
   # custo
   df.deficitSistema <- readr::read_fwf(I(sistemaTXT[tipoSistema == 0]),
-    col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+    col_positions = readr::fwf_positions( 
+      # vetor com as posicoes iniciais de cada campo
       c(2, 6, 18, 20, 28, 36, 44),
       # vetor com as posicoes finais de cada campo
       c(4, 15, 18, 26, 34, 42, 50),
@@ -65,10 +72,14 @@ leituraDeficitSistema <- function(pastaCaso) {
     col_types = "icidddd"
   )
 
-  df.deficitSistema <- df.deficitSistema %>% tidyr::pivot_longer(cols = c("1", "2", "3", "4"), names_to = "patamar", values_to = "custoDefict")
+  df.deficitSistema <- df.deficitSistema %>% 
+    tidyr::pivot_longer(cols = c("1", "2", "3", "4"), 
+                        names_to = "patamar", 
+                        values_to = "custoDefict")
 
   df.sistemaProfundiade <- readr::read_fwf(I(sistemaTXT[tipoSistema == 0]),
-    col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+    col_positions = readr::fwf_positions( 
+      # vetor com as posicoes iniciais de cada campo
       c(2, 6, 18, 52, 58, 64, 70),
       # vetor com as posicoes finais de cada campo
       c(4, 15, 18, 56, 62, 68, 74),
@@ -79,11 +90,17 @@ leituraDeficitSistema <- function(pastaCaso) {
     col_types = "icidddd"
   )
   # profundidade
-  df.sistemaProfundiade <- df.sistemaProfundiade %>% tidyr::pivot_longer(cols = c("1", "2", "3", "4"), names_to = "patamar", values_to = "profundidadeDefict")
+  df.sistemaProfundiade <- df.sistemaProfundiade %>% 
+    tidyr::pivot_longer(cols = c("1", "2", "3", "4"), 
+                        names_to = "patamar", 
+                        values_to = "profundidadeDefict")
 
-  df.deficitSistema <- dplyr::inner_join(df.deficitSistema, df.sistemaProfundiade, by = c("codSubsistema", "nomeSubsistema", "tipoFicticio", "patamar"))
+  df.deficitSistema <- dplyr::inner_join(df.deficitSistema, 
+                                         df.sistemaProfundiade, 
+                                         by = c("codSubsistema", "nomeSubsistema", "tipoFicticio", "patamar"))
 
-  # le os dados dos sistemas ficticios - eles foram separados para nao dar erro de leitura por falta de dados
+  # le os dados dos sistemas ficticios - eles foram separados para nao dar erro 
+  # de leitura por falta de dados
   df.sistemaFicticio <- tidyr::tibble(
     codSubsistema = stringr::str_sub(sistemaTXT[tipoSistema == 1], 1, 4) %>% as.numeric(),
     nomeSubsistema = stringr::str_sub(sistemaTXT[tipoSistema == 1], 6, 16) %>% as.character() %>% stringr::str_trim(),
@@ -92,9 +109,9 @@ leituraDeficitSistema <- function(pastaCaso) {
   )
 
 
-
   # junta os data frames em um unico
-  df.deficitSistema <- rbind(df.deficitSistema, df.sistemaFicticio) %>% dplyr::arrange(codSubsistema, patamar)
+  df.deficitSistema <- rbind(df.deficitSistema, df.sistemaFicticio) %>% 
+    dplyr::arrange(codSubsistema, patamar)
 
   return(df.deficitSistema)
 }

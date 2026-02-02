@@ -1,5 +1,6 @@
 test_that("leituraVertimentoFioDaguaTurbinavel works", {
   expect_snapshot_value(leituraVertimentoFioDaguaTurbinavel("testData"), style = "json2")
+  expect_snapshot_value(leituraVertimentoFioDaguaTurbinavel("testData", paralelo = TRUE), style = "json2")
 })
 
 test_that("leituraVertimentoFioDaguaTurbinavel error", {

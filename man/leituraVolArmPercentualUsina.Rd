@@ -7,10 +7,11 @@
 leituraVolArmPercentualUsina(pasta)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE com dados de volume armazenado percentual por usina}
+\item{pasta}{localizacao dos arquivos varmpuhxxx.* do NWLISTOP}
 }
 \value{
-\code{df.VolArmPercentualPercentualUsina} data frame com os valores de volume armazenado percentual por usina
+\code{df.VolArmPercentualPercentualUsina} data frame com os valores 
+de volume armazenado percentual por usina
 \itemize{
 \item codigo da usina (\code{$codUsina})
 \item serie (\code{$serie})
@@ -19,11 +20,14 @@ leituraVolArmPercentualUsina(pasta)
 }
 }
 \description{
-Faz a leitura dos arquivos do NEWAVE com dados de volume armazenado percentual por usina  (varmpuhxxx.*) e
-recupera esses valores por codigo da usina, ano, mes, patamar e serie.
+Faz a leitura dos arquivos do NEWAVE com dados de volume armazenado 
+percentual por usina  (varmpuhxxx.*) e recupera esses valores por codigo da 
+usina, ano, mes, patamar e serie.
 Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz uma modificacao no numero da serie para garantir compatibilidade da 
+sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{

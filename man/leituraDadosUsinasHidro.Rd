@@ -10,9 +10,11 @@ leituraDadosUsinasHidro(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE}
 }
 \value{
-\code{lt.dadosUsinasHidroeletricas} lista com data frames com dados das usinas hidroeletricas
+\code{lt.dadosUsinasHidroeletricas} lista com data frames com dados 
+das usinas hidroeletricas
 \itemize{
-\item \code{df.dadosUsinasHidroeletricas} data frame com dados gerais das usinas hidroeletricas
+\item \code{df.dadosUsinasHidroeletricas} data frame com dados gerais das 
+usinas hidroeletricas
 \itemize{
 \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 \item nome da usina (\code{$nomeUsina})
@@ -74,7 +76,8 @@ leituraDadosUsinasHidro(pastaCaso)
 \item queda efetiva por conjunto [m] (\code{$quedaEfetiva})
 \item vazao efetiva por conjunto [m3/s] (\code{$vazaoEfetiva})
 }
-\item \code{df.polinomiosVazaoNivelJusante} data frame com dados dos polinomios de vazao de nivel de jusante por usina
+\item \code{df.polinomiosVazaoNivelJusante} data frame com dados dos 
+polinomios de vazao de nivel de jusante por usina
 \itemize{
 \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 \item nome da usina (\code{$nomeUsina})
@@ -90,9 +93,11 @@ leituraDadosUsinasHidro(pastaCaso)
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados das usinas hidroeletricas (hidr.dat).
-O arquivo de dados das usinas hidroelrtricas corresponde ao arquivo de cadastro com os dados das usinas hidroeletricas.
-Arquivo de acesso direto, nao formatado, com 320/600 registros, cada registro correspondendo a uma usina.
+Faz a leitura do arquivo do NEWAVE com dados das usinas hidroeletricas 
+(hidr.dat). O arquivo de dados das usinas hidroelrtricas corresponde ao 
+arquivo de cadastro com os dados das usinas hidroeletricas.
+Arquivo de acesso direto, nao formatado, com 320/600 registros, cada registro 
+correspondendo a uma usina.
 }
 \examples{
 \dontrun{

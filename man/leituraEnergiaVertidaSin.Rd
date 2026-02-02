@@ -7,10 +7,11 @@
 leituraEnergiaVertidaSin(pasta)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE com dados de energia vertida SIN}
+\item{pasta}{localizacao dos arquivos evertsin.* do NWLISTOP}
 }
 \value{
-\code{df.energiaVertidaSin} data frame com os valores de energia vertida para o SIN
+\code{df.energiaVertidaSin} data frame com os valores de energia 
+vertida para o SIN
 \itemize{
 \item serie (\code{$serie})
 \item valor de ano e mes (\code{$anoMes})
@@ -18,10 +19,13 @@ leituraEnergiaVertidaSin(pasta)
 }
 }
 \description{
-Faz a leitura dos arquivos do NEWAVE com dados de energia vertida para o Sistema Interligado Nacional  (evertsin.*) e recupera esses valores por ano, mes e serie.
+Faz a leitura dos arquivos do NEWAVE com dados de energia vertida para o SIN  
+(evertsin.*) e recupera esses valores por ano, mes e serie.
 Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz uma modificacao no numero da serie para garantir compatibilidade da 
+sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{

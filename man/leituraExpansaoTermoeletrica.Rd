@@ -10,21 +10,25 @@ leituraExpansaoTermoeletrica(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE.}
 }
 \value{
-\code{df.ExpansaoTermoeletrica} data frame com dados de usinas termoeletricas
+\code{df.ExpansaoTermoeletrica} data frame com dados de usinas 
+termoeletricas
 \itemize{
 \item numero da usina termica (\code{$codUsinaTermica})
 \item periodo (anoMes-AAAAMM) (\code{$anoMes})
 \item capacidade instalada (MW) (\code{$capacidaInstalada})
 \item fator de capacidade maximo (\%) (\code{$FCMaximo})
 \item TEIF da usina termica (\%) (\code{$TEIF})
-\item indisponibilidade programada (IP) da usina termica para os demais anos do estudo (\%) (\code{$IP})
+\item indisponibilidade programada (IP) da usina termica para os demais anos 
+do estudo (\%) (\code{$IP})
 \item geracao termica minima (MWmes) (\code{$GTMin})
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados de expansao termoeletrica (expt.*).
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Faz a leitura do arquivo do NEWAVE com dados de expansao termoeletrica 
+(expt.*).
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{

@@ -7,10 +7,12 @@
 leituraDeficitEnergiaSin(pasta)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE com dados de deficit de energia do sistema interligado}
+\item{pasta}{localizacao dos arquivos do NWLISTOP com dados de deficit de 
+energia do SIN}
 }
 \value{
-\code{df.deficitEnergiaSin} data frame com os valores de deficit de energia do sistema interligado
+\code{df.deficitEnergiaSin} data frame com os valores de deficit de 
+energia do SIN
 \itemize{
 \item numero do patamar com deficit (\code{$patamarDeficit})
 \item serie (\code{$serie})
@@ -20,11 +22,14 @@ leituraDeficitEnergiaSin(pasta)
 }
 }
 \description{
-Faz a leitura dos arquivos do NEWAVE com dados de deficit de energia por deficit no patamar do sistema interligado nacional   (defsinpXXX.*) e
+Faz a leitura dos arquivos do NEWAVE com dados de deficit de energia por 
+deficit no patamar do sistema interligado nacional   (defsinpXXX.*) e
 recupera esses valores por patamar com defcit, ano, mes, patamar e serie.
 Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz uma modificacao no numero da serie para garantir compatibilidade da 
+sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{

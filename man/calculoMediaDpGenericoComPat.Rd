@@ -16,12 +16,15 @@ calculoMediaDpGenericoComPat(
 
 \item{nomeTabela}{nome da tabela do Nwlistop ex (efiol)}
 
-\item{passo}{tamanho do campo (opcional). Caso seja vazio ou NA, o passo será calculado pelo cabeçalho}
+\item{passo}{tamanho do campo (opcional). Caso seja vazio ou NA, o passo será
+calculado pelo cabeçalho}
 
-\item{colunaInicialJaneiro}{coluna em que inicia a impressao dos dados (coluna posterior ao final da impressao do patamar)}
+\item{colunaInicialJaneiro}{coluna em que inicia a impressao dos dados 
+(coluna posterior ao final da impressao do patamar)}
 }
 \value{
-\code{df.cmoMedio} data frame com os valores de custo marginal de demanda
+\code{df.cmoMedio} data frame com os valores de custo marginal de 
+demanda
 \itemize{
 \item codigo do REE (\code{$codREE})
 \item valor do ano (\code{$ano})
@@ -30,7 +33,8 @@ calculoMediaDpGenericoComPat(
 }
 }
 \description{
-Faz o calculo da media e do desvio padrao da variavel de interesse por submercado e por ano de estudo,
+Faz o calculo da media e do desvio padrao da variavel de interesse por 
+submercado e por ano de estudo,
 }
 \examples{
 \dontrun{

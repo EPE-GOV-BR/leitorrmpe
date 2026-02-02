@@ -1,5 +1,6 @@
 test_that("leituraGeracaoHidroTotal works", {
   expect_snapshot_value(leituraGeracaoHidroTotal("testData"), style = "json2")
+  expect_snapshot_value(leituraGeracaoHidroTotal("testData", paralelo = TRUE), style = "json2")
 })
 
 test_that("leituraGeracaoHidroTotal error", {

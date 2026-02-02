@@ -1,18 +1,22 @@
 #' Leitor dos dados de profundidade patamares das usinas nao simuladas
 #'
-#' Faz a leitura do arquivo do NEWAVE com dados de profundidade patamares de usinas nao simuladas (patamar.*).
-#' Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-#' Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+#' Faz a leitura do arquivo do NEWAVE com dados de profundidade patamares de 
+#' usinas nao simuladas (patamar.*).
+#' Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+#' do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+#' equivalentes do Projeto NEWAVE
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos NEWAVE.
 #'
-#' @return \code{df.dadosPatamarUsinasNaoSimuladas} data frame com dados de patamares de usinas nao simuladas
+#' @return \code{df.dadosPatamarUsinasNaoSimuladas} data frame com dados de 
+#' patamares de usinas nao simuladas
 #' \itemize{
 #' \item numero do subsistema/submercado  (\code{$codSubsistema})
 #' \item numero do bloco de usinas nao simuladas  (\code{$codBlocoUNS})
 #' \item numero do patamar (\code{$patamar})
 #' \item ano e mes referente a informacao (\code{$anoMes})
-#' \item profundidade de patamar das usinas nao simuladas (\code{$profundidadeUNS})
+#' \item profundidade de patamar das usinas nao simuladas 
+#' (\code{$profundidadeUNS})
 #' }
 #'
 #' @examples
@@ -26,7 +30,8 @@ leituraDadosPatamarUsinasNaoSimuladas <- function(pastaCaso) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
 
-  # encontra o nome do arquivo com dados de duracao de patamar (patamar.*) de acordo com a ordem informada no manual do NEWAVE para o arquivos.dat
+  # encontra o nome do arquivo com dados de duracao de patamar (patamar.*) de 
+  # acordo com a ordem informada no manual do NEWAVE para o arquivos.dat
   arquivo <- leituraArquivos(pastaCaso) %>%
     dplyr::slice(10) %>%
     dplyr::pull(arquivo)
@@ -37,7 +42,8 @@ leituraDadosPatamarUsinasNaoSimuladas <- function(pastaCaso) {
   }
 
   # le o arquivo sistema como um vetor de caracteres
-  dadosPatamarUsinas <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), locale = readr::locale(encoding = "latin1"))
+  dadosPatamarUsinas <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), 
+                                          locale = readr::locale(encoding = "latin1"))
   # encontra o inicio da informacao
   inicioPatamarUsina <- which(stringr::str_detect(dadosPatamarUsinas, "BLOCO DE USINAS NAO SIMULADAS"))
 
@@ -53,7 +59,8 @@ leituraDadosPatamarUsinasNaoSimuladas <- function(pastaCaso) {
 
     # recupera a estrutura de dados
     df.dadosPatamarUsinasNaoSimuladas <- readr::read_fwf(I(dadosPatamarUsinasTXT),
-      col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+      col_positions = readr::fwf_positions(
+        # vetor com as posicoes iniciais de cada campo
         c(4, 9, 16, 23, 30, 37, 44, 51, 58, 65, 72, 79, 86, 2, 6),
         # vetor com as posicoes finais de cada campo
         c(7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 4, 8),
@@ -64,12 +71,14 @@ leituraDadosPatamarUsinasNaoSimuladas <- function(pastaCaso) {
     ) %>%
       suppressWarnings()
 
-    # Ajusta as linhas das colunas "ano", "codBlocoUNS" e "codSubsistema", mantendo apenas os valores originais
+    # Ajusta as linhas das colunas "ano", "codBlocoUNS" e "codSubsistema", 
+    # mantendo apenas os valores originais
     # Estende o valor referente ao "ano" para os demais anos
     # Estende o valor referente ao "codBlocoUNS" para os demais anos
     # Estende o valor referente ao "codSubsistema" para os demais anos
     # Filtra para manter apenas as linhas com os valores anuais
-    # Cria uma sequencia numerica para a representacao dos patamares. O valor retorna ao inicio no momento em que se altera o ANO.
+    # Cria uma sequencia numerica para a representacao dos patamares
+    # O valor retorna ao inicio no momento em que se altera o ANO.
     df.dadosPatamarUsinasNaoSimuladas <- df.dadosPatamarUsinasNaoSimuladas %>%
       dplyr::mutate(codBlocoUNS = ifelse(!is.na(DEZ), NA, codBlocoUNS)) %>%
       dplyr::mutate(codSubsistema = ifelse(!is.na(DEZ), NA, codSubsistema)) %>%
@@ -84,7 +93,8 @@ leituraDadosPatamarUsinasNaoSimuladas <- function(pastaCaso) {
     # renomeia colunas
     colnames(df.dadosPatamarUsinasNaoSimuladas)[2:13] <- c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
 
-    # tranforma colunas em linhas, exceto as colunas "ano","codSubsistema","codBlocoUNS" e "patamar".
+    # tranforma colunas em linhas, exceto as colunas "ano","codSubsistema",
+    # "codBlocoUNS" e "patamar".
     # o objetivo  criar duas colunas com as informacoes do "mes" e "profundidadeUNS"
     # cria o campo anoMes (AAAAMM)
     # seleciona apenas os campos de interesse

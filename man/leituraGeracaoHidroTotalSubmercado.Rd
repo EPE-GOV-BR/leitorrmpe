@@ -7,10 +7,11 @@
 leituraGeracaoHidroTotalSubmercado(pasta)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE com dados de geracao hidroeletrica total}
+\item{pasta}{localizacao dos arquivos ghtotmxxx.* do NWLISTOP}
 }
 \value{
-\code{df.geracaoHidroTotalSubmercado} data frame com os valores de geracao hidroeletrica total por submercado
+\code{df.geracaoHidroTotalSubmercado} data frame com os valores de 
+geracao hidroeletrica total por submercado
 \itemize{
 \item codigo do submercado (\code{$codSubmercado})
 \item serie (\code{$serie})
@@ -20,11 +21,14 @@ leituraGeracaoHidroTotalSubmercado(pasta)
 }
 }
 \description{
-Faz a leitura dos arquivos do NEWAVE com dados de geracao hidroeletrica total por submercado (ghtotmxxx.*) e
-recupera esses valores por ano, mes, patamar e serie.
+Faz a leitura dos arquivos do NEWAVE com dados de geracao hidroeletrica total 
+por submercado (ghtotmxxx.*) e recupera esses valores por ano, mes, patamar e 
+serie.
 Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz uma modificacao no numero da serie para garantir compatibilidade da 
+sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{

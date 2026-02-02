@@ -10,7 +10,8 @@ consolidaHidreletricasnoHorizonte(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE.}
 }
 \value{
-\code{df.consolidadoUHEnoHorizonte} data frame com dados consolidados de hidreletricas ao longo do horizonte
+\code{df.consolidadoUHEnoHorizonte} data frame com dados consolidados 
+de hidreletricas ao longo do horizonte
 \itemize{
 \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 \item nome da usina (\code{$nomeUsina})
@@ -27,9 +28,11 @@ consolidaHidreletricasnoHorizonte(pastaCaso)
 }
 }
 \description{
-Faz a consolidacao dos dados das hidreletricas ao longo do horizonte de estudo definido no NEWAVE.
-Usa como referencia para a leitura dos arquivos as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Faz a consolidacao dos dados das hidreletricas ao longo do horizonte de 
+estudo definido no NEWAVE.
+Usa como referencia para a leitura dos arquivos as posicoes definidas no 
+Manual do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{

@@ -1,9 +1,12 @@
 #' Leitor de dados de energia vertida por REE
 #'
-#' Faz a leitura dos arquivos do NEWAVE com dados de energia vertida por REE (evertxxx.*) e recupera esses valores por ano, mes e serie.
+#' Faz a leitura dos arquivos do NEWAVE com dados de energia vertida por REE 
+#' (evertxxx.*) e recupera esses valores por ano, mes e serie.
 #' Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-#' Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+#' Faz uma modificacao no numero da serie para garantir compatibilidade da 
+#' sequencia. Esse "problema" acontece na numeracao das series historicas.
+#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+#' uma mesma sequencia para cada ano.
 #'
 #' @param pasta localizacao dos arquivos do NEWAVE com dados de energia vertida
 #'
@@ -27,8 +30,12 @@ leituraEnergiaVertida <- function(pasta) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
 
-  # cria data frame de base para armazenar os dados de energia vertida para todos os anos
-  df.energiaVertida <- tidyr::tibble(codREE = numeric(), serie = numeric(), anoMes = numeric(), vertimento = numeric())
+  # cria data frame de base para armazenar os dados de energia vertida para 
+  # todos os anos
+  df.energiaVertida <- tidyr::tibble(codREE = numeric(), 
+                                     serie = numeric(), 
+                                     anoMes = numeric(), 
+                                     vertimento = numeric())
 
   # seleciona somente os arquivos evert
   arquivos <- setdiff(list.files(pasta, pattern = "^evert"), list.files(pasta, pattern = "^evert[pms]"))
@@ -55,12 +62,14 @@ leituraEnergiaVertida <- function(pasta) {
         .[1, 2] + 1
       } %>%
       unname()
-    codREE <- stringr::str_sub(arquivo, inicioREE, inicioREE + 2) %>% as.integer()
+    codREE <- stringr::str_sub(arquivo, inicioREE, inicioREE + 2) %>% 
+      as.integer()
 
     purrr::map_df(1:length(anos), function(andaAnos) {
       # posicoes e nomes das variaveis
       df.energiaVertidaAnual <- readr::read_fwf(I(dadosBrutos[inicioAnos[andaAnos]:(fimAnos[andaAnos] - 2)]),
-        col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+        col_positions = readr::fwf_positions( 
+          # vetor com as posicoes iniciais de cada campo
           c(3, 8, 17, 26, 35, 44, 53, 62, 71, 80, 89, 98, 107),
           # vetor com as posicoes finais de cada campo
           c(6, 15, 24, 33, 42, 51, 60, 69, 78, 87, 96, 105, 114),
@@ -71,15 +80,21 @@ leituraEnergiaVertida <- function(pasta) {
         skip = 2
       )
 
-      # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-      # pelo valor dentro de uma sequencia para cada ano.
+      # garante a sequencia correta na numeracao das series. Esse problema 
+      # acontece na numeracao das series historicas. Assim troca-se o numero ou 
+      # ano pelo valor dentro de uma sequencia para cada ano.
       series <- 1:nrow(df.energiaVertidaAnual)
       df.energiaVertidaAnual$serie <- series
 
-      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy)
+      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados 
+      # (tidy)
       df.energiaVertidaAnual <- df.energiaVertidaAnual %>%
-        tidyr::pivot_longer(cols = -serie, names_to = "mes", values_to = "vertimento") %>%
-        dplyr::mutate(ano = anos[andaAnos], codREE = codREE, anoMes = (ano * 100 + as.numeric(mes))) %>%
+        tidyr::pivot_longer(cols = -serie, 
+                            names_to = "mes", 
+                            values_to = "vertimento") %>%
+        dplyr::mutate(ano = anos[andaAnos], 
+                      codREE = codREE, 
+                      anoMes = (ano * 100 + as.numeric(mes))) %>%
         dplyr::select(codREE, serie, anoMes, vertimento)
       # concatena dados num data frame unico
       df.energiaVertida <- rbind(df.energiaVertida, df.energiaVertidaAnual)

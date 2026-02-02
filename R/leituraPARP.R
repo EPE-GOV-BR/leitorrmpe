@@ -1,48 +1,66 @@
 #' Leitor dos dados do arquivo PARP
 #'
-#' Faz a leitura do arquivo do NEWAVE com memoria de calculo do modelo autorregressivo periodico (parp.dat).
+#' Faz a leitura do arquivo do NEWAVE com memoria de calculo do modelo 
+#' autorregressivo periodico (parp.dat).
 #'
 #' @param pasta localizacao do arquivo do NEWAVE PARP
 #'
-#' @return \code{lt.dadosParp} lista com data frames com dados das usinas hidroeletricas para cada reservatorio equivalente (REE)
+#' @return \code{lt.dadosParp} lista com data frames com dados das usinas 
+#' hidroeletricas para cada reservatorio equivalente (REE)
 #' \itemize{
-#' \item \code{df.energiahist} data frame com a energia natural afluente historica (ENA)
+#' \item \code{df.energiahist} data frame com a energia natural afluente 
+#' historica (ENA)
 #' \itemize{
 #' \item nome da usina (\code{$nomeUsina})
 #' \item configuracao (\code{$configuracao})
 #' \item ano e mes da ENA para uma determinada configuracao (\code{$anomes})
 #' \item energia natural afluente historica (ENA) (\code{$enahist})
 #' }
-#' \item \code{df.parametros} data frame com dados de evaporacao mensal por usina
+#' \item \code{df.parametros} data frame com dados de evaporacao mensal por 
+#' usina
 #' \itemize{
 #' \item nome da usina (\code{$nomeUsina})
 #' \item ano e mes da ENA para uma determinada configuracao (\code{$anomes})
-#' \item ordem do modelo PARP antes do processo de reducao da ordem (\code{$ordemOriginal})
-#' \item ordem do modelo PARP apos o processo de reducao da ordem (\code{$ordemFinal})
+#' \item ordem do modelo PARP antes do processo de reducao da ordem 
+#' (\code{$ordemOriginal})
+#' \item ordem do modelo PARP apos o processo de reducao da ordem 
+#' (\code{$ordemFinal})
 #' \item parametro fi do modelo PARP, lag1 (\code{$fiLag1})
 #' \item parametro fi do modelo PARP, lag2 (\code{$fiLag2})
 #' \item parametro fi do modelo PARP, lag3 (\code{$fiLag3})
 #' \item parametro fi do modelo PARP, lag4 (\code{$fiLag4})
 #' \item parametro fi do modelo PARP, lag5 (\code{$fiLag5})
 #' \item parametro fi do modelo PARP, lag6 (\code{$fiLag6})
-#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, lag1 (\code{$coefLag1})
-#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, lag2 (\code{$coefLag2})
-#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, lag3 (\code{$coefLag3})
-#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, lag4 (\code{$coefLag4})
-#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, lag5 (\code{$coefLag5})
-#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, lag6 (\code{$coefLag6})
+#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, 
+#' lag1 (\code{$coefLag1})
+#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, 
+#' lag2 (\code{$coefLag2})
+#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, 
+#' lag3 (\code{$coefLag3})
+#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, 
+#' lag4 (\code{$coefLag4})
+#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, 
+#' lag5 (\code{$coefLag5})
+#' \item parametro coef (fi*desvio padrao t / desvio padrao t-1) do modelo PARP, 
+#' lag6 (\code{$coefLag6})
 #' \item parametro fiA do modelo PARP com parcela anual, lag1 (\code{$fiLag1})
 #' \item parametro fiA do modelo PARP com parcela anual, lag2 (\code{$fiLag2})
 #' \item parametro fiA do modelo PARP com parcela anual, lag3 (\code{$fiLag3})
 #' \item parametro fiA do modelo PARP com parcela anual, lag4 (\code{$fiLag4})
 #' \item parametro fiA do modelo PARP com parcela anual, lag5 (\code{$fiLag5})
 #' \item parametro fiA do modelo PARP com parcela anual, lag6 (\code{$fiLag6})
-#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP com parcela anual, lag1 (\code{$coefLag1})
-#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP com parcela anual, lag2 (\code{$coefLag2})
-#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP com parcela anual, lag3 (\code{$coefLag3})
-#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP com parcela anual, lag4 (\code{$coefLag4})
-#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP com parcela anual, lag5 (\code{$coefLag5})
-#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP com parcela anual, lag6 (\code{$coefLag6})
+#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP 
+#' com parcela anual, lag1 (\code{$coefLag1})
+#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP 
+#' com parcela anual, lag2 (\code{$coefLag2})
+#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP 
+#' com parcela anual, lag3 (\code{$coefLag3})
+#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP 
+#' com parcela anual, lag4 (\code{$coefLag4})
+#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP 
+#' com parcela anual, lag5 (\code{$coefLag5})
+#' \item parametro coefA (fi*desvio padrao t / desvio padrao t-1) do modelo PARP 
+#' com parcela anual, lag6 (\code{$coefLag6})
 #' }
 #' }
 #'
@@ -57,17 +75,75 @@ leituraPARP <- function(pasta) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
 
-  # cria data frame de base para armazenar os dados de energia natural afluente para as configuracoes
-  df.energiahist <- tidyr::tibble(NomeREE = character(), configuracao = numeric(), anomes = numeric(), enahist = numeric())
+  # cria data frame de base para armazenar os dados de energia natural afluente 
+  # para as configuracoes
+  df.energiahist <- tidyr::tibble(NomeREE = character(), 
+                                  configuracao = numeric(), 
+                                  anomes = numeric(), 
+                                  enahist = numeric())
 
-  df.ordemOriginal <- tidyr::tibble(NomeREE = character(), ano = character(), mes = numeric(), ordem = numeric())
-  df.ordemFinal <- tidyr::tibble(NomeREE = character(), ano = character(), mes = numeric(), ordem = numeric())
+  df.ordemOriginal <- tidyr::tibble(NomeREE = character(), 
+                                    ano = character(), 
+                                    mes = numeric(), 
+                                    ordem = numeric())
+  
+  df.ordemFinal <- tidyr::tibble(NomeREE = character(), 
+                                 ano = character(), 
+                                 mes = numeric(), 
+                                 ordem = numeric())
 
-  df.parametros <- tidyr::tibble(fiLag1 = numeric(), fiLag2 = numeric(), fiLag3 = numeric(), fiLag4 = numeric(), fiLag5 = numeric(), fiLag6 = numeric(), coefLag1 = numeric(), coefLag2 = numeric(), coefLag3 = numeric(), coefLag4 = numeric(), coefLag5 = numeric(), coefLag6 = numeric(), fiALag1 = numeric(), fiALag2 = numeric(), fiALag3 = numeric(), fiALag4 = numeric(), fiALag5 = numeric(), fiALag6 = numeric(), coefALag1 = numeric(), coefALag2 = numeric(), coefALag3 = numeric(), coefALag4 = numeric(), coefALag5 = numeric(), coefALag6 = numeric())
-  df.fiParp <- tidyr::tibble(fiLag1 = numeric(), fiLag2 = numeric(), fiLag3 = numeric(), fiLag4 = numeric(), fiLag5 = numeric(), fiLag6 = numeric())
-  df.coefParp <- tidyr::tibble(coefLag1 = numeric(), coefLag2 = numeric(), coefLag3 = numeric(), coefLag4 = numeric(), coefLag5 = numeric(), coefLag6 = numeric())
-  df.fiParpA <- tidyr::tibble(fiALag1 = numeric(), fiALag2 = numeric(), fiALag3 = numeric(), fiALag4 = numeric(), fiALag5 = numeric(), fiALag6 = numeric())
-  df.coefParpA <- tidyr::tibble(coefALag1 = numeric(), coefALag2 = numeric(), coefALag3 = numeric(), coefALag4 = numeric(), coefALag5 = numeric(), coefALag6 = numeric())
+  df.parametros <- tidyr::tibble(fiLag1 = numeric(), 
+                                 fiLag2 = numeric(), 
+                                 fiLag3 = numeric(), 
+                                 fiLag4 = numeric(), 
+                                 fiLag5 = numeric(), 
+                                 fiLag6 = numeric(), 
+                                 coefLag1 = numeric(), 
+                                 coefLag2 = numeric(), 
+                                 coefLag3 = numeric(), 
+                                 coefLag4 = numeric(), 
+                                 coefLag5 = numeric(), 
+                                 coefLag6 = numeric(), 
+                                 fiALag1 = numeric(), 
+                                 fiALag2 = numeric(), 
+                                 fiALag3 = numeric(), 
+                                 fiALag4 = numeric(), 
+                                 fiALag5 = numeric(), 
+                                 fiALag6 = numeric(), 
+                                 coefALag1 = numeric(), 
+                                 coefALag2 = numeric(), 
+                                 coefALag3 = numeric(), 
+                                 coefALag4 = numeric(), 
+                                 coefALag5 = numeric(), 
+                                 coefALag6 = numeric())
+  
+  df.fiParp <- tidyr::tibble(fiLag1 = numeric(), 
+                             fiLag2 = numeric(), 
+                             fiLag3 = numeric(), 
+                             fiLag4 = numeric(), 
+                             fiLag5 = numeric(), 
+                             fiLag6 = numeric())
+  
+  df.coefParp <- tidyr::tibble(coefLag1 = numeric(),
+                               coefLag2 = numeric(), 
+                               coefLag3 = numeric(), 
+                               coefLag4 = numeric(), 
+                               coefLag5 = numeric(), 
+                               coefLag6 = numeric())
+  
+  df.fiParpA <- tidyr::tibble(fiALag1 = numeric(), 
+                              fiALag2 = numeric(), 
+                              fiALag3 = numeric(), 
+                              fiALag4 = numeric(), 
+                              fiALag5 = numeric(), 
+                              fiALag6 = numeric())
+  
+  df.coefParpA <- tidyr::tibble(coefALag1 = numeric(), 
+                                coefALag2 = numeric(), 
+                                coefALag3 = numeric(), 
+                                coefALag4 = numeric(), 
+                                coefALag5 = numeric(), 
+                                coefALag6 = numeric())
   df.energiahistFinal <- NULL
   # seleciona somente arquivo parp
   arquivos <- setdiff(list.files(pasta, pattern = "^parp"), list.files(pasta, pattern = "^parp[ms]"))
@@ -87,7 +163,8 @@ leituraPARP <- function(pasta) {
     stringr::str_remove("SERIE  DE ENERGIAS DO REE") %>%
     stringr::str_remove("CONFIGURACAO No.")
   nomeREE <- unique(stringr::str_extract(nomeREE_configuracao, pattern = "[[:alpha:]]..........."))
-  configuracao <- as.numeric(unique(stringr::str_extract(nomeREE_configuracao, pattern = ".[[:digit:]].") %>% stringr::str_remove(pattern = "[[:punct:]]")))
+  configuracao <- as.numeric(unique(stringr::str_extract(nomeREE_configuracao, pattern = ".[[:digit:]].") %>% 
+                                      stringr::str_remove(pattern = "[[:punct:]]")))
 
 
   # localiza a posicao do inicio de dados
@@ -114,7 +191,8 @@ leituraPARP <- function(pasta) {
     df.energiahistFinal <- purrr::map_df(1:length(configuracao), function(andaconfig) {
       # posicoes e nomes de acordo com manual do NEWAVE
       df.energiaHistConfiguracao <- readr::read_fwf(I(dadosBrutos[inicioEnahist[andaconfig]:fimEnahist[andaconfig]]),
-        col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+        col_positions = readr::fwf_positions( 
+          # vetor com as posicoes iniciais de cada campo
           c(1, 5, 15, 26, 37, 48, 59, 70, 81, 92, 103, 114, 125),
           # vetor com as posicoes finais de cada campo
           c(4, 14, 25, 36, 47, 58, 69, 80, 91, 102, 113, 124, 135),
@@ -126,10 +204,15 @@ leituraPARP <- function(pasta) {
       )
 
 
-      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy) nomeREE[andaREE]
+      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados 
+      # nomeREE[andaREE]
       df.energiahistAux <- df.energiaHistConfiguracao %>%
-        tidyr::pivot_longer(cols = -ano, names_to = "mes", values_to = "enahist") %>%
-        dplyr::mutate(NomeREE = nomeREE[andaREE], configuracao = configuracao[andaconfig], anomes = (ano * 100 + as.numeric(mes))) %>%
+        tidyr::pivot_longer(cols = -ano, 
+                            names_to = "mes",
+                            values_to = "enahist") %>%
+        dplyr::mutate(NomeREE = nomeREE[andaREE], 
+                      configuracao = configuracao[andaconfig], 
+                      anomes = (ano * 100 + as.numeric(mes))) %>%
         dplyr::select(NomeREE, configuracao, anomes, enahist)
 
       df.energiahist <- rbind(df.energiahist, df.energiahistAux)
@@ -139,7 +222,8 @@ leituraPARP <- function(pasta) {
     # Le a ordem original do modelo autorregressivo periodico para cada REE
 
     df.ordemAux <- readr::read_fwf(I(dadosBrutos[posicaoInicialOrdemOriginal[andaREE]:(posicaoInicialOrdemOriginal[andaREE] + numeroLinhasOrdem[andaREE] - 1)]),
-      col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+      col_positions = readr::fwf_positions( 
+        # vetor com as posicoes iniciais de cada campo
         c(33, 37, 42, 47, 52, 57, 62, 67, 72, 77, 82, 87, 92),
         # vetor com as posicoes finais de cada campo
         c(36, 41, 46, 51, 56, 61, 66, 71, 76, 81, 86, 91, 96),
@@ -150,7 +234,8 @@ leituraPARP <- function(pasta) {
       show_col_types = FALSE
     )
 
-    # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy) nomeREE[andaREE]
+    # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados 
+    # nomeREE[andaREE]
 
     df.ordemAux <- df.ordemAux %>%
       tidyr::pivot_longer(cols = -ano, names_to = "mes", values_to = "ordem_original") %>%
@@ -162,7 +247,8 @@ leituraPARP <- function(pasta) {
     # Le a ordem final do modelo autorregressivo periodico para cada REE
 
     df.ordemfAux <- readr::read_fwf(I(dadosBrutos[posicaoInicialOrdemOriginal[andaREE]:(posicaoInicialOrdemOriginal[andaREE] + numeroLinhasOrdem[andaREE] - 1)]),
-      col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+      col_positions = readr::fwf_positions( 
+        # vetor com as posicoes iniciais de cada campo
         c(33, 37, 42, 47, 52, 57, 62, 67, 72, 77, 82, 87, 92),
         # vetor com as posicoes finais de cada campo
         c(36, 41, 46, 51, 56, 61, 66, 71, 76, 81, 86, 91, 96),
@@ -173,7 +259,8 @@ leituraPARP <- function(pasta) {
       show_col_types = FALSE
     )
 
-    # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy) nomeREE[andaREE]
+    # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados 
+    # nomeREE[andaREE]
 
     df.ordemfAux <- df.ordemfAux %>%
       tidyr::pivot_longer(cols = -ano, names_to = "mes", values_to = "ordem_final") %>%
@@ -188,7 +275,8 @@ leituraPARP <- function(pasta) {
     posicaoPeriodosREE <- as.numeric(which((posicaoPeriodos > posicaoInicialOrdemOriginal[andaREE] & posicaoPeriodos < posicaoCorrelogramo[andaREE])))
 
     fiParpAux <- readr::read_fwf(I(dadosBrutos[posicaoPeriodos[posicaoPeriodosREE] + 2]),
-      col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+      col_positions = readr::fwf_positions( 
+        # vetor com as posicoes iniciais de cada campo
         c(1, 12, 23, 34, 45, 56),
         # vetor com as posicoes finais de cada campo
         c(9, 20, 31, 42, 53, 64),
@@ -204,7 +292,8 @@ leituraPARP <- function(pasta) {
     df.fiParp <- rbind(df.fiParp, fiParpAux)
 
     coefParpAux <- readr::read_fwf(I(dadosBrutos[posicaoPeriodos[posicaoPeriodosREE] + 3]),
-      col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+      col_positions = readr::fwf_positions( 
+        # vetor com as posicoes iniciais de cada campo
         c(1, 12, 23, 34, 45, 56),
         # vetor com as posicoes finais de cada campo
         c(9, 20, 31, 42, 53, 64),
@@ -219,7 +308,8 @@ leituraPARP <- function(pasta) {
     df.coefParp <- rbind(df.coefParp, coefParpAux)
 
     fiParpAAaux <- readr::read_fwf(I(dadosBrutos[posicaoPeriodos[posicaoPeriodosREE] + 4]),
-      col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+      col_positions = readr::fwf_positions( 
+        # vetor com as posicoes iniciais de cada campo
         c(1, 12, 23, 34, 45, 56),
         # vetor com as posicoes finais de cada campo
         c(9, 20, 31, 42, 53, 64),
@@ -234,7 +324,8 @@ leituraPARP <- function(pasta) {
     df.fiParpA <- rbind(df.fiParpA, fiParpAAaux)
 
     coefParpAAaux <- readr::read_fwf(I(dadosBrutos[posicaoPeriodos[posicaoPeriodosREE] + 5]),
-      col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+      col_positions = readr::fwf_positions( 
+        # vetor com as posicoes iniciais de cada campo
         c(1, 12, 23, 34, 45, 56),
         # vetor com as posicoes finais de cada campo
         c(9, 20, 31, 42, 53, 64),
@@ -272,7 +363,14 @@ leituraPARP <- function(pasta) {
 
   df.ordemFinal <- lista$df.ordemFinal
 
-  df.parametros <- cbind(lista$df.ordemOriginal, dplyr::select(df.ordemFinal, ordem_final), lista$df.fiParp, lista$df.coefParp, lista$df.fiParpA, lista$df.coefParpA)
+  df.parametros <- cbind(lista$df.ordemOriginal, 
+                         dplyr::select(df.ordemFinal, ordem_final), 
+                         lista$df.fiParp, 
+                         lista$df.coefParp, 
+                         lista$df.fiParpA, 
+                         lista$df.coefParpA)
+  
   lt.dadosParp <- list(df.energiahist = lista$df.energiahistFinal, df.parametros = df.parametros)
+  
   return(lt.dadosParp)
 }

@@ -10,7 +10,8 @@ leituraSubmotorizacaoREE(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE}
 }
 \value{
-\code{df.submotorizacao} data frame com os valores de submotorizacao por REE
+\code{df.submotorizacao} data frame com os valores de submotorizacao 
+por REE
 \itemize{
 \item nome do REE (\code{$nomeREE})
 \item valor de ano e mes (\code{$anoMes})
@@ -18,9 +19,9 @@ leituraSubmotorizacaoREE(pastaCaso)
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com informacao de submotorizacao por REE (relat.d**). Usa a funcao \code{\link{leituraArquivos}}
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Faz a leitura do arquivo do relatorio de saida do NEWAVE que contem a 
+informacao de submotorizacao por REE. 
+Usa a funcao \code{\link{leituraArquivos}}
 }
 \examples{
 \dontrun{

@@ -1,8 +1,10 @@
 #' Leitor dos dados de duracao de patamares de mercado
 #'
-#' Faz a leitura do arquivo do NEWAVE com dados de duracao de patamares (patamar.*).
-#' Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-#' Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+#' Faz a leitura do arquivo do NEWAVE com dados de duracao de patamares 
+#' (patamar.*).
+#' Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+#' do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+#' equivalentes do Projeto NEWAVE
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos NEWAVE.
 #'
@@ -24,7 +26,8 @@ leituraDadosDuracaoPatamar <- function(pastaCaso) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
 
-  # encontra o nome do arquivo com dados de duracao de patamar (patamar.*) de acordo com a ordem informada no manual do NEWAVE para o arquivos.dat
+  # encontra o nome do arquivo com dados de duracao de patamar (patamar.*) de 
+  # acordo com a ordem informada no manual do NEWAVE para o arquivos.dat
   arquivo <- leituraArquivos(pastaCaso) %>%
     dplyr::slice(10) %>%
     dplyr::pull(arquivo)
@@ -34,9 +37,9 @@ leituraDadosDuracaoPatamar <- function(pastaCaso) {
     stop(paste0(arquivo, " n\u00E3o encontrado em ", pastaCaso))
   }
 
-
   # le o arquivo patamar como um vetor de caracteres
-  dadosPatamar <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), locale = readr::locale(encoding = "latin1"))
+  dadosPatamar <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), 
+                                    locale = readr::locale(encoding = "latin1"))
   # encontra o inicio da informacao
   inicioPatamar <- which(stringr::str_detect(dadosPatamar, " NUMERO DE PATAMARES"))
   # encontra o fim da informacao
@@ -62,7 +65,8 @@ leituraDadosDuracaoPatamar <- function(pastaCaso) {
   )
 
   # Estende o valor referente ao ANO para os demais patamares.
-  # Cria uma sequencia numerica para a representacao dos patamares. O valor retorna ao inicio no momento em que se altera o ANO.
+  # Cria uma sequencia numerica para a representacao dos patamares
+  # O valor retorna ao inicio no momento em que se altera o ANO.
   df.dadosDuracaoPatamar <- df.dadosDuracaoPatamar %>%
     dplyr::mutate(ano = zoo::na.locf(ano)) %>%
     dplyr::mutate(patamar = sequence(rle(ano)$lengths))
@@ -89,7 +93,9 @@ leituraDadosDuracaoPatamar <- function(pastaCaso) {
     length()
   if (numeroPatamares == 1) {
     df.dadosDuracaoPatamar <- df.dadosDuracaoPatamar %>%
-      dplyr::mutate(duracaoPatamar = ifelse(is.na(duracaoPatamar), 1, duracaoPatamar))
+      dplyr::mutate(duracaoPatamar = ifelse(is.na(duracaoPatamar), 
+                                            1, 
+                                            duracaoPatamar))
   }
 
   return(df.dadosDuracaoPatamar)

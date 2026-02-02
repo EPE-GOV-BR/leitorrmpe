@@ -10,16 +10,19 @@ leituraConfiguracaoHidroDC(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos DECOMP}
 }
 \value{
-\code{df.dadosConfiguracaoHidroDC} data frame com dados de configuracao hidroeletrica
+\code{df.dadosConfiguracaoHidroDC} data frame com dados de 
+configuracao hidroeletrica
 \itemize{
 \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 \item codigo do REE (\code{$codREE})
-\item volume armazenado inicial em percentagem do volume util (\code{$volumeInical})
+\item volume armazenado inicial em percentagem do volume util 
+(\code{$volumeInical})
 \item flag de evaporacao (0 nao considera; 1 considera) (\code{$flagEvap})
 }
 }
 \description{
-Faz a leitura dos dados de configuracao hidroeletrica do DECOMP no arquivo (dadger.*).
+Faz a leitura dos dados de configuracao hidroeletrica do DECOMP no 
+arquivo (dadger.*).
 }
 \examples{
 \dontrun{

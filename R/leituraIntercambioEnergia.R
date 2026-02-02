@@ -75,7 +75,8 @@ leituraIntercambioEnergia <- function(pasta) {
     purrr::map_df(1:length(anos), function(andaAnos) {
       # posicoes e nomes das variaveis
       df.intercambioEnergiaAnual <- readr::read_fwf(I(dadosBrutos[inicioAnos[andaAnos]:(fimAnos[andaAnos] - 2)]),
-        col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+        col_positions = readr::fwf_positions( 
+          # vetor com as posicoes iniciais de cada campo
           c(3, 10, 13, 22, 31, 40, 49, 58, 67, 76, 85, 94, 103, 112),
           # vetor com as posicoes finais de cada campo
           c(6, 11, 20, 29, 38, 47, 56, 65, 74, 83, 92, 101, 110, 119),
@@ -86,15 +87,16 @@ leituraIntercambioEnergia <- function(pasta) {
         skip = 2
       )
 
-      # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-      # pelo valor dentro de uma sequencia para cada ano.
+      # garante a sequencia correta na numeracao das series. Esse problema 
+      # acontece na numeracao das series historicas. Assim troca-se o numero ou 
+      # ano pelo valor dentro de uma sequencia para cada ano.
       numeroPatamar <- df.intercambioEnergiaAnual %>%
         dplyr::distinct(patamar) %>%
         dplyr::pull() %>%
         max()
       series <- rep(1:(nrow(df.intercambioEnergiaAnual) / numeroPatamar), each = numeroPatamar)
       df.intercambioEnergiaAnual$serie <- series
-      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy)
+      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados
       df.intercambioEnergiaAnual <- df.intercambioEnergiaAnual %>%
         tidyr::pivot_longer(cols = c(-serie, -patamar), names_to = "mes", values_to = "intercambio") %>%
         dplyr::mutate(ano = anos[andaAnos], codSubsistemaOrigem = codSubsistemaOrigem, codSubsistemaDestino = codSubsistemaDestino, anoMes = (ano * 100 + as.numeric(mes))) %>%

@@ -72,7 +72,8 @@ leituraGeracaoTermicaMediaClasses <- function(pasta) {
       purrr::map_df(1:length(anos), function(andaAnos) {
         # posicoes e nomes das variaveis
         df.geracaoTermicaClassesMediaAnual <- readr::read_fwf(I(dadosBrutos[((andaAnos - 1) * nClasses + andaAnos):(andaAnos * nClasses + andaAnos - 1)]),
-          col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+          col_positions = readr::fwf_positions( 
+            # vetor com as posicoes iniciais de cada campo
             c(18, 27, 36, 45, 54, 63, 72, 81, 90, 99, 108, 117),
             # vetor com as posicoes finais de cada campo
             c(25, 34, 43, 52, 61, 70, 79, 88, 97, 106, 115, 124),
@@ -83,7 +84,7 @@ leituraGeracaoTermicaMediaClasses <- function(pasta) {
         ) %>%
           dplyr::mutate(codUsina = classes)
 
-        # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy)
+        # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados
         df.geracaoTermicaClassesMediaAnual <- df.geracaoTermicaClassesMediaAnual %>%
           tidyr::pivot_longer(cols = !codUsina, names_to = "mes", values_to = "geracao") %>%
           dplyr::mutate(ano = anos[andaAnos], codSubmercado = codSubmercado, anoMes = (ano * 100 + as.numeric(mes))) %>%

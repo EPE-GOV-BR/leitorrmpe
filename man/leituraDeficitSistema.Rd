@@ -2,7 +2,7 @@
 % Please edit documentation in R/leituraDeficitSistema.R
 \name{leituraDeficitSistema}
 \alias{leituraDeficitSistema}
-\title{Leitor dos dados de deficit de sistema}
+\title{Leitor dos dados de custo de deficit}
 \usage{
 leituraDeficitSistema(pastaCaso)
 }
@@ -14,16 +14,19 @@ leituraDeficitSistema(pastaCaso)
 \itemize{
   \item codigo do subsistema/submercado (\code{$codSubsistema})
   \item nome do subsistema/submercado (\code{$nomeSubsistema})
-  \item tipo de subsistema/submercado (\code{$tipoFicticio}) - pode assumir 1 para ficticio, ou 0 para real
+  \item tipo de subsistema/submercado (\code{$tipoFicticio}) - pode assumir 1 
+  para ficticio, ou 0 para real
   \item patamar de carga (\code{$patamar})
   \item custo de deficit em R$/MWh (\code{$custoDeficit})
   \item profundidade de deficit em p.u. (\code{$profundidadeDefict})
   }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com informacao de deficit do sistema (sistema.d**). Usa a funcao \code{\link{leituraArquivos}}
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Faz a leitura do arquivo do NEWAVE com informacao do custo de deficit por 
+subsistema (sistema.d**). Usa a funcao \code{\link{leituraArquivos}}
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{

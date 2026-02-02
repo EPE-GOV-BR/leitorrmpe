@@ -1,13 +1,18 @@
-#' Leitor de dados de vertimento fio dagua turbinavel para o Sistema Interligado Nacional
+#' Leitor de dados de vertimento fio dagua turbinavel para o SIN
 #'
-#' Faz a leitura dos arquivos do NEWAVE com dados de vertimento fio dagua turbinavel para o Sistema Interligado Nacional  (verturbsin.*) e recupera esses valores por ano, mes e serie.
+#' Faz a leitura dos arquivos do NEWAVE com dados de vertimento fio dagua 
+#' turbinavel para o Sistema Interligado Nacional  (verturbsin.*) e recupera 
+#' esses valores por ano, mes e serie.
 #' Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-#' Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+#' Faz uma modificacao no numero da serie para garantir compatibilidade da 
+#' sequencia. Esse "problema" acontece na numeracao das series historicas.
+#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+#' uma mesma sequencia para cada ano.
 #'
-#' @param pasta localizacao dos arquivos do NEWAVE com dados de vertimento fio dagua turbinavel SIN
+#' @param pasta localizacao do arquivo verturbsin.* do NWLISTOP
 #'
-#' @return \code{df.vertimentoFioDaguaTurbinavelSin} data frame com os valores de vertimento fio dagua turbinavel para o SIN
+#' @return \code{df.vertimentoFioDaguaTurbinavelSin} data frame com os valores 
+#' de vertimento fio dagua turbinavel para o SIN
 #' \itemize{
 #' \item serie (\code{$serie})
 #' \item valor de ano e mes (\code{$anoMes})
@@ -27,7 +32,10 @@ leituraVertimentoFioDaguaTurbinavelSin <- function(pasta) {
   }
 
   # cria data frame de base
-  df.vertimentoFioDaguaTurbinavelSin <- tidyr::tibble(codSubmercado = numeric(), serie = numeric(), anoMes = numeric(), vertimento = numeric())
+  df.vertimentoFioDaguaTurbinavelSin <- tidyr::tibble(codSubmercado = numeric(), 
+                                                      serie = numeric(), 
+                                                      anoMes = numeric(), 
+                                                      vertimento = numeric())
 
   # seleciona somente o arquivo verturbsin
   arquivo <- list.files(pasta, pattern = "^verturbsin")
@@ -50,7 +58,8 @@ leituraVertimentoFioDaguaTurbinavelSin <- function(pasta) {
   df.vertimentoFioDaguaTurbinavelSin <- purrr::map_df(1:length(anos), function(andaAnos) {
     # posicoes e nomes das variaveis
     df.vertimentoFioDaguaTurbinavelAnual <- readr::read_fwf(I(dadosBrutos[inicioAnos[andaAnos]:(fimAnos[andaAnos] - 2)]),
-      col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+      col_positions = readr::fwf_positions( 
+        # vetor com as posicoes iniciais de cada campo
         c(3, 8, 17, 26, 35, 44, 53, 62, 71, 80, 89, 98, 107),
         # vetor com as posicoes finais de cada campo
         c(6, 15, 24, 33, 42, 51, 60, 69, 78, 87, 96, 105, 114),
@@ -61,15 +70,19 @@ leituraVertimentoFioDaguaTurbinavelSin <- function(pasta) {
       skip = 2
     )
 
-    # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-    # pelo valor dentro de uma sequencia para cada ano.
+    # garante a sequencia correta na numeracao das series. Esse problema 
+    # acontece na numeracao das series historicas. Assim troca-se o numero ou 
+    # ano pelo valor dentro de uma sequencia para cada ano.
     series <- 1:nrow(df.vertimentoFioDaguaTurbinavelAnual)
     df.vertimentoFioDaguaTurbinavelAnual$serie <- series
 
-    # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy)
+    # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados
     df.vertimentoFioDaguaTurbinavelAnual <- df.vertimentoFioDaguaTurbinavelAnual %>%
-      tidyr::pivot_longer(cols = -serie, names_to = "mes", values_to = "vertimento") %>%
-      dplyr::mutate(ano = anos[andaAnos], anoMes = (ano * 100 + as.numeric(mes))) %>%
+      tidyr::pivot_longer(cols = -serie, 
+                          names_to = "mes", 
+                          values_to = "vertimento") %>%
+      dplyr::mutate(ano = anos[andaAnos], 
+                    anoMes = (ano * 100 + as.numeric(mes))) %>%
       dplyr::select(serie, anoMes, vertimento)
     # concatena dados num data frame unico
     df.vertimentoFioDaguaTurbinavelSin <- rbind(df.vertimentoFioDaguaTurbinavelSin, df.vertimentoFioDaguaTurbinavelAnual)

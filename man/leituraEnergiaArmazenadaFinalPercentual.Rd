@@ -4,29 +4,40 @@
 \alias{leituraEnergiaArmazenadaFinalPercentual}
 \title{Leitor dos dados de energia armazenada final em relacao a maxima por REE}
 \usage{
-leituraEnergiaArmazenadaFinalPercentual(pasta)
+leituraEnergiaArmazenadaFinalPercentual(pasta, paralelo = FALSE)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE com dados de energia armazenada final}
+\item{pasta}{localizacao dos arquivos do NWLISTOP com dados de energia 
+armazenada final percentual}
+
+\item{paralelo}{booleano que indica se a leitura dos arquivos sera realizada
+de forma serial ou em paralelo (Default: FASLE)}
 }
 \value{
-\code{df.energiaArmazenadaFinalPercentual} data frame com os valores de energia armazenada final por REE
+\code{df.energiaArmazenadaFinalPercentual} data frame com os valores 
+de energia armazenada final percentual por REE
 \itemize{
 \item codigo do REE (\code{$codREE})
 \item serie (\code{$serie})
 \item valor de ano e mes (\code{$anoMes})
-\item valor de energia armazenada final em relacao a maxima [\%] valor entre 0-100 (\code{$earmfp})
+\item valor de energia armazenada final em relacao a maxima [\%] valor entre 
+0-100 (\code{$earmfp})
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com informacao de energia armazenada final por REE (earmfpXXX.out) e recupera esses valores por ano, mes e serie.
+Faz a leitura do arquivo do NEWAVE com informacao de energia armazenada final 
+percentual por REE (earmfpXXX.out) e recupera esses valores por ano, mes e 
+serie.
 Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz uma modificacao no numero da serie para garantir compatibilidade da 
+sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
 leituraEnergiaArmazenadaFinalPercentual("C:/PDE2027_Caso080")
+leituraEnergiaArmazenadaFinalPercentual("C:/PDE2027_Caso080", paralelo = TRUE)
 }
 
 }

@@ -1,11 +1,14 @@
 #' Leitor de dados do valor dagua por REE
 #'
-#' Faz a leitura dos arquivos do NEWAVE com dados do valor dagua por REE  (valor_aguaxxx.*) e recupera esses valores por ano, mes e serie.
+#' Faz a leitura dos arquivos do NEWAVE com dados do valor dagua por REE  
+#' (valor_aguaxxx.*) e recupera esses valores por ano, mes e serie.
 #' Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-#' Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+#' Faz uma modificacao no numero da serie para garantir compatibilidade da 
+#' sequencia. Esse "problema" acontece na numeracao das series historicas.
+#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+#' uma mesma sequencia para cada ano.
 #'
-#' @param pasta localizacao dos arquivos do NEWAVE com dados do valor dagua
+#' @param pasta localizacao dos arquivos valor_aguaxxx.* do NWLISTOP
 #'
 #' @return \code{df.valorDagua} data frame com os valores dagua
 #' \itemize{
@@ -28,7 +31,10 @@ leituraValorDagua <- function(pasta) {
   }
 
   # cria data frame de base
-  df.valorDagua <- tidyr::tibble(codREE = numeric(), serie = numeric(), anoMes = numeric(), valorDagua = numeric())
+  df.valorDagua <- tidyr::tibble(codREE = numeric(), 
+                                 serie = numeric(), 
+                                 anoMes = numeric(), 
+                                 valorDagua = numeric())
 
   # seleciona somente os arquivos vagua
   arquivos <- setdiff(list.files(pasta, pattern = "^valor_agua"), list.files(pasta, pattern = "^valor_agua[pms]"))
@@ -55,12 +61,14 @@ leituraValorDagua <- function(pasta) {
         .[1, 2] + 1
       } %>%
       unname()
-    codREE <- stringr::str_sub(arquivo, inicioREE, inicioREE + 2) %>% as.integer()
+    codREE <- stringr::str_sub(arquivo, inicioREE, inicioREE + 2) %>% 
+      as.integer()
 
     purrr::map_df(1:length(anos), function(andaAnos) {
       # posicoes e nomes das variaveis
       df.valorDaguaAnual <- readr::read_fwf(I(dadosBrutos[inicioAnos[andaAnos]:(fimAnos[andaAnos] - 2)]),
-        col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+        col_positions = readr::fwf_positions( 
+          # vetor com as posicoes iniciais de cada campo
           c(3, 7, 18, 27, 36, 45, 54, 63, 72, 81, 90, 99, 108),
           # vetor com as posicoes finais de cada campo
           c(6, 17, 26, 35, 44, 53, 62, 71, 80, 89, 98, 107, 116),
@@ -71,15 +79,20 @@ leituraValorDagua <- function(pasta) {
         skip = 2
       )
 
-      # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-      # pelo valor dentro de uma sequencia para cada ano.
+      # garante a sequencia correta na numeracao das series. Esse problema 
+      # acontece na numeracao das series historicas. Assim troca-se o numero ou 
+      # ano pelo valor dentro de uma sequencia para cada ano.
       series <- 1:nrow(df.valorDaguaAnual)
       df.valorDaguaAnual$serie <- series
 
-      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy)
+      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados
       df.valorDaguaAnual <- df.valorDaguaAnual %>%
-        tidyr::pivot_longer(cols = -serie, names_to = "mes", values_to = "valorDagua") %>%
-        dplyr::mutate(ano = anos[andaAnos], codREE = codREE, anoMes = (ano * 100 + as.numeric(mes))) %>%
+        tidyr::pivot_longer(cols = -serie, 
+                            names_to = "mes", 
+                            values_to = "valorDagua") %>%
+        dplyr::mutate(ano = anos[andaAnos], 
+                      codREE = codREE, 
+                      anoMes = (ano * 100 + as.numeric(mes))) %>%
         dplyr::select(codREE, serie, anoMes, valorDagua)
       # concatena dados num data frame unico
       df.valorDagua <- rbind(df.valorDagua, df.valorDaguaAnual)

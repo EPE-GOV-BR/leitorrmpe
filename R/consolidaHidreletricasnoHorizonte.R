@@ -1,12 +1,15 @@
 #' Dados consolidados de hidreletricas ao longo do horizonte
 #'
-#' Faz a consolidacao dos dados das hidreletricas ao longo do horizonte de estudo definido no NEWAVE.
-#' Usa como referencia para a leitura dos arquivos as posicoes definidas no Manual do Usuario do
-#' Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+#' Faz a consolidacao dos dados das hidreletricas ao longo do horizonte de 
+#' estudo definido no NEWAVE.
+#' Usa como referencia para a leitura dos arquivos as posicoes definidas no 
+#' Manual do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+#' equivalentes do Projeto NEWAVE
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos NEWAVE.
 #'
-#' @return \code{df.consolidadoUHEnoHorizonte} data frame com dados consolidados de hidreletricas ao longo do horizonte
+#' @return \code{df.consolidadoUHEnoHorizonte} data frame com dados consolidados 
+#' de hidreletricas ao longo do horizonte
 #' \itemize{
 #' \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 #' \item nome da usina (\code{$nomeUsina})
@@ -36,24 +39,36 @@ consolidaHidreletricasnoHorizonte <- function(pastaCaso) {
   # executa as funcoes de leitura do pacote leitorrcepel para o carregamento dos dados das usinas hidreletricas
 
   lt.dadosUsinasHidro <- leituraDadosUsinasHidro(pastaCaso)
-  df.dadosConfiguracao <- lt.dadosUsinasHidro$df.dadosConfiguracao %>% dplyr::select(-nomeUsina)
-  df.dadosUsinasHidroeletricas <- lt.dadosUsinasHidro$df.dadosUsinasHidroeletricas %>% dplyr::select(-nomeUsina)
+  
+  df.dadosConfiguracao <- lt.dadosUsinasHidro$df.dadosConfiguracao %>% 
+    dplyr::select(-nomeUsina)
+  
+  df.dadosUsinasHidroeletricas <- lt.dadosUsinasHidro$df.dadosUsinasHidroeletricas %>% 
+    dplyr::select(-nomeUsina)
 
   df.configuracaoHidro <- leituraConfiguracaoHidro(pastaCaso) %>%
     dplyr::select(codUsina, nomeUsina, codREE, idUsinaExistente, idModificacaoUsina)
 
   lt.alteracaoDadosUsinasHidro <- leituraAlteracaoDadosUsinasHidro(pastaCaso)
-  df.alteracaoConjunto <- lt.alteracaoDadosUsinasHidro$df.alteracaoConjunto %>% dplyr::rename(potenciaUnitaria = potenciaEfetiva)
-  df.alteracaoHidro <- lt.alteracaoDadosUsinasHidro$df.alteracaoHidro %>% dplyr::select(codUsina, anoMes, canalFuga, TEIF, IP, volumeMaximo, volumeMinimo, vazaoMinima)
+  
+  df.alteracaoConjunto <- lt.alteracaoDadosUsinasHidro$df.alteracaoConjunto %>% 
+    dplyr::rename(potenciaUnitaria = potenciaEfetiva)
+  
+  df.alteracaoHidro <- lt.alteracaoDadosUsinasHidro$df.alteracaoHidro %>% 
+    dplyr::select(codUsina, anoMes, canalFuga, TEIF, IP, volumeMaximo, volumeMinimo, vazaoMinima)
 
   lt.dadosExpansaoHidro <- leituraDadosExpansaoUsinasHidro(pastaCaso)
-  df.dadosExpansaoHidroTempo <- lt.dadosExpansaoHidro$df.dadosExpansaoHidroTempo %>% dplyr::select(-nomeUsina)
+  
+  df.dadosExpansaoHidroTempo <- lt.dadosExpansaoHidro$df.dadosExpansaoHidroTempo %>% 
+    dplyr::select(-nomeUsina)
 
   df.dadosGerais <- leituraDadosGerais(pastaCaso)
 
-  # confere se existem declaracoes no arquivo modif em usinas que nao estao com flag ativo no confh
+  # confere se existem declaracoes no arquivo modif em usinas que nao estao 
+  # com flag ativo no confh
 
-  df.usinasComModif <- dplyr::distinct(rbind(dplyr::select(df.alteracaoConjunto, codUsina), dplyr::select(df.alteracaoHidro, codUsina))) %>%
+  df.usinasComModif <- dplyr::distinct(rbind(dplyr::select(df.alteracaoConjunto, codUsina), 
+                                             dplyr::select(df.alteracaoHidro, codUsina))) %>%
     dplyr::mutate(modif = TRUE)
 
   df.verificaModifConfh <- dplyr::left_join(df.configuracaoHidro, df.usinasComModif, by = "codUsina") %>%
@@ -69,7 +84,8 @@ consolidaHidreletricasnoHorizonte <- function(pastaCaso) {
     stop(paste("Existem UHEs representadas no arquivo modif sem o flag ativo no arquivo confh: ", usinas))
   }
 
-  # define o dataframe com as informacoes da potencia efetiva total e numero de conjuntos de cada hidreletrica
+  # define o dataframe com as informacoes da potencia efetiva total e numero de 
+  # conjuntos de cada hidreletrica
 
   df.potef <- dplyr::inner_join(df.dadosConfiguracao, df.configuracaoHidro, by = c("codUsina")) %>%
     dplyr::filter((!stringr::str_detect(nomeUsina, "FIC ") & !stringr::str_detect(nomeUsina, "FICT"))) %>%
@@ -125,8 +141,8 @@ consolidaHidreletricasnoHorizonte <- function(pastaCaso) {
       volumeMinimoFinal = ifelse(!is.na(volumeMinimo.y) & idModificacaoUsina == 1, volumeMinimo.y, volumeMinimo.x),
       vazaoMinimaFinal = ifelse(!is.na(vazaoMinima) & idModificacaoUsina == 1, vazaoMinima, vazaoMinimaHistorico),
       canalFugaFinal = ifelse(!is.na(canalFuga) & idModificacaoUsina == 1, canalFuga, canalFugaMedio),
-      TEIF = ifelse(!is.na(TEIF.y) & idModificacaoUsina == 1, TEIF.y/100, TEIF.x/100),
-      IP = ifelse(!is.na(IP.y) & idModificacaoUsina == 1, IP.y/100, IP.x/100)
+      TEIF = ifelse(!is.na(TEIF.y) & idModificacaoUsina == 1, TEIF.y / 100, TEIF.x / 100),
+      IP = ifelse(!is.na(IP.y) & idModificacaoUsina == 1, IP.y / 100, IP.x / 100)
     ) %>%
     dplyr::inner_join(df.potef, by = c("codUsina", "anoMes")) %>%
     dplyr::select(

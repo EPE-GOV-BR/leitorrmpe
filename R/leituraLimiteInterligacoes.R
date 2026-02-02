@@ -46,7 +46,8 @@ leituraLimiteInterligacoes <- function(pastaCaso) {
 
   # recupera a estrutura de dados
   df.limiteInterligacoes <- readr::read_fwf(I(dadosLimiteSistemaTXT),
-    col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+    col_positions = readr::fwf_positions( 
+      # vetor com as posicoes iniciais de cada campo
       c(1, 2, 6, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 6, 2),
       # vetor com as posicoes finais de cada campo
       c(7, 4, 8, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86, 94, 102, 8, 4),

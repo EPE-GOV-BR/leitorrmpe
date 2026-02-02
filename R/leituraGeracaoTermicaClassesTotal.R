@@ -1,14 +1,21 @@
 #' Leitor de dados de geracao termica por classes e total
 #'
-#' Faz a leitura dos arquivos do NEWAVE com dados de geracao termica por classes e total do submercado  (gtertxxx.*) e
-#' recupera esses valores por codigo da usina, ano, mes, patamar e serie.
+#' Faz a leitura dos arquivos do NEWAVE com dados de geracao termica por classes
+#' e total do submercado  (gtertxxx.*) e recupera esses valores por codigo da
+#' usina, ano, mes, patamar e serie.
 #' Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
-#' Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+#' Faz uma modificacao no numero da serie para garantir compatibilidade
+#' da sequencia. Esse "problema" acontece na numeracao das series historicas.
+#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro
+#' de uma mesma sequencia para cada ano.
 #'
-#' @param pasta localizacao dos arquivos do NEWAVE com dados de geracao termica por classes e total
+#' @param pasta localizacao dos arquivos do NWLISTOP com dados de geracao 
+#' termica por classes e total
+#' @param paralelo booleano que indica se a leitura dos arquivos sera realizada
+#' de forma serial ou em paralelo (Default: FASLE)
 #'
-#' @return \code{df.geracaoTermicaClassesTotal} data frame com os valores de geracao termica por classes e total
+#' @return \code{df.geracaoTermicaClassesTotal} data frame com os valores de
+#' geracao termica por classes e total
 #' \itemize{
 #' \item codigo da usina (\code{$codUsina})
 #' \item codigo do submercado (\code{$codSubmercado})
@@ -21,13 +28,18 @@
 #' @examples
 #' \dontrun{
 #' leituraGeracaoTermicaClassesTotal("C:/PDE2027_Caso080")
+#' leituraGeracaoTermicaClassesTotal("C:/PDE2027_Caso080", paralelo = TRUE)
 #' }
 #'
 #' @export
-leituraGeracaoTermicaClassesTotal <- function(pasta) {
+leituraGeracaoTermicaClassesTotal <- function(pasta, paralelo = FALSE) {
   if (missing(pasta)) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
+
+  # aumenta o limite do future pois o arquivo de geracao termica por classes
+  # pode ser muito grande
+  options(future.globals.maxSize = 3 * 1e9)
 
   # cria data frame de base
   df.geracaoTermicaClassesTotal <- tidyr::tibble()
@@ -39,8 +51,12 @@ leituraGeracaoTermicaClassesTotal <- function(pasta) {
     stop(paste0("N\u00E3o foram encontrados os arquivos gtertXXX.out em ", pasta))
   }
 
+  # se o flag paralelo estiver ativo
+  if (paralelo) {
+    future::plan(future::multisession(workers = future::availableCores() - 1))
+  }
 
-  df.geracaoTermicaClassesTotal <- purrr::map_df(arquivos, function(arquivo) {
+  df.geracaoTermicaClassesTotal <- furrr::future_map_dfr(arquivos, function(arquivo) {
     # le o arquivo de entrada como um vetor de caracteres nx1
     dadosBrutos <- iotools::input.file(stringi::stri_enc_toutf8(paste(pasta, arquivo, sep = "/")), sep = "\n")
 
@@ -75,10 +91,11 @@ leituraGeracaoTermicaClassesTotal <- function(pasta) {
         unname()
       codSubmercado <- stringr::str_sub(arquivo, inicioSubmercado, inicioSubmercado + 2) %>% as.integer()
 
-      purrr::map_df(1:length(anos), function(andaAnos) {
+      furrr::future_map_dfr(1:length(anos), function(andaAnos) {
         # posicoes e nomes das variaveis
         df.geracaoTermicaClassesTotalAnual <- readr::read_fwf(I(dadosBrutos[inicioAnos[andaAnos]:(fimAnos[andaAnos])]),
-          col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+          col_positions = readr::fwf_positions( 
+            # vetor com as posicoes iniciais de cada campo
             c(2, 7, 13, 18, 27, 36, 45, 54, 63, 72, 81, 90, 99, 108, 117),
             # vetor com as posicoes finais de cada campo
             c(6, 12, 17, 25, 34, 43, 52, 61, 70, 79, 88, 97, 106, 115, 124),
@@ -91,8 +108,10 @@ leituraGeracaoTermicaClassesTotal <- function(pasta) {
 
         df.geracaoTermicaClassesTotalAnual <- df.geracaoTermicaClassesTotalAnual %>% tidyr::fill(codUsina, serie)
 
-        # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-        # pelo valor dentro de uma sequencia para cada ano.
+        # garante a sequencia correta na numeracao das series.
+        # Esse problema acontece na numeracao das series historicas.
+        # Assim troca-se o numero ou ano pelo valor dentro de uma sequencia para
+        # cada ano.
         numeroPatamar <- df.geracaoTermicaClassesTotalAnual %>%
           dplyr::distinct(patamar) %>%
           dplyr::pull() %>%
@@ -114,6 +133,10 @@ leituraGeracaoTermicaClassesTotal <- function(pasta) {
       })
     }
   })
+  
+  # volta para processamento sequencial 
+  future::plan(future::sequential)
+
   # faz o "pivot" da tabela para dados normalizados (tidy)
   df.geracaoTermicaClassesTotal <- df.geracaoTermicaClassesTotal %>%
     tidyr::pivot_longer(cols = c(-codUsina, -codSubmercado, -serie, -patamar, -ano), names_to = "mes", values_to = "geracao") %>%

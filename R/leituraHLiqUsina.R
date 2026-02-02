@@ -65,7 +65,8 @@ leituraHLiqUsina <- function(pasta) {
     purrr::map_df(1:length(anos), function(andaAnos) {
       # posicoes e nomes das variaveis
       df.HLiqAnual <- readr::read_fwf(I(dadosBrutos[inicioAnos[andaAnos]:fimAnos[andaAnos]]),
-        col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+        col_positions = readr::fwf_positions( 
+          # vetor com as posicoes iniciais de cada campo
           c(3, 9, 15, 24, 33, 42, 51, 60, 69, 78, 87, 96, 105, 114),
           # vetor com as posicoes finais de cada campo
           c(6, 11, 23, 32, 41, 50, 59, 68, 77, 86, 95, 104, 113, 122),
@@ -76,15 +77,16 @@ leituraHLiqUsina <- function(pasta) {
         skip = 2
       )
 
-      # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-      # pelo valor dentro de uma sequencia para cada ano.
+      # garante a sequencia correta na numeracao das series. Esse problema 
+      # acontece na numeracao das series historicas. Assim troca-se o numero ou 
+      # ano pelo valor dentro de uma sequencia para cada ano.
       numeroPatamar <- df.HLiqAnual %>%
         dplyr::distinct(patamar) %>%
         dplyr::pull() %>%
         max()
       series <- rep(1:(nrow(df.HLiqAnual) / numeroPatamar), each = numeroPatamar)
       df.HLiqAnual$serie <- series
-      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy)
+      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados
       df.HLiqAnual <- df.HLiqAnual %>%
         tidyr::pivot_longer(cols = c(-serie, -patamar), names_to = "mes", values_to = "hliq") %>%
         dplyr::mutate(ano = anos[andaAnos], codUsina = codUsina, anoMes = (ano * 100 + as.numeric(mes))) %>%

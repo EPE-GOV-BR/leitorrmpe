@@ -10,7 +10,8 @@ leituraAntecipacaoGnl(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE}
 }
 \value{
-\code{df.antecipacaoDespachoGnl} data frame com os dados de antecipação de despacho de usinas térmicas GNL
+\code{df.antecipacaoDespachoGnl} data frame com os dados de 
+antecipação de despacho de usinas térmicas GNL
 \itemize{
 \item numero da usina térmica (\code{$codUsina})
 \item numero do mês para despacho antecipado (\code{$numMes})
@@ -19,9 +20,11 @@ leituraAntecipacaoGnl(pastaCaso)
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados de antecipação de despacho de usinas térmicas GNL (adterm.dat)
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Faz a leitura do arquivo do NEWAVE com dados de antecipação de despacho de 
+usinas térmicas GNL (adterm.dat)
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{

@@ -1,14 +1,21 @@
 #' Leitor de dados de custo marginal de demanda do submercado
 #'
-#' Faz a leitura dos arquivos do NEWAVE com dados de custo marginal de demanda do submercado  (cmargxxx.*) e
-#' recupera esses valores por ano, mes, patamar e serie.
+#' Faz a leitura dos arquivos do NEWAVE com dados de custo marginal de demanda 
+#' do submercado  (cmargxxx.*) e recupera esses valores por ano, mes, patamar e 
+#' serie.
 #' Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
-#' Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+#' Faz uma modificacao no numero da serie para garantir compatibilidade da 
+#' sequencia. Esse "problema" acontece na numeracao das series historicas.
+#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+#' uma mesma sequencia para cada ano.
 #'
-#' @param pasta localizacao dos arquivos do NEWAVE com dados de custo marginal de demanda
+#' @param pasta localizacao dos arquivos do NWLISTOP com dados de custo marginal 
+#' de demanda
+#' @param paralelo booleano que indica se a leitura dos arquivos sera realizada
+#' de forma serial ou em paralelo (Default: FASLE)
 #'
-#' @return \code{df.custoMarginalDemanda} data frame com os valores de custo marginal de demanda
+#' @return \code{df.custoMarginalDemanda} data frame com os valores de custo 
+#' marginal de demanda
 #' \itemize{
 #' \item codigo do submercado (\code{$codSubmercado})
 #' \item serie (\code{$serie})
@@ -20,16 +27,18 @@
 #' @examples
 #' \dontrun{
 #' leituraCustoMarginalDemanda("C:/PDE2027_Caso080")
+#' leituraCustoMarginalDemanda("C:/PDE2027_Caso080", paralelo = TRUE)
 #' }
 #'
 #' @export
 
-leituraCustoMarginalDemanda <- function(pasta) {
+leituraCustoMarginalDemanda <- function(pasta, paralelo = FALSE) {
   if (missing(pasta)) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
 
-  # cria data frame de base para armazenar os dados de custo marginal para todos os anos
+  # cria data frame de base para armazenar os dados de custo marginal para todos 
+  # os anos
   df.custoMarginalDemanda <- tidyr::tibble()
 
   # seleciona somente os arquivos cmarg
@@ -38,9 +47,13 @@ leituraCustoMarginalDemanda <- function(pasta) {
   if (length(arquivos) == 0) {
     stop(paste0("N\u00E3o foram encontrados os arquivos cmargXXX.out em ", pasta))
   }
+  
+  # se o flag paralelo estiver ativo
+  if (paralelo) {
+    future::plan(future::multisession(workers = future::availableCores() - 1))
+  }
 
-
-  df.custoMarginalDemanda <- purrr::map_df(arquivos, function(arquivos) {
+  df.custoMarginalDemanda <- furrr::future_map_dfr(arquivos, function(arquivos) {
     dadosBrutos <- iotools::input.file(stringi::stri_enc_toutf8(paste(pasta, arquivos, sep = "/")), sep = "\n")
     # encontra os anos
     anos <- dadosBrutos[which(stringr::str_detect(dadosBrutos, "ANO:"))] %>%
@@ -57,19 +70,22 @@ leituraCustoMarginalDemanda <- function(pasta) {
         .[1, 2] + 1
       } %>%
       unname()
-    codSubmercado <- stringr::str_sub(arquivos, inicioSubmercado, inicioSubmercado + 2) %>% as.integer()
     
+    codSubmercado <- stringr::str_sub(arquivos, inicioSubmercado, inicioSubmercado + 2) %>% 
+      as.integer()
+
     # leitura do tamanho dos campos de acordo com o cabecalho
-    posicoes <- gregexpr("[0-9]", dadosBrutos[5])[[1]]  
-    espacamento <- diff(posicoes)  
+    posicoes <- gregexpr("[0-9]", dadosBrutos[5])[[1]]
+    espacamento <- diff(posicoes)
     passo <- as.numeric(names(sort(-table(espacamento)))[1])
-    
+
     posicaoColunasInicio <- c(3, 10, seq.int(15, 15 + passo * 11, passo))
     posicaoColunasFim <- c(6, 11, seq.int(15 + passo - 1, 15 + passo * 12 - 1, passo))
 
-    purrr::map_df(1:length(anos), function(andaAnos) {
+    furrr::future_map_dfr(1:length(anos), function(andaAnos) {
       df.custoMarginalDemandaAnual <- readr::read_fwf(I(dadosBrutos[inicioAnos[andaAnos]:(fimAnos[andaAnos] - 2)]),
-        col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+        col_positions = readr::fwf_positions( 
+          # vetor com as posicoes iniciais de cada campo
           posicaoColunasInicio,
           # vetor com as posicoes finais de cada campo
           posicaoColunasFim,
@@ -80,23 +96,33 @@ leituraCustoMarginalDemanda <- function(pasta) {
         skip = 2
       )
 
-      # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-      # pelo valor dentro de uma sequencia para cada ano.
+      # garante a sequencia correta na numeracao das series. Esse problema 
+      # acontece na numeracao das series historicas. Assim troca-se o numero ou 
+      # ano pelo valor dentro de uma sequencia para cada ano.
       numeroPatamar <- df.custoMarginalDemandaAnual %>%
         dplyr::distinct(patamar) %>%
         dplyr::pull() %>%
         max()
-      series <- rep(1:(nrow(df.custoMarginalDemandaAnual) / numeroPatamar), each = numeroPatamar)
+      series <- rep(1:(nrow(df.custoMarginalDemandaAnual) / numeroPatamar), 
+                    each = numeroPatamar)
       df.custoMarginalDemandaAnual$serie <- series
-      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy)
+      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados
       df.custoMarginalDemandaAnual <- df.custoMarginalDemandaAnual %>%
-        tidyr::pivot_longer(cols = c(-serie, -patamar), names_to = "mes", values_to = "custoMarginalDemanda") %>%
-        dplyr::mutate(ano = anos[andaAnos], codSubmercado = codSubmercado, anoMes = (ano * 100 + as.numeric(mes))) %>%
+        tidyr::pivot_longer(cols = c(-serie, -patamar), 
+                            names_to = "mes", 
+                            values_to = "custoMarginalDemanda") %>%
+        dplyr::mutate(ano = anos[andaAnos], 
+                      codSubmercado = codSubmercado, 
+                      anoMes = (ano * 100 + as.numeric(mes))) %>%
         dplyr::select(codSubmercado, serie, patamar, anoMes, custoMarginalDemanda)
       # concatena dados num data frame unico
-      df.custoMarginalDemanda <- rbind(df.custoMarginalDemanda, df.custoMarginalDemandaAnual)
+      df.custoMarginalDemanda <- rbind(df.custoMarginalDemanda, 
+                                       df.custoMarginalDemandaAnual)
     })
   })
+  
+  # volta para processamento sequencial 
+  future::plan(future::sequential)
 
   return(df.custoMarginalDemanda)
 }

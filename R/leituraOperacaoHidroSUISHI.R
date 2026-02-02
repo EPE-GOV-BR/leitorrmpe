@@ -1,19 +1,25 @@
 #' Leitor dos dados de operacao das usinas hidro do SUISHI
 #'
-#' Faz a leitura dos arquivos do SUISHI com informacao de operacao das usinas hidro (usihid_xxx.csv) e recupera esses valores por ano, mes, serie e patamar.
-#' Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+#' Faz a leitura dos arquivos do SUISHI com informacao de operacao das usinas 
+#' hidro (usihid_xxx.csv) e recupera esses valores por ano, mes, serie e patamar.
+#' Faz uma modificacao no numero da serie para garantir compatibilidade da 
+#' sequencia. Esse "problema" acontece na numeracao das series historicas.
+#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+#' uma mesma sequencia para cada ano.
 #'
-#' @param pasta localizacao dos arquivos do SUISHI com dados de operacao das usinas hidro
+#' @param pasta localizacao dos arquivos do SUISHI com dados de operacao das 
+#' usinas hidro
 #'
-#' @return \code{df.operacaoHidroSUISHI} data frame com dados de operacao das usinas hidro
+#' @return \code{df.operacaoHidroSUISHI} data frame com dados de operacao das 
+#' usinas hidro
 #' \itemize{
 #' \item codigo da usina (\code{$codUsina})
 #' \item valor de ano e mes (\code{$anoMes})
 #' \item serie (\code{$serie})
 #' \item patamar de carga (\code{$patamar})
 #' \item codigo do REE onde a usina se encontra (\code{$codREE})
-#' \item todas as colunas representando dados que forem disponibilizados no SUISHI
+#' \item todas as colunas representando dados que forem disponibilizados no 
+#' SUISHI
 #' }
 #'
 #' @examples
@@ -43,9 +49,11 @@ leituraOperacaoHidroSUISHI <- function(pasta) {
       I() %>%
       readr::read_csv(col_types = readr::cols(.default = readr::col_double()))
 
-    # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-    # pelo valor dentro de uma sequencia para cada ano. Aqui a serie e montada pela quantidade de anos x quantidade de patamares repetidos pela quantidade
-    # de registros compondo ano e mes do dado
+    # garante a sequencia correta na numeracao das series. Esse problema 
+    # acontece na numeracao das series historicas. Assim troca-se o numero ou 
+    # ano pelo valor dentro de uma sequencia para cada ano. 
+    # Aqui a serie e montada pela quantidade de anos x quantidade de patamares 
+    # repetidos pela quantidade de registros compondo ano e mes do dado
     series <- df.operacaoHidroSUISHIUsina %>%
       dplyr::summarise(maximo = max(SERIE), minimo = min(SERIE)) %>%
       dplyr::mutate(series = maximo - minimo + 1) %>%
@@ -62,9 +70,15 @@ leituraOperacaoHidroSUISHI <- function(pasta) {
     df.operacaoHidroSUISHIUsina <- df.operacaoHidroSUISHIUsina %>%
       dplyr::mutate(SERIE = series, anoMes = ((ANO * 100) + MES)) %>%
       dplyr::select(-ANO, -MES) %>%
-      dplyr::select(codUsina = NUMUHE, anoMes, serie = SERIE, patamar = PAT, codREE = REE, everything())
+      dplyr::select(codUsina = NUMUHE, 
+                    anoMes, 
+                    serie = SERIE, 
+                    patamar = PAT, 
+                    codREE = REE, 
+                    everything())
 
-    df.operacaoHidroSUISHI <- rbind(df.operacaoHidroSUISHI, df.operacaoHidroSUISHIUsina)
+    df.operacaoHidroSUISHI <- rbind(df.operacaoHidroSUISHI, 
+                                    df.operacaoHidroSUISHIUsina)
   })
   return(df.operacaoHidroSUISHI)
 }

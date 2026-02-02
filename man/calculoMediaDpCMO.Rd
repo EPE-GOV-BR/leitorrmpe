@@ -7,10 +7,12 @@
 calculoMediaDpCMO(pasta)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE para os quais deseja efetuar o calculo}
+\item{pasta}{localizacao dos arquivos do NEWAVE para os quais deseja efetuar 
+o calculo}
 }
 \value{
-\code{df.cmoMedio} data frame com os valores de custo marginal de demanda
+\code{df.cmoMedio} data frame com os valores de custo marginal de 
+demanda
 \itemize{
 \item codigo do submercado (\code{$codSubmercado})
 \item valor do ano (\code{$ano})
@@ -19,8 +21,9 @@ calculoMediaDpCMO(pasta)
 }
 }
 \description{
-Faz o calculo da media e do desvio padrao dos CMOs por submercado e por ano de estudo,
-reproduzindo o calculo que e encontrado ao final do relatorio de saida do NEWAVE
+Faz o calculo da media e do desvio padrao dos CMOs por submercado e por ano 
+de estudo,reproduzindo o calculo que e encontrado ao final do relatorio de 
+saida do NEWAVE
 }
 \examples{
 \dontrun{

@@ -7,23 +7,29 @@
 leituraOperacaoHidroSUISHI(pasta)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do SUISHI com dados de operacao das usinas hidro}
+\item{pasta}{localizacao dos arquivos do SUISHI com dados de operacao das 
+usinas hidro}
 }
 \value{
-\code{df.operacaoHidroSUISHI} data frame com dados de operacao das usinas hidro
+\code{df.operacaoHidroSUISHI} data frame com dados de operacao das 
+usinas hidro
 \itemize{
 \item codigo da usina (\code{$codUsina})
 \item valor de ano e mes (\code{$anoMes})
 \item serie (\code{$serie})
 \item patamar de carga (\code{$patamar})
 \item codigo do REE onde a usina se encontra (\code{$codREE})
-\item todas as colunas representando dados que forem disponibilizados no SUISHI
+\item todas as colunas representando dados que forem disponibilizados no 
+SUISHI
 }
 }
 \description{
-Faz a leitura dos arquivos do SUISHI com informacao de operacao das usinas hidro (usihid_xxx.csv) e recupera esses valores por ano, mes, serie e patamar.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz a leitura dos arquivos do SUISHI com informacao de operacao das usinas 
+hidro (usihid_xxx.csv) e recupera esses valores por ano, mes, serie e patamar.
+Faz uma modificacao no numero da serie para garantir compatibilidade da 
+sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{

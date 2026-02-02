@@ -4,13 +4,18 @@
 \alias{leituraGeracaoTermicaClassesTotal}
 \title{Leitor de dados de geracao termica por classes e total}
 \usage{
-leituraGeracaoTermicaClassesTotal(pasta)
+leituraGeracaoTermicaClassesTotal(pasta, paralelo = FALSE)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE com dados de geracao termica por classes e total}
+\item{pasta}{localizacao dos arquivos do NWLISTOP com dados de geracao 
+termica por classes e total}
+
+\item{paralelo}{booleano que indica se a leitura dos arquivos sera realizada
+de forma serial ou em paralelo (Default: FASLE)}
 }
 \value{
-\code{df.geracaoTermicaClassesTotal} data frame com os valores de geracao termica por classes e total
+\code{df.geracaoTermicaClassesTotal} data frame com os valores de
+geracao termica por classes e total
 \itemize{
 \item codigo da usina (\code{$codUsina})
 \item codigo do submercado (\code{$codSubmercado})
@@ -21,15 +26,19 @@ leituraGeracaoTermicaClassesTotal(pasta)
 }
 }
 \description{
-Faz a leitura dos arquivos do NEWAVE com dados de geracao termica por classes e total do submercado  (gtertxxx.*) e
-recupera esses valores por codigo da usina, ano, mes, patamar e serie.
+Faz a leitura dos arquivos do NEWAVE com dados de geracao termica por classes
+e total do submercado  (gtertxxx.*) e recupera esses valores por codigo da
+usina, ano, mes, patamar e serie.
 Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz uma modificacao no numero da serie para garantir compatibilidade
+da sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro
+de uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
 leituraGeracaoTermicaClassesTotal("C:/PDE2027_Caso080")
+leituraGeracaoTermicaClassesTotal("C:/PDE2027_Caso080", paralelo = TRUE)
 }
 
 }

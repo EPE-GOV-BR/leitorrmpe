@@ -18,7 +18,8 @@ definePeriodo(pastaCaso)
 }
 }
 \description{
-Com o auxilio da funcao \code{\link{leituraDadosGerais}} cria um data frame com o horizonte do caso
+Com o auxilio da funcao \code{\link{leituraDadosGerais}} cria um data frame 
+com o horizonte do caso
 }
 \examples{
 \dontrun{

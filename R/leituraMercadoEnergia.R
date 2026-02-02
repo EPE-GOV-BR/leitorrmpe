@@ -103,7 +103,8 @@ leituraMercadoEnergia <- function(pastaCaso) {
 
 
   df.mercadoEnergia <- readr::read_fwf(I(dadosMercadoEnergiaTXT),
-    col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+    col_positions = readr::fwf_positions( 
+      # vetor com as posicoes iniciais de cada campo
       c(1, 6, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96),
       # vetor com as posicoes finais de cada campo
       c(4, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86, 94, 102),
@@ -172,7 +173,8 @@ leituraMercadoEnergia <- function(pastaCaso) {
 
       # dataframe cAdic
       df.cAdic <- readr::read_fwf(I(dadosCAdicTXT),
-        col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+        col_positions = readr::fwf_positions( 
+          # vetor com as posicoes iniciais de cada campo
           c(1, 6, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96),
           # vetor com as posicoes finais de cada campo
           c(4, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86, 94, 102),

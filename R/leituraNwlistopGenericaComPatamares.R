@@ -2,13 +2,19 @@
 #'
 #' Faz a leitura do arquivo do NEWAVE com informacao de inicio e fim da coluna
 #' Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-#' Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+#' Faz uma modificacao no numero da serie para garantir compatibilidade da 
+#' sequencia. Esse "problema" acontece na numeracao das series historicas.
+#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+#' uma mesma sequencia para cada ano.
 #'
 #' @param pasta localizacao dos arquivos do NEWAVE com as tabelas do Nwlistop
 #' @param nomeTabela nome da tabela do Nwlistop ex (efiol)
-#' @param passo tamanho do campo (opcional). Caso seja vazio ou NA, o passo será calculado pelo cabeçalho
-#' @param colunaInicialJaneiro coluna em que inicia a impressao dos dados (coluna posterior ao final da impressao do patamar)
+#' @param passo tamanho do campo (opcional). Caso seja vazio ou NA, o passo será 
+#' calculado pelo cabeçalho
+#' @param colunaInicialJaneiro coluna em que inicia a impressao dos dados 
+#' (coluna posterior ao final da impressao do patamar)
+#' @param paralelo booleano que indica se a leitura dos arquivos sera realizada
+#' de forma serial ou em paralelo (Default: FASLE)
 #'
 #'
 #' @return \code{df.dadosNwlistop} data frame com os dados lidos
@@ -23,10 +29,11 @@
 #' @examples
 #' \dontrun{
 #' leituraNwlistopGenericaComPatamares("C:/PDE2027_Caso080", "ghtot", 9, 12)
+#' leituraNwlistopGenericaComPatamares("C:/PDE2027_Caso080", "ghtot", 9, 12, TRUE)
 #' }
 #'
 #' @export
-leituraNwlistopGenericaComPatamares <- function(pasta, nomeTabela, passo = NA, colunaInicialJaneiro) {
+leituraNwlistopGenericaComPatamares <- function(pasta, nomeTabela, passo = NA, colunaInicialJaneiro, paralelo = FALSE) {
   if (missing(pasta)) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
@@ -59,16 +66,20 @@ leituraNwlistopGenericaComPatamares <- function(pasta, nomeTabela, passo = NA, c
     # localiza a posicao do fim de dados pela informacao de desvio padrao
     fimAnos <- which(stringr::str_detect(dadosBrutos, "DPADRAO"))
     # pega informacao de ree no nome do arquivo
-    inicioREE <- stringr::str_locate(arquivo, nomeTabela) %>% {.[1, 2] + 1} %>% unname()
+    inicioREE <- stringr::str_locate(arquivo, nomeTabela) %>%
+      {
+        .[1, 2] + 1
+      } %>%
+      unname()
     codREE <- stringr::str_sub(arquivo, inicioREE, inicioREE + 2) %>% as.integer()
-    
+
     # se o passo nao for informado, encontra pelo espacamento da linha 5 do arquivo
-    if(is.na(passo)){
-      posicoes <- gregexpr("[0-9]", dadosBrutos[5])[[1]]  
-      espacamento <- diff(posicoes)  
+    if (is.na(passo)) {
+      posicoes <- gregexpr("[0-9]", dadosBrutos[5])[[1]]
+      espacamento <- diff(posicoes)
       passo <- as.numeric(names(sort(-table(espacamento)))[1])
     }
-    
+
     # Encontra as colunas
     posicaoColunasInicio <- c(3, 10, seq.int(colunaInicialJaneiro, colunaInicialJaneiro + passo * 11, passo))
     posicaoColunasFim <- c(6, 11, seq.int(colunaInicialJaneiro + passo - 1, colunaInicialJaneiro + passo * 12 - 1, passo))
@@ -77,7 +88,8 @@ leituraNwlistopGenericaComPatamares <- function(pasta, nomeTabela, passo = NA, c
       # posicoes e nomes de acordo com manual do NEWAVE
       suppressWarnings(
         df.dadosNwlistopAno <- readr::read_fwf(I(dadosBrutos[inicioAnos[andaAnos]:(fimAnos[andaAnos] - 2)]),
-          col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+          col_positions = readr::fwf_positions( 
+            # vetor com as posicoes iniciais de cada campo
             posicaoColunasInicio,
             # vetor com as posicoes finais de cada campo
             posicaoColunasFim,
@@ -91,15 +103,17 @@ leituraNwlistopGenericaComPatamares <- function(pasta, nomeTabela, passo = NA, c
       # Retira linhas "total"
       df.dadosNwlistopAnoTOT <- df.dadosNwlistopAno[is.na(df.dadosNwlistopAno$patamar), ]
       df.dadosNwlistopAno <- df.dadosNwlistopAno[!is.na(df.dadosNwlistopAno$patamar), ]
-      # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-      # pelo valor dentro de uma sequencia para cada ano.
+      # garante a sequencia correta na numeracao das series. Esse problema 
+      # acontece na numeracao das series historicas. Assim troca-se o numero ou 
+      # ano pelo valor dentro de uma sequencia para cada ano.
       numeroPatamar <- df.dadosNwlistopAno %>%
         dplyr::distinct(patamar) %>%
         dplyr::pull() %>%
         max()
       series <- rep(1:(nrow(df.dadosNwlistopAno) / numeroPatamar), each = numeroPatamar)
       df.dadosNwlistopAno <- df.dadosNwlistopAno %>% dplyr::mutate(serie = series)
-      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy),dados de todos os patamares
+      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados 
+      # (tidy),dados de todos os patamares
       df.dadosNwlistopAno <- df.dadosNwlistopAno %>%
         tidyr::pivot_longer(cols = c(-serie, -patamar), names_to = "mes", values_to = "dados") %>%
         dplyr::mutate(ano = anos[andaAnos], codREE = codREE, anoMes = (ano * 100 + as.numeric(mes))) %>%
@@ -108,7 +122,7 @@ leituraNwlistopGenericaComPatamares <- function(pasta, nomeTabela, passo = NA, c
       df.dadosNwlistop <- rbind(df.dadosNwlistop, df.dadosNwlistopAno)
       # se o df.dadosNwlistopAnoTOT e vazio, nao entra nesta rotina
       if (nrow(df.dadosNwlistopAnoTOT) > 0) {
-        # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy),dados patamar tot
+        # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados,dados patamar tot
         series <- rep(1:(nrow(df.dadosNwlistopAnoTOT)))
         df.dadosNwlistopAnoTOT <- df.dadosNwlistopAnoTOT %>% dplyr::mutate(serie = series)
         df.dadosNwlistopAnoTOT <- df.dadosNwlistopAnoTOT %>%
@@ -122,9 +136,19 @@ leituraNwlistopGenericaComPatamares <- function(pasta, nomeTabela, passo = NA, c
 
       return(list(df.dadosNwlistop, df.dadosNwlistopTOT))
     })
+    
+    # se o flag paralelo estiver ativo
+    if (paralelo) {
+      future::plan(future::multisession(workers = future::availableCores() - 1))
+    }
 
-    return(list(purrr::map_df(dados, ~ .[[1]]), purrr::map_df(dados, ~ .[[2]])))
+    return(list(furrr::future_map_dfr(dados, ~ .[[1]]), 
+                furrr::future_map_dfr(dados, ~ .[[2]])))
   })
 
-  return(list(df.dadosNwlistop = purrr::map_df(dados, ~ .[[1]]), df.dadosNwlistopTOT = purrr::map_df(dados, ~ .[[2]])))
+  return(list(df.dadosNwlistop = furrr::future_map_dfr(dados, ~ .[[1]]), 
+              df.dadosNwlistopTOT = furrr::future_map_dfr(dados, ~ .[[2]])))
+  
+  # volta para processamento sequencial 
+  future::plan(future::sequential)
 }

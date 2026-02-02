@@ -1,8 +1,10 @@
 #' Leitor dos dados dos subsistemas/submercados
 #'
-#' Faz a leitura do arquivo do NEWAVE com dados dos subsistemas/submercados (sistema.*)
-#' Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-#' Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+#' Faz a leitura do arquivo do NEWAVE com dados dos subsistemas/submercados 
+#' (sistema.*)
+#' Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+#' do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+#' equivalentes do Projeto NEWAVE
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos NEWAVE
 #'
@@ -25,7 +27,8 @@ leituraDadosSubsistema <- function(pastaCaso) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
 
-  # encontra o nome do arquivo de dados gerais de acordo com a ordem informada no manual do NEWAVE para o arquivos.dat
+  # encontra o nome do arquivo de dados gerais de acordo com a ordem informada 
+  # no manual do NEWAVE para o arquivos.dat
   arquivo <- leituraArquivos(pastaCaso) %>%
     dplyr::slice(2) %>%
     dplyr::pull(arquivo)

@@ -1,6 +1,7 @@
 #' Data frama com periodo do caso NEWAVE
 #'
-#' Com o auxilio da funcao \code{\link{leituraDadosGerais}} cria um data frame com o horizonte do caso
+#' Com o auxilio da funcao \code{\link{leituraDadosGerais}} cria um data frame 
+#' com o horizonte do caso
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos NEWAVE
 #'
@@ -26,9 +27,14 @@ definePeriodo <- function(pastaCaso) {
 
   # cria estruturas dos meses e dos anos do periodo de simulacao
   df.mes <- data.frame(mes = seq(1, 12), index = 1)
-  df.ano <- data.frame(ano = seq(df.dadosGerais$anoInicio, df.dadosGerais$anoInicio + df.dadosGerais$duracaoEstudo - 1), index = 1)
+  df.ano <- data.frame(ano = seq(df.dadosGerais$anoInicio, 
+                                 df.dadosGerais$anoInicio + df.dadosGerais$duracaoEstudo - 1), 
+                       index = 1)
   # cria estrutura mista contendo todos os anos e meses do periodo de simulacao, no formato AAAAMM
-  df.periodo <- dplyr::inner_join(df.ano, df.mes, by = c("index" = "index"), relationship = "many-to-many") %>%
+  df.periodo <- dplyr::inner_join(df.ano, 
+                                  df.mes, 
+                                  by = c("index" = "index"), 
+                                  relationship = "many-to-many") %>%
     dplyr::mutate(anoMes = (ano * 100 + mes)) %>%
     dplyr::filter(anoMes >= (df.dadosGerais$anoInicio * 100 + df.dadosGerais$mesInicio)) %>%
     dplyr::select(-index)

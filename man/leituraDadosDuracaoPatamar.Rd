@@ -18,9 +18,11 @@ leituraDadosDuracaoPatamar(pastaCaso)
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados de duracao de patamares (patamar.*).
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Faz a leitura do arquivo do NEWAVE com dados de duracao de patamares 
+(patamar.*).
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{

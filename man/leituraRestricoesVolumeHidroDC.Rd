@@ -22,7 +22,8 @@ leituraRestricoesVolumeHidroDC(pastaCaso)
 }
 }
 \description{
-Faz a leitura dos dados de restricao de volume armazenado do DECOMP no arquivo (dadger.*).
+Faz a leitura dos dados de restricao de volume armazenado do DECOMP no 
+arquivo (dadger.*).
 Utiliza as informacoes do BLOCO 35 do DADGER
 }
 \examples{

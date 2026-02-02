@@ -10,9 +10,11 @@ leituraAlteracaoDadosUsinasHidro(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE}
 }
 \value{
-\code{lt.alteracaoDadosUsinasHidro} lista com data frames com dados alteracao de configuracao hidroeletrica
+\code{lt.alteracaoDadosUsinasHidro} lista com data frames com dados 
+alteracao de configuracao hidroeletrica
 \itemize{
-\item \code{df.alteracaoHidro} data frame com dados de alteracao de configuracao hidroeletrica
+\item \code{df.alteracaoHidro} data frame com dados de alteracao de 
+configuracao hidroeletrica
 \itemize{
 \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 \item anoMes no formato aaaamm (\code{$anoMes})
@@ -20,19 +22,27 @@ leituraAlteracaoDadosUsinasHidro(pastaCaso)
 \item nivel de montante [m] (\code{$nivelMontante})
 \item vazao minima [m3/s] (\code{$vazaoMinima})
 \item vazao maxima [m3/s] (\code{$vazaoMaxima})
-\item volume minimo operativo no tempo [hm3] (\code{$volumeMinimo}) - como e no tempo este campo representa tanto VOLMIN e VMINT
-\item volume minimo operativo no tempo [p.u.] do volume util (\code{$volumeMinimoPU}) - como e no tempo este campo representa tanto VOLMIN e VMINT
-\item volume maximo operativo no tempo [hm3] (\code{$volumeMaximo}) - como e no tempo este campo representa tanto VOLMAX e VMAXT
-\item volume maximo operativo no tempo [p.u.] do volume util (\code{$volumeMaximoPU}) - como e no tempo este campo representa tanto VOLMAX e VMAXT
+\item volume minimo operativo no tempo [hm3] (\code{$volumeMinimo}) - como e 
+no tempo este campo representa tanto VOLMIN e VMINT
+\item volume minimo operativo no tempo [p.u.] do volume util 
+(\code{$volumeMinimoPU}) - como e no tempo este campo representa tanto VOLMIN 
+e VMINT
+\item volume maximo operativo no tempo [hm3] (\code{$volumeMaximo}) - como e 
+no tempo este campo representa tanto VOLMAX e VMAXT
+\item volume maximo operativo no tempo [p.u.] do volume util 
+(\code{$volumeMaximoPU}) - como e no tempo este campo representa tanto VOLMAX 
+e VMAXT
 \item numero de unidades de base (\code{$numeroUnidadeBase})
-\item total de conjuntos de maquinas (considerados apenas os n primeiros conjuntos, de acordo com a ordem destes conjuntos no cadastro)
+\item total de conjuntos de maquinas (considerados apenas os n primeiros 
+conjuntos, de acordo com a ordem destes conjuntos no cadastro)
 (\code{$numeroConjuntos})
 \item produtibilidade especifica [MW/m3/s/m] (\code{$produtibilidade})
 \item taxa esperada de indisponibilidade forcada (TEIF) [\%] (\code{$TEIF})
 \item indisponibilidade programada (IP) [\%] (\code{$IP})
 \item perda hidraulica [unidade do cadastro] (\code{$perda})
 }
-\item \code{df.alteracaoConjunto} data frame com dados de alteracao de configuracao por conjunto de maquinas
+\item \code{df.alteracaoConjunto} data frame com dados de alteracao de 
+configuracao por conjunto de maquinas
 \itemize{
 \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 \item anoMes no formato aaaamm (\code{$anoMes})
@@ -42,11 +52,14 @@ leituraAlteracaoDadosUsinasHidro(pastaCaso)
 }}
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados de alteracao de configuracao hidroeletrica (modif.*). Usa as funcoes internas \code{\link{leituraArquivos}},
+Faz a leitura do arquivo do NEWAVE com dados de alteracao de configuracao 
+hidroeletrica (modif.*). Usa as funcoes internas \code{\link{leituraArquivos}},
 \code{\link{definePeriodo}}, \code{\link{leituraDadosUsinasHidro}}.
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
-Retorna as ateracoes no tempo (por todos os meses e anos do horizonte mesmo que o valor seja o mesmo) e sem os periodos de pre e pos
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
+Retorna as ateracoes no tempo (por todos os meses e anos do horizonte mesmo 
+que o valor seja o mesmo) e sem os periodos de pre e pos
 }
 \examples{
 \dontrun{

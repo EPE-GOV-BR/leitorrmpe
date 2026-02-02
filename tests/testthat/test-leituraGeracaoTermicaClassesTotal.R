@@ -1,5 +1,6 @@
 test_that("leituraGeracaoTermicaClassesTotal works", {
   expect_snapshot_value(leituraGeracaoTermicaClassesTotal("testData"), style = "json2")
+  expect_snapshot_value(leituraGeracaoTermicaClassesTotal("testData", paralelo = TRUE), style = "json2")
 })
 
 test_that("leituraGeracaoTermicaClassesTotal error", {

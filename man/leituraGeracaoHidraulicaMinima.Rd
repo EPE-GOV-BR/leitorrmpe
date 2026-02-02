@@ -10,19 +10,23 @@ leituraGeracaoHidraulicaMinima(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE}
 }
 \value{
-\code{df.geracaoHidraulicaMinima} lista com data frames com dados das usinas hidroeletricas
+\code{df.geracaoHidraulicaMinima} lista com data frames com dados 
+das usinas hidroeletricas
 \itemize{
 \item numero da usina hidroeletrica (\code{$codUsina})
-\item mes e ano de inicio da restricao de geracao hidraulica minima (\code{$anoMes})
+\item mes e ano de inicio da restricao de geracao hidraulica minima 
+(\code{$anoMes})
 \item numero do patamar de carga (\code{$patamar})
 \item geracao hidraulica minima da usina [MWmedio] (\code{$geracao})
 
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados de geracao hidraulica minima (ghmin.dat).
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo de planejamento da operacao de sistemas hidrotermicos interligados de longo e medio prazos do Projeto NEWAVE versao 27 de dezembro/2019 - pagina 65
+Faz a leitura do arquivo do NEWAVE com dados de geracao hidraulica minima 
+(ghmin.dat).
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+do Usuario do Modelo de planejamento da operacao de sistemas hidrotermicos 
+interligados de longo e medio prazos do Projeto NEWAVE
 OBS: O leitor desconsidera os dados para periodos PRE e POS.
 }
 \examples{

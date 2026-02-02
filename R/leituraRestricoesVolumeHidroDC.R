@@ -1,6 +1,7 @@
 #' Leitor de dados de restricoes de volume armazenado para UHEs do DECOMP
 #'
-#' Faz a leitura dos dados de restricao de volume armazenado do DECOMP no arquivo (dadger.*).
+#' Faz a leitura dos dados de restricao de volume armazenado do DECOMP no 
+#' arquivo (dadger.*).
 #' Utiliza as informacoes do BLOCO 35 do DADGER
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos DECOMP
@@ -38,7 +39,8 @@ leituraRestricoesVolumeHidroDC <- function(pastaCaso) {
   }
 
   # le o arquivo dadger como um vetor de caracteres
-  dadger <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), locale = readr::locale(encoding = "latin1"))
+  dadger <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), 
+                              locale = readr::locale(encoding = "latin1"))
   # encontra a data inicial do estudo
   dataInicial <- dadger[grepl("^DT  ", dadger)]
   dataInicial <- as.Date(paste0(as.numeric(stringr::str_sub(dataInicial, 15, 18)), "-", as.numeric(stringr::str_sub(dataInicial, 10, 11)), "-", as.numeric(stringr::str_sub(dataInicial, 5, 7))))
@@ -62,7 +64,10 @@ leituraRestricoesVolumeHidroDC <- function(pastaCaso) {
     aux = 1
   )
   nEstagios <- max(df.HV$periodoFim)
-  df.HV <- dplyr::left_join(df.HV, data.frame(aux = 1, estagio = 1:nEstagios), by = "aux", relationship = "many-to-many") %>%
+  df.HV <- dplyr::left_join(df.HV, 
+                            data.frame(aux = 1, estagio = 1:nEstagios), 
+                            by = "aux", 
+                            relationship = "many-to-many") %>%
     dplyr::filter(estagio <= periodoFim, estagio >= periodoIni) %>%
     dplyr::select(numRest, estagio)
 
@@ -74,8 +79,14 @@ leituraRestricoesVolumeHidroDC <- function(pastaCaso) {
   ) %>%
     dplyr::group_by(numRest) %>%
     dplyr::mutate(
-      estagioFim = ifelse(dplyr::n() == 1, nEstagios, ifelse(estagioIni == nEstagios, nEstagios, dplyr::lead(estagioIni) - 1)),
-      estagioFim = ifelse(estagioIni > estagioFim, estagioIni, estagioFim)
+      estagioFim = ifelse(dplyr::n() == 1, 
+                          nEstagios, 
+                          ifelse(estagioIni == nEstagios, 
+                                 nEstagios, 
+                                 dplyr::lead(estagioIni) - 1)),
+      estagioFim = ifelse(estagioIni > estagioFim, 
+                          estagioIni, 
+                          estagioFim)
     )
 
   df.CV <- data.frame(
@@ -87,10 +98,14 @@ leituraRestricoesVolumeHidroDC <- function(pastaCaso) {
   )
 
   df.RHV <- dplyr::inner_join(df.HV, df.LV, by = "numRest") %>%
-    dplyr::mutate(valeRest = ifelse(((estagio >= estagioIni) & (estagio <= estagioFim)), "sim", "nao")) %>%
+    dplyr::mutate(valeRest = ifelse(((estagio >= estagioIni) & (estagio <= estagioFim)), 
+                                    "sim", 
+                                    "nao")) %>%
     dplyr::filter(valeRest != "nao") %>%
     dplyr::select(-c("valeRest", "estagioIni", "estagioFim")) %>%
-    dplyr::inner_join(dplyr::select(df.CV, -estagio), by = "numRest", relationship = "many-to-many") %>%
+    dplyr::inner_join(dplyr::select(df.CV, -estagio), 
+                      by = "numRest", 
+                      relationship = "many-to-many") %>%
     dplyr::select(numRest, codUsina, everything())
 
   return(df.RHV)

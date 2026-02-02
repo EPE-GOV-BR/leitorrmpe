@@ -1,7 +1,8 @@
 #' Leitor dos nomes dos arquivos do DECOMP
 #'
-#' Procura o arquivo caso.dat (nos formatos Caso.dat, caso.dat e CASO.DAT) e faz a leitura do arquivo do CEPEL
-#' indicado nele (geralmente rvX) para recuperar a lista de arquivos de entrada utilizados pelo DECOMP.
+#' Procura o arquivo caso.dat (nos formatos Caso.dat, caso.dat e CASO.DAT) e faz 
+#' a leitura do arquivo do CEPEL indicado nele (geralmente rvX) para recuperar a 
+#' lista de arquivos de entrada utilizados pelo DECOMP.
 #'
 #' @param pastaCaso string com localizacao do arquivo caso.dat.
 #'
@@ -29,7 +30,8 @@ leituraArquivosDC <- function(pastaCaso) {
   if (length(caso) != 1) {
     stop("caso.dat n\u00E3o encontrado ou multiplos arquivos similares!")
   }
-  arquivo <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, caso, sep = "/")), locale = readr::locale(encoding = "latin1")) %>%
+  arquivo <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, caso, sep = "/")), 
+                               locale = readr::locale(encoding = "latin1")) %>%
     stringr::str_squish() %>%
     dplyr::first()
 
@@ -38,7 +40,8 @@ leituraArquivosDC <- function(pastaCaso) {
     stop(paste0(arquivo, " n\u00E3o encontrado em ", pastaCaso))
   }
 
-  df.arquivos <- data.frame(arquivo = readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), locale = readr::locale(encoding = "latin1")))
+  df.arquivos <- data.frame(arquivo = readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), 
+                                                        locale = readr::locale(encoding = "latin1")))
   if (nrow(df.arquivos) == 0) {
     stop(nomeArquivo, " vazio")
   }

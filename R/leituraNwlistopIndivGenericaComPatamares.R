@@ -2,13 +2,17 @@
 #'
 #' Faz a leitura do arquivo do NEWAVE com informacao de inicio e fim da coluna
 #' Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-#' Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+#' Faz uma modificacao no numero da serie para garantir compatibilidade da 
+#' sequencia. Esse "problema" acontece na numeracao das series historicas.
+#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+#' uma mesma sequencia para cada ano.
 #'
 #' @param pasta localizacao dos arquivos do NEWAVE com as tabelas do Nwlistop
 #' @param nomeTabela Nome da tabela do Nwlistop ex (efiol)
-#' @param passo tamanho do campo (opcional). Caso seja vazio ou NA, o passo será calculado pelo cabeçalho
-#' @param colunaInicialJaneiro coluna em que inicia a impressao dos dados (coluna posterior ao final da impressao da serie)
+#' @param passo tamanho do campo (opcional). Caso seja vazio ou NA, o passo será 
+#' calculado pelo cabeçalho
+#' @param colunaInicialJaneiro coluna em que inicia a impressao dos dados 
+#' (coluna posterior ao final da impressao da serie)
 #'
 #'
 #' @return \code{df.dadosNwlistop} data frame com os dados lidos
@@ -41,7 +45,10 @@ leituraNwlistopIndivGenericaComPatamares <- function(pasta, nomeTabela, passo = 
   }
 
   # cria data frame de base para armazenar os dados
-  df.dadosNwlistop <- tidyr::tibble(codREE = numeric(), serie = numeric(), anoMes = numeric(), dados = numeric())
+  df.dadosNwlistop <- tidyr::tibble(codREE = numeric(), 
+                                    serie = numeric(), 
+                                    anoMes = numeric(), 
+                                    dados = numeric())
 
   # seleciona somente os arquivos escolhidos
   arquivos <- list.files(pasta, pattern = paste0("^", nomeTabela, "[0-9]"))
@@ -49,12 +56,12 @@ leituraNwlistopIndivGenericaComPatamares <- function(pasta, nomeTabela, passo = 
   if (length(arquivos) == 0) {
     stop(paste0("N\u00E3o foram encontrados os arquivos ", nomeTabela, "XXX.out em ", pasta))
   }
-  
+
   # se o passo nao for informado, encontra pelo espacamento da linha 5 do arquivo
-  if(is.na(passo)){
+  if (is.na(passo)) {
     linha <- readr::read_lines(paste(pasta, arquivos[1], sep = "/"), n_max = 5)[5]
-    posicoes <- gregexpr("[0-9]", linha)[[1]]  
-    espacamento <- diff(posicoes)  
+    posicoes <- gregexpr("[0-9]", linha)[[1]]
+    espacamento <- diff(posicoes)
     passo <- as.numeric(names(sort(-table(espacamento)))[1])
   }
 
@@ -82,13 +89,19 @@ leituraNwlistopIndivGenericaComPatamares <- function(pasta, nomeTabela, passo = 
     }
 
     # pega informacao da usina no nome do arquivo
-    inicioUsina <- stringr::str_locate(arquivo, nomeTabela) %>% {.[1, 2] + 1} %>% unname()
-    codUsina <- stringr::str_sub(arquivo, inicioUsina, inicioUsina + 2) %>% as.integer()
+    inicioUsina <- stringr::str_locate(arquivo, nomeTabela) %>%
+      {
+        .[1, 2] + 1
+      } %>%
+      unname()
+    codUsina <- stringr::str_sub(arquivo, inicioUsina, inicioUsina + 2) %>% 
+      as.integer()
 
     purrr::map_df(1:length(anos), function(andaAnos) {
       # posicoes e nomes de acordo com manual do NEWAVE
       df.dadosNwlistopAno <- readr::read_fwf(I(dadosBrutos[inicioAnos[andaAnos]:(fimAnos[andaAnos] - 2)]),
-        col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+        col_positions = readr::fwf_positions( 
+          # vetor com as posicoes iniciais de cada campo
           posicaoColunasInicio,
           # vetor com as posicoes finais de cada campo
           posicaoColunasFim,
@@ -99,20 +112,24 @@ leituraNwlistopIndivGenericaComPatamares <- function(pasta, nomeTabela, passo = 
         skip = 2
       )
 
-      # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-      # pelo valor dentro de uma sequencia para cada ano.
-      # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-      # pelo valor dentro de uma sequencia para cada ano.
+      # garante a sequencia correta na numeracao das series. Esse problema 
+      # acontece na numeracao das series historicas. Assim troca-se o numero ou 
+      # ano pelo valor dentro de uma sequencia para cada ano.
       numeroPatamar <- df.dadosNwlistopAno %>%
         dplyr::distinct(patamar) %>%
         dplyr::pull() %>%
         max()
-      series <- rep(1:(nrow(df.dadosNwlistopAno) / numeroPatamar), each = numeroPatamar)
+      series <- rep(1:(nrow(df.dadosNwlistopAno) / numeroPatamar), 
+                    each = numeroPatamar)
       df.dadosNwlistopAno$serie <- series
-      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy)
+      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados
       df.dadosNwlistopAno <- df.dadosNwlistopAno %>%
-        tidyr::pivot_longer(cols = c(-serie, -patamar), names_to = "mes", values_to = "dados") %>%
-        dplyr::mutate(ano = anos[andaAnos], codUsina = codUsina, anoMes = (ano * 100 + as.numeric(mes))) %>%
+        tidyr::pivot_longer(cols = c(-serie, -patamar), 
+                            names_to = "mes", 
+                            values_to = "dados") %>%
+        dplyr::mutate(ano = anos[andaAnos], 
+                      codUsina = codUsina, 
+                      anoMes = (ano * 100 + as.numeric(mes))) %>%
         dplyr::select(codUsina, serie, patamar, anoMes, dados)
 
       # concatena dados num data frame unico

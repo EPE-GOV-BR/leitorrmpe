@@ -1,14 +1,17 @@
 #' Leitor de dados de configuracao hidroeletrica do DECOMP
 #'
-#' Faz a leitura dos dados de configuracao hidroeletrica do DECOMP no arquivo (dadger.*).
+#' Faz a leitura dos dados de configuracao hidroeletrica do DECOMP no 
+#' arquivo (dadger.*).
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos DECOMP
 #'
-#' @return \code{df.dadosConfiguracaoHidroDC} data frame com dados de configuracao hidroeletrica
+#' @return \code{df.dadosConfiguracaoHidroDC} data frame com dados de 
+#' configuracao hidroeletrica
 #' \itemize{
 #' \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 #' \item codigo do REE (\code{$codREE})
-#' \item volume armazenado inicial em percentagem do volume util (\code{$volumeInical})
+#' \item volume armazenado inicial em percentagem do volume util 
+#' (\code{$volumeInical})
 #' \item flag de evaporacao (0 nao considera; 1 considera) (\code{$flagEvap})
 #' }
 #'
@@ -34,7 +37,8 @@ leituraConfiguracaoHidroDC <- function(pastaCaso) {
   }
 
   # le o arquivo dadger como um vetor de caracteres
-  dadger <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), locale = readr::locale(encoding = "latin1"))
+  dadger <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), 
+                              locale = readr::locale(encoding = "latin1"))
   # encontra o inicio da informacao
   inicioUH <- which(stringr::str_detect(dadger, "BLOCO 3"))[1]
   # encontra o fim da informacao

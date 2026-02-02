@@ -14,20 +14,30 @@ leituraDesvioAgua(pastaCaso)
 \itemize{
 \item numero do subsistema/submercado (\code{$codUsina})
 \item ano e mes (\code{$anoMes})
-\item vazao adicionada (positivo) ou desviada (negativo) no mes correspondente devido a uso consuntiv0 (\code{$desvioUsoConsuntivo})
-\item vazao adicionada (positivo) ou desviada (negativo) no mes correspondente devido a vazao remanescente (\code{$desvioVazaoRemanescente})
-\item vazao adicionada (positivo) ou desviada (negativo) no mes correspondente devido a transposicao (\code{$desvioTransposicao})
-\item vazao adicionada (positivo) ou desviada (negativo) no mes correspondente devido a reitrada de agua (\code{$desvioRetiradaDagua})
-\item vazao adicionada (positivo) ou desviada (negativo) no mes correspondente devido a escada de peixe (\code{$desvioEscadaPeixe})
-\item vazao adicionada (positivo) ou desviada (negativo) no mes correspondente nao identificado (\code{$desvioNaoIdentificado})
-\item vazao adicionada (positivo) ou desviada (negativo) total no mes correspondente (\code{$desvioTotal})
-\item flag para a consideracao do registro de desvio, caso a usina seja NC (\code{$flagDesvio})
+\item vazao adicionada (positivo) ou desviada (negativo) no mes 
+correspondente devido a uso consuntiv0 (\code{$desvioUsoConsuntivo})
+\item vazao adicionada (positivo) ou desviada (negativo) no mes 
+correspondente devido a vazao remanescente (\code{$desvioVazaoRemanescente})
+\item vazao adicionada (positivo) ou desviada (negativo) no mes 
+correspondente devido a transposicao (\code{$desvioTransposicao})
+\item vazao adicionada (positivo) ou desviada (negativo) no mes 
+correspondente devido a reitrada de agua (\code{$desvioRetiradaDagua})
+\item vazao adicionada (positivo) ou desviada (negativo) no mes 
+correspondente devido a escada de peixe (\code{$desvioEscadaPeixe})
+\item vazao adicionada (positivo) ou desviada (negativo) no mes 
+correspondente nao identificado (\code{$desvioNaoIdentificado})
+\item vazao adicionada (positivo) ou desviada (negativo) total no mes 
+correspondente (\code{$desvioTotal})
+\item flag para a consideracao do registro de desvio, caso a usina seja NC 
+(\code{$flagDesvio})
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados para outros usos da agua (dsvagua.dat).
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Faz a leitura do arquivo do NEWAVE com dados para outros usos da agua 
+(dsvagua.dat).
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{

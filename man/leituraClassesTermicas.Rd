@@ -10,7 +10,8 @@ leituraClassesTermicas(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE.}
 }
 \value{
-\code{df.ClassesTermicas} data frame com dados de usinas termoeletricas
+\code{df.ClassesTermicas} data frame com dados de usinas 
+termeletricas
 \itemize{
 \item numero da usina termica (\code{$codUsinaTermica})
 \item periodo (anoMes-AAAAMM) (\code{$anoMes})
@@ -20,8 +21,9 @@ leituraClassesTermicas(pastaCaso)
 }
 \description{
 Faz a leitura do arquivo do NEWAVE com dados de classes termicas (clast.*).
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{

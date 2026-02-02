@@ -4,13 +4,17 @@
 \alias{leituraVertimentoFioDaguaTurbinavel}
 \title{Leitor de dados de vertimento fio dagua turbinavel por REE}
 \usage{
-leituraVertimentoFioDaguaTurbinavel(pasta)
+leituraVertimentoFioDaguaTurbinavel(pasta, paralelo = FALSE)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE com dados de vertimento fio dagua turbinavel}
+\item{pasta}{localizacao dos arquivos verturbxxx.* do NWLISTOP}
+
+\item{paralelo}{booleano que indica se a leitura dos arquivos sera realizada
+de forma serial ou em paralelo (Default: FASLE)}
 }
 \value{
-\code{df.vertimentoFioDaguaTurbinavel} data frame com os valores de vertimento fio dagua turbinavel
+\code{df.vertimentoFioDaguaTurbinavel} data frame com os valores de 
+vertimento fio dagua turbinavel
 \itemize{
 \item codigo do REE (\code{$codREE})
 \item serie (\code{$serie})
@@ -19,14 +23,19 @@ leituraVertimentoFioDaguaTurbinavel(pasta)
 }
 }
 \description{
-Faz a leitura dos arquivos do NEWAVE com dados de vertimento fio dagua turbinavel por REE (verturbxxx.*) e recupera esses valores por ano, mes e serie.
+Faz a leitura dos arquivos do NEWAVE com dados de vertimento fio dagua 
+turbinavel por REE (verturbxxx.*) e recupera esses valores por ano, mes e 
+serie.
 Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz uma modificacao no numero da serie para garantir compatibilidade da 
+sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
 leituraVertimentoFioDaguaTurbinavel("C:/PDE2027_Caso080")
+leituraVertimentoFioDaguaTurbinavel("C:/PDE2027_Caso080", paralelo = TRUE)
 }
 
 }

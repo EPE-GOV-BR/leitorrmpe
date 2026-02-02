@@ -10,18 +10,24 @@ leituraAgrupamentoInterligacoes(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE.}
 }
 \value{
-\code{df.agrupamentoInterligacoes} data frame com dados de agrupamento livre de interligacoes
+\code{df.agrupamentoInterligacoes} data frame com dados de 
+agrupamento livre de interligacoes
 \itemize{
 \item numero do agrupamento (\code{$codAgrup})
-\item subsistema/submercado de origem da interligacao que compoe o agrupamento (\code{$codSubsistemaOrigem})
-\item subsistema/submercado de destino da interligacao que compoe o agrupamento (\code{$codSubsistemaDestino})
-\item coeficiente associado a interligacao que compoe o agrupamento (\code{$coeficiente})
+\item subsistema/submercado de origem da interligacao que compoe o 
+agrupamento (\code{$codSubsistemaOrigem})
+\item subsistema/submercado de destino da interligacao que compoe o 
+agrupamento (\code{$codSubsistemaDestino})
+\item coeficiente associado a interligacao que compoe o agrupamento 
+(\code{$coeficiente})
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados de agrupamento livre de interligacoes (agrint.*).
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Faz a leitura do arquivo do NEWAVE com dados de agrupamento livre de 
+interligacoes (agrint.*).
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual
+do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{

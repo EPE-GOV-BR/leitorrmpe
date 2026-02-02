@@ -7,10 +7,12 @@
 leituraEnergiaArmazenadaFinalSubmercado(pasta)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE com dados de energia armazenada final por submercado}
+\item{pasta}{localizacao dos arquivos do NEWAVE com dados de energia 
+armazenada final por submercado}
 }
 \value{
-\code{df.energiArmazenadaFinalSubmercadoSubmercado} data frame com os valores de energia armazenada final por REE
+\code{df.energiArmazenadaFinalSubmercadoSubmercado} data frame com os 
+valores de energia armazenada final por REE
 \itemize{
 \item codigo do submercado (\code{$codSubmercado})
 \item serie (\code{$serie})
@@ -19,10 +21,13 @@ leituraEnergiaArmazenadaFinalSubmercado(pasta)
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com informacao de energia armazenada final por Submercado (earmfMXXX.out) e recupera esses valores por ano, mes e serie.
+Faz a leitura do arquivo do NEWAVE com informacao de energia armazenada final 
+por Submercado (earmfMXXX.out) e recupera esses valores por ano, mes e serie.
 Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz uma modificacao no numero da serie para garantir compatibilidade da 
+sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{

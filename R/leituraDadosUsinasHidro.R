@@ -1,14 +1,18 @@
 #' Leitor de dados das usinas hidroeletricas
 #'
-#' Faz a leitura do arquivo do NEWAVE com dados das usinas hidroeletricas (hidr.dat).
-#' O arquivo de dados das usinas hidroelrtricas corresponde ao arquivo de cadastro com os dados das usinas hidroeletricas.
-#' Arquivo de acesso direto, nao formatado, com 320/600 registros, cada registro correspondendo a uma usina.
+#' Faz a leitura do arquivo do NEWAVE com dados das usinas hidroeletricas 
+#' (hidr.dat). O arquivo de dados das usinas hidroelrtricas corresponde ao 
+#' arquivo de cadastro com os dados das usinas hidroeletricas.
+#' Arquivo de acesso direto, nao formatado, com 320/600 registros, cada registro 
+#' correspondendo a uma usina.
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos NEWAVE
 #'
-#' @return \code{lt.dadosUsinasHidroeletricas} lista com data frames com dados das usinas hidroeletricas
+#' @return \code{lt.dadosUsinasHidroeletricas} lista com data frames com dados 
+#' das usinas hidroeletricas
 #' \itemize{
-#' \item \code{df.dadosUsinasHidroeletricas} data frame com dados gerais das usinas hidroeletricas
+#' \item \code{df.dadosUsinasHidroeletricas} data frame com dados gerais das 
+#' usinas hidroeletricas
 #' \itemize{
 #' \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 #' \item nome da usina (\code{$nomeUsina})
@@ -70,7 +74,8 @@
 #' \item queda efetiva por conjunto [m] (\code{$quedaEfetiva})
 #' \item vazao efetiva por conjunto [m3/s] (\code{$vazaoEfetiva})
 #' }
-#' \item \code{df.polinomiosVazaoNivelJusante} data frame com dados dos polinomios de vazao de nivel de jusante por usina
+#' \item \code{df.polinomiosVazaoNivelJusante} data frame com dados dos 
+#' polinomios de vazao de nivel de jusante por usina
 #' \itemize{
 #' \item codigo da usina no cadastro de usinas hidroeletricas (\code{$codUsina})
 #' \item nome da usina (\code{$nomeUsina})
@@ -93,20 +98,22 @@
 #' @export
 leituraDadosUsinasHidro <- function(pastaCaso) {
   arquivos <- list.files(pastaCaso)
-  
+
   # verifica existencia do arquivo hidr.dat
   if (!any(stringr::str_detect(arquivos, "(?i)hidr.dat"))) {
     stop(paste0("hidr.dat n\u00E3o encontrado em ", pastaCaso))
-  }else{
-    if(sum(stringr::str_detect(arquivos, "(?i)hidr.dat"))>1){
+  } else {
+    if (sum(stringr::str_detect(arquivos, "(?i)hidr.dat")) > 1) {
       stop(paste0("mais de um arquivo hidr.dat encontrado em ", pastaCaso))
-    }else{
+    } else {
       hidr <- arquivos[stringr::str_detect(arquivos, "(?i)hidr.dat")]
     }
   }
 
-  # o arquivo hidr possui usinas do codigo 1 ate o maior cadastrado. O arquivo nao possui buracos.
-  # logo quando nao existir um determinado codigo, existira uma linha com seus dados mas com valores zerados.
+  # o arquivo hidr possui usinas do codigo 1 ate o maior cadastrado. 
+  # O arquivo nao possui buracos.
+  # logo quando nao existir um determinado codigo, existira uma linha com seus 
+  # dados mas com valores zerados.
   maiorCodUsina <- leituraConfiguracaoHidro(pastaCaso) %>%
     dplyr::pull(codUsina) %>%
     max()
@@ -121,7 +128,8 @@ leituraDadosUsinasHidro <- function(pastaCaso) {
   df.polinomiosVazaoNivelJusante <- tidyr::tibble()
 
   for (andaUsina in 1:maiorCodUsina) {
-    # a cada leitura feita no arquivo binario, o ponteiro com a posicao sera atualizado para posicao logo apos o fim dos dados lidos
+    # a cada leitura feita no arquivo binario, o ponteiro com a posicao sera 
+    # atualizado para posicao logo apos o fim dos dados lidos
     nomeUsina <- readBin(conexaoArquivoBinario, raw(), 12) %>% rawToChar()
     posto <- readBin(conexaoArquivoBinario, integer())
     postoBDH <- readBin(conexaoArquivoBinario, raw(), 8) %>% rawToChar()

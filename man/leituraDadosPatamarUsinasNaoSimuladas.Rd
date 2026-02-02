@@ -10,19 +10,23 @@ leituraDadosPatamarUsinasNaoSimuladas(pastaCaso)
 \item{pastaCaso}{caracter com localizacao dos arquivos NEWAVE.}
 }
 \value{
-\code{df.dadosPatamarUsinasNaoSimuladas} data frame com dados de patamares de usinas nao simuladas
+\code{df.dadosPatamarUsinasNaoSimuladas} data frame com dados de 
+patamares de usinas nao simuladas
 \itemize{
 \item numero do subsistema/submercado  (\code{$codSubsistema})
 \item numero do bloco de usinas nao simuladas  (\code{$codBlocoUNS})
 \item numero do patamar (\code{$patamar})
 \item ano e mes referente a informacao (\code{$anoMes})
-\item profundidade de patamar das usinas nao simuladas (\code{$profundidadeUNS})
+\item profundidade de patamar das usinas nao simuladas 
+(\code{$profundidadeUNS})
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com dados de profundidade patamares de usinas nao simuladas (patamar.*).
-Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+Faz a leitura do arquivo do NEWAVE com dados de profundidade patamares de 
+usinas nao simuladas (patamar.*).
+Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+equivalentes do Projeto NEWAVE
 }
 \examples{
 \dontrun{

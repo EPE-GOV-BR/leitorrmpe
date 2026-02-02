@@ -4,13 +4,18 @@
 \alias{leituraEnergiaAfluenteTotalBrutaMercado}
 \title{Leitor dos dados de energia afluente total bruta por submercado}
 \usage{
-leituraEnergiaAfluenteTotalBrutaMercado(pasta)
+leituraEnergiaAfluenteTotalBrutaMercado(pasta, paralelo = FALSE)
 }
 \arguments{
-\item{pasta}{localizacao dos arquivos do NEWAVE com dados de energia armazenada final}
+\item{pasta}{localizacao dos arquivos do NWLISTOP com dados de energia
+afluente total bruta por submercado}
+
+\item{paralelo}{booleano que indica se a leitura dos arquivos sera realizada
+de forma serial ou em paralelo (Default: FASLE)}
 }
 \value{
-\code{df.energiaAfluenteTotalBruta} data frame com os valores de energia afluente total bruta por submercado
+\code{df.energiaAfluenteTotalBruta} data frame com os valores de 
+energia afluente total bruta por submercado
 \itemize{
 \item codigo do subsistema/submercado (\code{$codSubsistema})
 \item serie (\code{$serie})
@@ -19,14 +24,19 @@ leituraEnergiaAfluenteTotalBrutaMercado(pasta)
 }
 }
 \description{
-Faz a leitura do arquivo do NEWAVE com informacao de energia afluente total bruta por submercado (eafbmXXX.out) e recupera esses valores por ano, mes e serie.
+Faz a leitura do arquivo do NEWAVE com informacao de energia afluente total 
+bruta por submercado (eafbmXXX.out) e recupera esses valores por ano, mes e 
+serie.
 Nao retorna os valores de media, desvio e etc. do arquivo de origem.
-Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+Faz uma modificacao no numero da serie para garantir compatibilidade da 
+sequencia. Esse "problema" acontece na numeracao das series historicas.
+Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+uma mesma sequencia para cada ano.
 }
 \examples{
 \dontrun{
 leituraEnergiaAfluenteTotalBrutMercado("C:/PDE2027_Caso080")
+leituraEnergiaAfluenteTotalBrutMercado("C:/PDE2027_Caso080", paralelo = TRUE)
 }
 
 }

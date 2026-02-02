@@ -1,13 +1,17 @@
 #' Calculo da media e desvio padrao de tabela Nwlistop COM patamar
 #'
-#' Faz o calculo da media e do desvio padrao da variavel de interesse por submercado e por ano de estudo,
+#' Faz o calculo da media e do desvio padrao da variavel de interesse por 
+#' submercado e por ano de estudo,
 #'
 #' @param pasta localizacao dos arquivos do NEWAVE com as tabelas do Nwlistop
 #' @param nomeTabela nome da tabela do Nwlistop ex (efiol)
-#' @param passo tamanho do campo (opcional). Caso seja vazio ou NA, o passo será calculado pelo cabeçalho
-#' @param colunaInicialJaneiro coluna em que inicia a impressao dos dados (coluna posterior ao final da impressao do patamar)
+#' @param passo tamanho do campo (opcional). Caso seja vazio ou NA, o passo será
+#' calculado pelo cabeçalho
+#' @param colunaInicialJaneiro coluna em que inicia a impressao dos dados 
+#' (coluna posterior ao final da impressao do patamar)
 #'
-#' @return \code{df.cmoMedio} data frame com os valores de custo marginal de demanda
+#' @return \code{df.cmoMedio} data frame com os valores de custo marginal de 
+#' demanda
 #' \itemize{
 #' \item codigo do REE (\code{$codREE})
 #' \item valor do ano (\code{$ano})
@@ -52,14 +56,17 @@ calculoMediaDpGenericoComPat <- function(pasta, nomeTabela, passo = NA, colunaIn
     # veririfica se todas as series do confhd possuem o mesmo tamanho
     seriesHidro <- df.configuracaoHidro %>%
       dplyr::mutate(seriesHidro = fimHistorico - inicioHistorico + 1) %>%
-      dplyr::summarise(media = mean(seriesHidro), minimo = min(seriesHidro), maximo = max(seriesHidro))
+      dplyr::summarise(media = mean(seriesHidro), 
+                       minimo = min(seriesHidro), 
+                       maximo = max(seriesHidro))
     if (seriesHidro$media != seriesHidro$minimo | seriesHidro$media != seriesHidro$maximo | seriesHidro$minimo != seriesHidro$maximo) {
       stop("Series hidro nao possuem mesmo horizonte cadastrado no arquivo confhd")
     }
     fimHistorico <- df.configuracaoHidro %>%
       dplyr::pull(fimHistorico) %>%
       max()
-    # resgata o valor de inicio de varredura da serie historica para contabilizar quantidade de series
+    # resgata o valor de inicio de varredura da serie historica para 
+    # contabilizar quantidade de series
     inicioSimulacaoHistorico <- leituraSeriesHistoricasSimulacaoFinal(pastaCaso) %>%
       magrittr::extract2("df.varredura") %>%
       dplyr::pull(anoInicio)
@@ -75,7 +82,9 @@ calculoMediaDpGenericoComPat <- function(pasta, nomeTabela, passo = NA, colunaIn
     dplyr::group_by(codREE, serie, ano) %>%
     dplyr::summarise(valorMedio = mean(dados)) %>%
     dplyr::group_by(codREE, ano) %>%
-    dplyr::summarise(media = round(mean(valorMedio), 2), dp = round(stats::sd(valorMedio) / (sqrt(seriesHidro - 1)), 2)) %>%
+    dplyr::summarise(media = round(mean(valorMedio), 2), 
+                     dp = round(stats::sd(valorMedio) / (sqrt(seriesHidro - 1)), 2)
+                     ) %>%
     dplyr::mutate(ano = as.character(ano))
 
   df.valoresMediosPeriodoPlanej <- lt.dados[[2]] %>%
@@ -86,7 +95,9 @@ calculoMediaDpGenericoComPat <- function(pasta, nomeTabela, passo = NA, colunaIn
     dplyr::group_by(codREE, serie) %>%
     dplyr::summarise(valorMedio = mean(dados)) %>%
     dplyr::group_by(codREE) %>%
-    dplyr::summarise(media = round(mean(valorMedio), 2), dp = round(stats::sd(valorMedio) / (sqrt(seriesHidro - 1)), 2)) %>%
+    dplyr::summarise(media = round(mean(valorMedio), 2), 
+                     dp = round(stats::sd(valorMedio) / (sqrt(seriesHidro - 1)), 2)
+                     ) %>%
     dplyr::mutate(ano = "Periodo de Planejamento")
 
   df.valoresMedios <- rbind(df.valoresMedios, df.valoresMediosPeriodoPlanej)

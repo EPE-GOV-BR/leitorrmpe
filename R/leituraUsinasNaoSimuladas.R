@@ -1,12 +1,15 @@
 #' Leitor dos dados das usinas nao simuladas por subsistema/submercado
 #'
-#' Faz a leitura do arquivo do NEWAVE com dados das usinas nao simuladas por subsistema/submercado (sistema.*)
-#' Usa como referencia para a leitura do arquivo as posicoes definidas no Manual do Usuario do
-#' Modelo Estrategico de geracao hidrotermica a subsistemas equivalentes do Projeto NEWAVE
+#' Faz a leitura do arquivo do NEWAVE com dados das usinas nao simuladas por 
+#' subsistema/submercado (sistema.*)
+#' Usa como referencia para a leitura do arquivo as posicoes definidas no Manual 
+#' do Usuario do Modelo Estrategico de geracao hidrotermica a subsistemas 
+#' equivalentes do Projeto NEWAVE
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos NEWAVE
 #'
-#' @return \code{df.UsinasNaoSimuladas} data frame com os dados das usinas nao simuladas
+#' @return \code{df.UsinasNaoSimuladas} data frame com os dados das usinas nao 
+#' simuladas
 #' \itemize{
 #' \item numero do subsistema/submercado (\code{$codSubsistema})
 #' \item numero do bloco de usinas nao simuladas (\code{$codBlocoUNS})
@@ -26,7 +29,8 @@ leituraUsinasNaoSimuladas <- function(pastaCaso) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }
 
-  # encontra o nome do arquivo de dados gerais de acordo com a ordem informada no manual do NEWAVE para o arquivos.dat
+  # encontra o nome do arquivo de dados gerais de acordo com a ordem informada 
+  # no manual do NEWAVE para o arquivos.dat
   arquivo <- leituraArquivos(pastaCaso) %>%
     dplyr::slice(2) %>%
     dplyr::pull(arquivo)
@@ -36,12 +40,15 @@ leituraUsinasNaoSimuladas <- function(pastaCaso) {
     stop(paste0(arquivo, " n\u00E3o encontrado em ", pastaCaso))
   }
   # le o arquivo sistema como um vetor de caracteres
-  dadosBrutos <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), locale = readr::locale(encoding = "latin1"))
+  dadosBrutos <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), 
+                                   locale = readr::locale(encoding = "latin1"))
   # encontra o inicio da informacao
   inicioUsinasNaoSimuladas <- which(stringr::str_detect(dadosBrutos, "GERACAO DE USINAS NAO SIMULADAS|GERACAO DE PEQUENAS USINAS"))
   # encontra o fim da informacao
   fimUsinasNaoSimuladas <- which(stringr::str_detect(dadosBrutos, " MAXIMO RECEBIMENTO"))
-  fimUsinasNaoSimuladas <- ifelse(length(fimUsinasNaoSimuladas) == 0, length(dadosBrutos), fimUsinasNaoSimuladas - 2)
+  fimUsinasNaoSimuladas <- ifelse(length(fimUsinasNaoSimuladas) == 0, 
+                                  length(dadosBrutos), 
+                                  fimUsinasNaoSimuladas - 2)
   # filtra somente a parte do vetor que tem os dados de interesse
   UsinasNaoSimuladasTXT <- dadosBrutos[(inicioUsinasNaoSimuladas + 3):(fimUsinasNaoSimuladas)]
 
@@ -88,7 +95,8 @@ leituraUsinasNaoSimuladas <- function(pastaCaso) {
   # renomeia colunas
   colnames(df.dados)[5:16] <- c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
 
-  # tranforma colunas em linhas, exceto as colunas "ano","codBlocoUNS","nomeBlocoUNS" e "codSubsistema".
+  # tranforma colunas em linhas, exceto as colunas "ano","codBlocoUNS","
+  # nomeBlocoUNS" e "codSubsistema".
   # o objetivo  criar duas colunas com as informacoes do "mes" e "geracaoUNS"
   # cria o campo anoMes (AAAAMM)
   # seleciona apenas os campos de interesse

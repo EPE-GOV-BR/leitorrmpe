@@ -1,7 +1,8 @@
 #' Leitor dos nomes dos arquivos do NEWAVE
 #'
-#' Procura o arquivo caso.dat (nos formatos Caso.dat, caso.dat e CASO.DAT) e faz a leitura do arquivo do CEPEL
-#' indicado nele (geralmente arquivos.dat) para recuperar a lista de arquivos de entrada e resultados utilizados pelo NEWAVE.
+#' Procura o arquivo caso.dat (nos formatos Caso.dat, caso.dat e CASO.DAT) e faz 
+#' a leitura do arquivo do CEPEL indicado nele (geralmente arquivos.dat) para 
+#' recuperar a lista de arquivos de entrada e resultados utilizados pelo NEWAVE.
 #'
 #' @param pastaCaso caracter com localizacao do arquivo caso.dat.
 #'
@@ -30,7 +31,8 @@ leituraArquivos <- function(pastaCaso) {
   if (length(caso) != 1) {
     stop("caso.dat n\u00E3o encontrado ou multiplos arquivos similares!")
   }
-  arquivo <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, caso, sep = "/")), locale = readr::locale(encoding = "latin1")) %>%
+  arquivo <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, caso, sep = "/")), 
+                               locale = readr::locale(encoding = "latin1")) %>%
     stringr::str_squish() %>%
     dplyr::first()
 

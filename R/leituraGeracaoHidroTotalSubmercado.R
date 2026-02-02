@@ -1,14 +1,18 @@
 #' Leitor de dados de geracao hidroeletrica total por Submercado
 #'
-#' Faz a leitura dos arquivos do NEWAVE com dados de geracao hidroeletrica total por submercado (ghtotmxxx.*) e
-#' recupera esses valores por ano, mes, patamar e serie.
+#' Faz a leitura dos arquivos do NEWAVE com dados de geracao hidroeletrica total 
+#' por submercado (ghtotmxxx.*) e recupera esses valores por ano, mes, patamar e 
+#' serie.
 #' Nao retorna os valores de total, media, desvio e etc. do arquivo de origem.
-#' Faz uma modificacao no numero da serie para garantir compatibilidade da sequencia. Esse "problema" acontece na numeracao das series historicas.
-#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de uma mesma sequencia para cada ano.
+#' Faz uma modificacao no numero da serie para garantir compatibilidade da 
+#' sequencia. Esse "problema" acontece na numeracao das series historicas.
+#' Assim troca-se o valor original para o campo serie (ano) pelo valor dentro de 
+#' uma mesma sequencia para cada ano.
 #'
-#' @param pasta localizacao dos arquivos do NEWAVE com dados de geracao hidroeletrica total
+#' @param pasta localizacao dos arquivos ghtotmxxx.* do NWLISTOP
 #'
-#' @return \code{df.geracaoHidroTotalSubmercado} data frame com os valores de geracao hidroeletrica total por submercado
+#' @return \code{df.geracaoHidroTotalSubmercado} data frame com os valores de 
+#' geracao hidroeletrica total por submercado
 #' \itemize{
 #' \item codigo do submercado (\code{$codSubmercado})
 #' \item serie (\code{$serie})
@@ -65,7 +69,8 @@ leituraGeracaoHidroTotalSubmercado <- function(pasta) {
     purrr::map_df(1:length(anos), function(andaAnos) {
       # posicoes e nomes das variaveis
       df.geracaoHidroAnual <- readr::read_fwf(I(dadosBrutos[inicioAnos[andaAnos]:(fimAnos[andaAnos] - 2)]),
-        col_positions = readr::fwf_positions( # vetor com as posicoes iniciais de cada campo
+        col_positions = readr::fwf_positions( 
+          # vetor com as posicoes iniciais de cada campo
           c(3, 10, 13, 22, 31, 40, 49, 58, 67, 76, 85, 94, 103, 112),
           # vetor com as posicoes finais de cada campo
           c(6, 11, 20, 29, 38, 47, 56, 65, 74, 83, 92, 101, 110, 119),
@@ -76,15 +81,16 @@ leituraGeracaoHidroTotalSubmercado <- function(pasta) {
         skip = 2
       )
 
-      # garante a sequencia correta na numeracao das series. Esse problema acontece na numeracao das series historicas. Assim troca-se o numero ou ano
-      # pelo valor dentro de uma sequencia para cada ano.
+      # garante a sequencia correta na numeracao das series. Esse problema 
+      # acontece na numeracao das series historicas. Assim troca-se o numero ou 
+      # ano pelo valor dentro de uma sequencia para cada ano.
       numeroPatamar <- df.geracaoHidroAnual %>%
         dplyr::distinct(patamar) %>%
         dplyr::pull() %>%
         max()
       series <- rep(1:(nrow(df.geracaoHidroAnual) / numeroPatamar), each = numeroPatamar)
       df.geracaoHidroAnual$serie <- series
-      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados (tidy)
+      # recupera dados, limpa e faz o "pivot" da tabela para dados normalizados
       df.geracaoHidroAnual <- df.geracaoHidroAnual %>%
         tidyr::pivot_longer(cols = c(-serie, -patamar), names_to = "mes", values_to = "geracao") %>%
         dplyr::mutate(ano = anos[andaAnos], codSubmercado = codSubmercado, anoMes = (ano * 100 + as.numeric(mes))) %>%

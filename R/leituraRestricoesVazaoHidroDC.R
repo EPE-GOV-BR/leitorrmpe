@@ -1,6 +1,7 @@
 #' Leitor de dados de restricoes de vazao defluente para UHEs do DECOMP
 #'
-#' Faz a leitura dos dados de restricao de vazao defluente do DECOMP no arquivo (dadger.*).
+#' Faz a leitura dos dados de restricao de vazao defluente do DECOMP no arquivo 
+#' (dadger.*).
 #' Utiliza as informacoes do BLOCO 36 do DADGER
 #'
 #' @param pastaCaso caracter com localizacao dos arquivos DECOMP
@@ -42,7 +43,8 @@ leituraRestricoesVazaoHidroDC <- function(pastaCaso) {
   }
 
   # le o arquivo dadger como um vetor de caracteres
-  dadger <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), locale = readr::locale(encoding = "latin1"))
+  dadger <- readr::read_lines(stringi::stri_enc_toutf8(paste(pastaCaso, arquivo, sep = "/")), 
+                              locale = readr::locale(encoding = "latin1"))
   # encontra a data inicial do estudo
   dataInicial <- dadger[grepl("^DT  ", dadger)]
   dataInicial <- as.Date(paste0(as.numeric(stringr::str_sub(dataInicial, 15, 18)), "-", as.numeric(stringr::str_sub(dataInicial, 10, 11)), "-", as.numeric(stringr::str_sub(dataInicial, 5, 7))))
@@ -66,7 +68,10 @@ leituraRestricoesVazaoHidroDC <- function(pastaCaso) {
     aux = 1
   )
   nEstagios <- max(df.HQ$periodoFim)
-  df.HQ <- dplyr::left_join(df.HQ, data.frame(aux = 1, estagio = 1:nEstagios), by = "aux", relationship = "many-to-many") %>%
+  df.HQ <- dplyr::left_join(df.HQ, 
+                            data.frame(aux = 1, estagio = 1:nEstagios), 
+                            by = "aux", 
+                            relationship = "many-to-many") %>%
     dplyr::filter(estagio <= periodoFim, estagio >= periodoIni) %>%
     dplyr::select(numRest, estagio)
 
@@ -82,8 +87,14 @@ leituraRestricoesVazaoHidroDC <- function(pastaCaso) {
   ) %>%
     dplyr::group_by(numRest) %>%
     dplyr::mutate(
-      estagioFim = ifelse(dplyr::n() == 1, nEstagios, ifelse(estagioIni == nEstagios, nEstagios, dplyr::lead(estagioIni) - 1)),
-      estagioFim = ifelse(estagioIni > estagioFim, estagioIni, estagioFim)
+      estagioFim = ifelse(dplyr::n() == 1, 
+                          nEstagios, 
+                          ifelse(estagioIni == nEstagios, 
+                                 nEstagios, 
+                                 dplyr::lead(estagioIni) - 1)),
+      estagioFim = ifelse(estagioIni > estagioFim, 
+                          estagioIni, 
+                          estagioFim)
     )
 
   df.CQ <- data.frame(
@@ -94,15 +105,27 @@ leituraRestricoesVazaoHidroDC <- function(pastaCaso) {
     tipoRest = as.character(stringr::str_sub(registrosCQ, 35, 38))
   )
 
-  df.RHQ <- dplyr::inner_join(df.HQ, df.LQ, by = "numRest", relationship = "many-to-many") %>%
-    dplyr::mutate(valeRest = ifelse(((estagio >= estagioIni) & (estagio <= estagioFim)), "sim", "nao")) %>%
+  df.RHQ <- dplyr::inner_join(df.HQ, 
+                              df.LQ, 
+                              by = "numRest", 
+                              relationship = "many-to-many") %>%
+    dplyr::mutate(valeRest = ifelse(((estagio >= estagioIni) & (estagio <= estagioFim)), 
+                                    "sim", 
+                                    "nao")) %>%
     dplyr::filter(valeRest != "nao") %>%
     dplyr::select(-c("valeRest", "estagioIni", "estagioFim")) %>%
-    dplyr::inner_join(dplyr::select(df.CQ, -estagio), by = "numRest", relationship = "many-to-many") %>%
+    dplyr::inner_join(dplyr::select(df.CQ, -estagio), 
+                      by = "numRest", 
+                      relationship = "many-to-many") %>%
     dplyr::select(numRest, codUsina, everything()) %>%
-    tidyr::pivot_longer(starts_with("limSup"), names_to = "patamarSup", values_to = "limSup") %>%
-    tidyr::pivot_longer(starts_with("limInf"), names_to = "patamarInf", values_to = "limInf") %>%
-    dplyr::mutate(patamarSup = as.numeric(stringr::str_sub(patamarSup, 9, 9)), patamarInf = as.numeric(stringr::str_sub(patamarInf, 9, 9))) %>%
+    tidyr::pivot_longer(starts_with("limSup"), 
+                        names_to = "patamarSup", 
+                        values_to = "limSup") %>%
+    tidyr::pivot_longer(starts_with("limInf"), 
+                        names_to = "patamarInf", 
+                        values_to = "limInf") %>%
+    dplyr::mutate(patamarSup = as.numeric(stringr::str_sub(patamarSup, 9, 9)), 
+                  patamarInf = as.numeric(stringr::str_sub(patamarInf, 9, 9))) %>%
     dplyr::filter(patamarSup == patamarInf) %>%
     dplyr::rename(patamar = patamarSup) %>%
     dplyr::select(-patamarInf)
