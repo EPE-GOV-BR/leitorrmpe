@@ -26,7 +26,6 @@
 #' }
 #'
 #' @export
-
 leituraVertimentoFioDaguaTurbinavelSubmercado <- function(pasta) {
   if (missing(pasta)) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
