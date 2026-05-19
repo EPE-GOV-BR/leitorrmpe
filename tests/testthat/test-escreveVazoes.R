@@ -8,6 +8,6 @@ test_that("escreveVazoes works", {
 test_that("escreveVazoes error", {
   caminho <- withr::local_tempdir()
   df.vazoes <- leituraVazoes("testData")
-  expect_error(escreveVazoes(NULL, paste0(caminho, "/vazoes.dat")))
-  expect_error(escreveVazoes(df.vazoes, NULL))
+  expect_error(escreveVazoes(arquivo = paste0(caminho, "/vazoes.dat")))
+  expect_error(escreveVazoes(df.vazoes = df.vazoes))
 })
