@@ -23,11 +23,14 @@ escreveHidr <- function(lt.dadosUsinasHidroeletricas, arquivo) {
     stop("favor indicar o nome do arquivo a ser criado")
   }
   
-  maiorCodUsina <- max(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$codUsina)
+  nRegistros <- lt.dadosUsinasHidroeletricas[["df.hidrInfo"]]$nRegistros
+  tamanhoRegistrosPoli <- lt.dadosUsinasHidroeletricas[["df.hidrInfo"]]$tamanhoRegistrosPoli
+  
+  nBytesRegistro <- if(tamanhoRegistrosPoli == 4) 792 else 832
   
   con <- file(arquivo, "wb", encoding = "UTF-8")
   i <- 1
-  for(cod in 1:maiorCodUsina){
+  for(cod in 1:nRegistros){
     if(cod %in% lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$codUsina){
       codUsina <- cod
   
@@ -45,16 +48,16 @@ escreveHidr <- function(lt.dadosUsinasHidroeletricas, arquivo) {
       writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$volumeDesvio[i], con, size = 4)
       writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$cotaMinima[i], con, size = 4)
       writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$cotaMaxima[i], con, size = 4)
-      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliCotaVolumeA0[i], con, size = 4)
-      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliCotaVolumeA1[i], con, size = 4)
-      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliCotaVolumeA2[i], con, size = 4)
-      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliCotaVolumeA3[i], con, size = 4)
-      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliCotaVolumeA4[i], con, size = 4)
-      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliAreaCotaA0[i], con, size = 4)
-      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliAreaCotaA1[i], con, size = 4)
-      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliAreaCotaA2[i], con, size = 4)
-      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliAreaCotaA3[i], con, size = 4)
-      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliAreaCotaA4[i], con, size = 4)
+      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliCotaVolumeA0[i], con, size = tamanhoRegistrosPoli)
+      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliCotaVolumeA1[i], con, size = tamanhoRegistrosPoli)
+      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliCotaVolumeA2[i], con, size = tamanhoRegistrosPoli)
+      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliCotaVolumeA3[i], con, size = tamanhoRegistrosPoli)
+      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliCotaVolumeA4[i], con, size = tamanhoRegistrosPoli)
+      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliAreaCotaA0[i], con, size = tamanhoRegistrosPoli)
+      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliAreaCotaA1[i], con, size = tamanhoRegistrosPoli)
+      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliAreaCotaA2[i], con, size = tamanhoRegistrosPoli)
+      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliAreaCotaA3[i], con, size = tamanhoRegistrosPoli)
+      writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$poliAreaCotaA4[i], con, size = tamanhoRegistrosPoli)
       writeBin(as.integer(lt.dadosUsinasHidroeletricas[["df.evaporacaoMensal"]][lt.dadosUsinasHidroeletricas[["df.evaporacaoMensal"]]$codUsina == codUsina, ]$evaporacao), con, size = 4)
       writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$numeroConjuntos[i], con, size = 4)
       numeroMaquinas <- lt.dadosUsinasHidroeletricas[["df.dadosConfiguracao"]][lt.dadosUsinasHidroeletricas[["df.dadosConfiguracao"]]$codUsina == codUsina, ]$numeroMaquinas
@@ -105,7 +108,7 @@ escreveHidr <- function(lt.dadosUsinasHidroeletricas, arquivo) {
       
       i <- i + 1
     }else{
-      writeBin(raw(792), con)
+      writeBin(raw(nBytesRegistro), con)
     }
   }
   
