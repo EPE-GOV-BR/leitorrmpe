@@ -44,7 +44,7 @@ leituraClassesTermicas <- function(pastaCaso) {
 
   # detecta o inicio e fim dos CVUs estrutural e conjuntural
   inicioClast <- which(stringr::str_detect(clast_dados, "NUM"))
-  fimClast <- which(stringr::str_detect(clast_dados, "9999$"))
+  fimClast <- which(stringr::str_detect(clast_dados, "^ 9999"))
 
   # se nao identificar o CVU conjuntural, define o "fimClast" como o final do arquivo
   if (identical(fimClast, integer(0))) {
