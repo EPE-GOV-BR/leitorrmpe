@@ -1,10 +1,10 @@
-test_that("calculoMediaDpCMO works", {
+test_that("calculoMediaDpGenericoSemPat works", {
   expect_snapshot_value(calculoMediaDpGenericoSemPat("testData", "earmf", 9, 7), style = "json2")
   expect_snapshot_value(calculoMediaDpGenericoSemPat("testData", "earmf", NA, 7), style = "json2")
   expect_snapshot_value(calculoMediaDpGenericoSemPat("testData", "earmf", , 7), style = "json2")
 })
 
-test_that("calculoMediaDpCMO error", {
+test_that("calculoMediaDpGenericoSemPat error", {
   expect_error(calculoMediaDpGenericoSemPat("emptyData", "earmf", 9, 7))
   expect_error(calculoMediaDpGenericoSemPat("testData", "earmf", 9))
   expect_error(calculoMediaDpGenericoSemPat("testData"))

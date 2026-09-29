@@ -1,4 +1,4 @@
-# calculoMediaDpCMO works
+# calculoMediaDpCmo works
 
     {
       "type": "list",

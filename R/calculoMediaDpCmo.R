@@ -18,11 +18,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' calculoMediaDpCMO("C:/PDE2030_Caso080")
+#' calculoMediaDpCmo("C:/PDE2030_Caso080")
 #' }
 #'
 #' @export
-calculoMediaDpCMO <- function(pasta) {
+calculoMediaDpCmo <- function(pasta) {
   if (missing(pasta)) {
     stop("favor indicar a pasta com os arquivos do NEWAVE")
   }

@@ -1,8 +1,8 @@
-test_that("calculoMediaDpCMO works", {
-  expect_snapshot_value(calculoMediaDpCMO("testData"), style = "json2")
+test_that("calculoMediaDpCmo works", {
+  expect_snapshot_value(calculoMediaDpCmo("testData"), style = "json2")
 })
 
-test_that("calculoMediaDpCMO error", {
-  expect_error(calculoMediaDpCMO("emptyData"))
-  expect_error(calculoMediaDpCMO())
+test_that("calculoMediaDpCmo error", {
+  expect_error(calculoMediaDpCmo("emptyData"))
+  expect_error(calculoMediaDpCmo())
 })
