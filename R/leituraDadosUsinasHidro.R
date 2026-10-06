@@ -88,6 +88,12 @@
 #' \item coeficiente A4 do polinomio de vazao de nivel de jusante (\code{$coeficienteA4})
 #' \item altura de referencia (\code{$alturaReferencia})
 #' }
+#' \item \code{df.hidrInfo} data frame com informacoes sobre a estrutuura 
+#' do arquivo hidr.dat
+#' \itemize{
+#' \item numero de registros lidos (\code{$nRegistros})
+#' \item tamanho dos registros de polinomio (\code{$tamanhoRegistrosPoli})
+#' }
 #' }
 #'
 #' @examples
@@ -98,7 +104,7 @@
 #' @export
 leituraDadosUsinasHidro <- function(pastaCaso) {
   arquivos <- list.files(pastaCaso)
-
+  
   # verifica existencia do arquivo hidr.dat
   if (!any(stringr::str_detect(arquivos, "(?i)hidr.dat"))) {
     stop(paste0("hidr.dat n\u00E3o encontrado em ", pastaCaso))
@@ -110,196 +116,204 @@ leituraDadosUsinasHidro <- function(pastaCaso) {
     }
   }
   
-  # verifica o tamanho do arquivo e o numero de postos e tamanho do registro
-  tamanhoArquivo <- suppressWarnings(file.info(paste(pastaCaso, hidr, sep = "/"))$size)
-  if(tamanhoArquivo < 255000){
-    nRegistros <- 320
-    tamanhoRegistrosPoli <- 4
-  }else if(tamanhoArquivo > 255000 & tamanhoArquivo < 465000){
-    nRegistros <- 320
-    tamanhoRegistrosPoli <- 8
-  }else if(tamanhoArquivo > 465000 & tamanhoArquivo < 490000){
-    nRegistros <- 600
-    tamanhoRegistrosPoli <- 4
-  }else{
-    nRegistros <- 600
-    tamanhoRegistrosPoli <- 8
+  leituraValida <- FALSE
+  
+  # tenta a leitura com tamanho de registro de polinomio 4 e 8 bytes
+  # caso nao consiga ler com 4 bytes, tenta com 8 bytes
+  for (tamanhoRegistrosPoli in c(4L, 8L)) {
+    
+    # abre conexao com o arquivo binario.
+    conexaoArquivoBinario <- file(paste(pastaCaso, hidr, sep = "/"), "rb")
+    
+    # data frames de saida
+    df.dadosUsinasHidroeletricas <- tidyr::tibble()
+    df.evaporacaoMensal <- tidyr::tibble()
+    df.dadosConfiguracao <- tidyr::tibble()
+    df.polinomiosVazaoNivelJusante <- tidyr::tibble()
+    df.hidrInfo <- tidyr::tibble()
+    
+    # sempre tenta ler ate 600 registros, depois verifica o numero real
+    for (andaUsina in 1:600) {
+      # precisa do try pois existem hidr que nao tem todos os registros
+      try({
+        # a cada leitura feita no arquivo binario, o ponteiro com a posicao sera 
+        # atualizado para posicao logo apos o fim dos dados lidos
+        nomeUsina <- readBin(conexaoArquivoBinario, raw(), 12) %>% rawToChar()
+        posto <- readBin(conexaoArquivoBinario, integer())
+        postoBDH <- readBin(conexaoArquivoBinario, raw(), 8) %>% rawToChar()
+        codSubsistema <- readBin(conexaoArquivoBinario, integer())
+        codEmpresa <- readBin(conexaoArquivoBinario, integer())
+        codUsinaJusante <- readBin(conexaoArquivoBinario, integer())
+        codUsinaDesvio <- readBin(conexaoArquivoBinario, integer())
+        volumeMinimo <- readBin(conexaoArquivoBinario, numeric(), size = 4)
+        volumeMaximo <- readBin(conexaoArquivoBinario, numeric(), size = 4)
+        volumeVertedouro <- readBin(conexaoArquivoBinario, numeric(), size = 4)
+        volumeDesvio <- readBin(conexaoArquivoBinario, numeric(), size = 4)
+        cotaMinima <- readBin(conexaoArquivoBinario, numeric(), size = 4)
+        cotaMaxima <- readBin(conexaoArquivoBinario, numeric(), size = 4)
+        poliCotaVolume <- readBin(conexaoArquivoBinario, numeric(), 5, size = tamanhoRegistrosPoli)
+        poliAreaCota <- readBin(conexaoArquivoBinario, numeric(), 5, size = tamanhoRegistrosPoli)
+        evaporacaoMensal <- readBin(conexaoArquivoBinario, integer(), 12)
+        numeroConjuntos <- readBin(conexaoArquivoBinario, integer())
+        numeroMaquinas <- readBin(conexaoArquivoBinario, integer(), 5)
+        potenciaUnitaria <- readBin(conexaoArquivoBinario, numeric(), 5, size = 4)
+        qht <- readBin(conexaoArquivoBinario, numeric(), 25, size = 4)
+        qhg <- readBin(conexaoArquivoBinario, numeric(), 25, size = 4)
+        PHmaq <- readBin(conexaoArquivoBinario, numeric(), 25, size = 4)
+        quedaEfetiva <- readBin(conexaoArquivoBinario, numeric(), 5, size = 4)
+        vazaoEfetiva <- readBin(conexaoArquivoBinario, integer(), 5)
+        produtibilidade <- readBin(conexaoArquivoBinario, numeric(), size = 4)
+        perda <- readBin(conexaoArquivoBinario, numeric(), size = 4) 
+        numPoliVazaoNivelJusante <- readBin(conexaoArquivoBinario, integer())
+        poliVazaoNivelJusante <- readBin(conexaoArquivoBinario, numeric(), 30, size = 4)
+        naref <- readBin(conexaoArquivoBinario, numeric(), 6, size = 4) 
+        canalFugaMedio <- readBin(conexaoArquivoBinario, numeric(), size = 4)
+        influenciaVertimentoCanalFuga <- readBin(conexaoArquivoBinario, integer())
+        fatorCargaMaximo <- readBin(conexaoArquivoBinario, numeric(), size = 4)
+        fatorCargaMinimo <- readBin(conexaoArquivoBinario, numeric(), size = 4)
+        vazaoMinimaHistorico <- readBin(conexaoArquivoBinario, integer())
+        numUnidadesBase <- readBin(conexaoArquivoBinario, integer())
+        tipoTurbina <- readBin(conexaoArquivoBinario, integer())
+        representacaoConjunto <- readBin(conexaoArquivoBinario, integer())
+        TEIF <- readBin(conexaoArquivoBinario, numeric(), size = 4) %>% round(3)
+        IP <- readBin(conexaoArquivoBinario, numeric(), size = 4) %>% round(3)
+        tipoPerda <- readBin(conexaoArquivoBinario, integer())
+        data <- readBin(conexaoArquivoBinario, raw(), 8) %>% rawToChar()
+        observacao <- readBin(conexaoArquivoBinario, raw(), 43) %>% rawToChar() %>% iconv(from = "latin1", to = "UTF-8")
+        volumeReferencia <- readBin(conexaoArquivoBinario, numeric(), size = 4)
+        regulacao <- readBin(conexaoArquivoBinario, raw(), 1) %>% rawToChar()
+        
+        # data frame auxiliar com dados de evaporacao mensal
+        df.evaporacaoMensalAux <- data.frame(
+          codUsina = andaUsina,
+          nomeUsina = stringr::str_trim(nomeUsina),
+          codSubsistema = codSubsistema,
+          mes = 1:12,
+          evaporacao = evaporacaoMensal,
+          stringsAsFactors = F
+        )
+        
+        # data frame auxiliar com dados de configuracao das usinas
+        df.dadosConfiguracaoAux <- data.frame(
+          codUsina = andaUsina,
+          nomeUsina = stringr::str_trim(nomeUsina),
+          codSubsistema = codSubsistema,
+          numeroConjuntos = numeroConjuntos,
+          conjunto = 1:5,
+          numeroMaquinas = numeroMaquinas,
+          potenciaUnitaria = potenciaUnitaria,
+          quedaEfetiva = quedaEfetiva,
+          vazaoEfetiva = vazaoEfetiva,
+          stringsAsFactors = F
+        )
+        
+        # data frame auxiliar com dados dos polinomios de vazao de nivel jusante
+        df.polinomiosVazaoNivelJusanteAux <- data.frame(
+          codUsina = andaUsina,
+          nomeUsina = stringr::str_trim(nomeUsina),
+          codSubsistema = codSubsistema,
+          numPoliVazaoNivelJusante = numPoliVazaoNivelJusante,
+          polinomio = 1:6,
+          coeficienteA0 = poliVazaoNivelJusante[seq(1, 30, 5)],
+          coeficienteA1 = poliVazaoNivelJusante[seq(2, 30, 5)],
+          coeficienteA2 = poliVazaoNivelJusante[seq(3, 30, 5)],
+          coeficienteA3 = poliVazaoNivelJusante[seq(4, 30, 5)],
+          coeficienteA4 = poliVazaoNivelJusante[seq(5, 30, 5)],
+          alturaReferencia = naref,
+          stringsAsFactors = F
+        )
+        
+        # data frame auxiliar com dados gerais das usinas hidroeletricas
+        df.dadosUsinasHidroeletricasAux <- data.frame(
+          codUsina = andaUsina,
+          nomeUsina = stringr::str_trim(nomeUsina),
+          posto = posto,
+          postoBDH = postoBDH,
+          codSubsistema = codSubsistema,
+          codEmpresa = codEmpresa,
+          codUsinaJusante = codUsinaJusante,
+          codUsinaDesvio = codUsinaDesvio,
+          volumeMinimo = volumeMinimo,
+          volumeMaximo = volumeMaximo,
+          volumeVertedouro = volumeVertedouro,
+          volumeDesvio = volumeDesvio,
+          volumeReferencia = volumeReferencia,
+          cotaMinima = cotaMinima,
+          cotaMaxima = cotaMaxima,
+          poliCotaVolumeA0 = poliCotaVolume[1],
+          poliCotaVolumeA1 = poliCotaVolume[2],
+          poliCotaVolumeA2 = poliCotaVolume[3],
+          poliCotaVolumeA3 = poliCotaVolume[4],
+          poliCotaVolumeA4 = poliCotaVolume[5],
+          poliAreaCotaA0 = poliAreaCota[1],
+          poliAreaCotaA1 = poliAreaCota[2],
+          poliAreaCotaA2 = poliAreaCota[3],
+          poliAreaCotaA3 = poliAreaCota[4],
+          poliAreaCotaA4 = poliAreaCota[5],
+          numeroConjuntos = numeroConjuntos,
+          produtibilidade = produtibilidade,
+          perda = perda,
+          numPoliVazaoNivelJusante = numPoliVazaoNivelJusante,
+          canalFugaMedio = canalFugaMedio,
+          influenciaVertimentoCanalFuga = influenciaVertimentoCanalFuga,
+          vazaoMinimaHistorico = vazaoMinimaHistorico,
+          numUnidadesBase = numUnidadesBase,
+          tipoTurbina = tipoTurbina,
+          representacaoConjunto = representacaoConjunto,
+          TEIF = TEIF,
+          IP = IP,
+          tipoPerda = tipoPerda,
+          data = data,
+          observacao = observacao,
+          regulacao = regulacao,
+          stringsAsFactors = F
+        )
+        
+        # junta data frames
+        df.dadosUsinasHidroeletricas <- rbind(df.dadosUsinasHidroeletricas, df.dadosUsinasHidroeletricasAux)
+        df.evaporacaoMensal <- rbind(df.evaporacaoMensal, df.evaporacaoMensalAux)
+        df.dadosConfiguracao <- rbind(df.dadosConfiguracao, df.dadosConfiguracaoAux)
+        df.polinomiosVazaoNivelJusante <- rbind(df.polinomiosVazaoNivelJusante, df.polinomiosVazaoNivelJusanteAux)
+        
+        # captura saída para nRegistros = 320
+        if (andaUsina == 320){
+          df.dadosUsinasHidroeletricas320reg <- df.dadosUsinasHidroeletricas
+        }
+        
+      }, silent = TRUE)
+    }
+    
+    # fecha conexao com arquivo binario
+    close(conexaoArquivoBinario)
+    
+    # limpa cadastros inexistentes
+    df.dadosUsinasHidroeletricas <- dplyr::filter(df.dadosUsinasHidroeletricas, nomeUsina != "")
+    df.evaporacaoMensal <- dplyr::filter(df.evaporacaoMensal, nomeUsina != "")
+    df.dadosConfiguracao <- dplyr::filter(df.dadosConfiguracao, nomeUsina != "", conjunto <= numeroConjuntos) %>%
+      dplyr::select(-numeroConjuntos)
+    df.polinomiosVazaoNivelJusante <- dplyr::filter(df.polinomiosVazaoNivelJusante, nomeUsina != "", polinomio <= numPoliVazaoNivelJusante) %>%
+      dplyr::select(-numPoliVazaoNivelJusante)
+
+    if(!any(stringr::str_detect(df.dadosUsinasHidroeletricas$nomeUsina, pattern = "[\\p{Cc}\\p{Cs}\uFFFD]"))){
+      if(nrow(df.dadosUsinasHidroeletricas) == 
+         nrow(dplyr::filter(df.dadosUsinasHidroeletricas320reg, nomeUsina != ""))){
+        nRegistros <- 320
+      }else{
+        nRegistros <- 600
+      }
+  
+      break
+    }
   }
-
-  # abre conexao com o arquivo binario.
-  conexaoArquivoBinario <- file(paste(pastaCaso, hidr, sep = "/"), "rb")
-
-  # data frames de saida
-  df.dadosUsinasHidroeletricas <- tidyr::tibble()
-  df.evaporacaoMensal <- tidyr::tibble()
-  df.dadosConfiguracao <- tidyr::tibble()
-  df.polinomiosVazaoNivelJusante <- tidyr::tibble()
-  df.hidrInfo <- data.frame(nRegistros = nRegistros,
-                            tamanhoRegistrosPoli = tamanhoRegistrosPoli)
-
-  for (andaUsina in 1:nRegistros) {
-    # precisa do try pois existem hidr que nao tem todos os registros
-    try({
-      # a cada leitura feita no arquivo binario, o ponteiro com a posicao sera 
-      # atualizado para posicao logo apos o fim dos dados lidos
-      nomeUsina <- readBin(conexaoArquivoBinario, raw(), 12) %>% rawToChar()
-      posto <- readBin(conexaoArquivoBinario, integer())
-      postoBDH <- readBin(conexaoArquivoBinario, raw(), 8) %>% rawToChar()
-      codSubsistema <- readBin(conexaoArquivoBinario, integer())
-      codEmpresa <- readBin(conexaoArquivoBinario, integer())
-      codUsinaJusante <- readBin(conexaoArquivoBinario, integer())
-      codUsinaDesvio <- readBin(conexaoArquivoBinario, integer())
-      volumeMinimo <- readBin(conexaoArquivoBinario, numeric(), size = 4)
-      volumeMaximo <- readBin(conexaoArquivoBinario, numeric(), size = 4)
-      volumeVertedouro <- readBin(conexaoArquivoBinario, numeric(), size = 4)
-      volumeDesvio <- readBin(conexaoArquivoBinario, numeric(), size = 4)
-      cotaMinima <- readBin(conexaoArquivoBinario, numeric(), size = 4)
-      cotaMaxima <- readBin(conexaoArquivoBinario, numeric(), size = 4)
-      poliCotaVolume <- readBin(conexaoArquivoBinario, numeric(), 5, size = tamanhoRegistrosPoli)
-      poliAreaCota <- readBin(conexaoArquivoBinario, numeric(), 5, size = tamanhoRegistrosPoli)
-      evaporacaoMensal <- readBin(conexaoArquivoBinario, integer(), 12)
-      numeroConjuntos <- readBin(conexaoArquivoBinario, integer())
-      numeroMaquinas <- readBin(conexaoArquivoBinario, integer(), 5)
-      potenciaUnitaria <- readBin(conexaoArquivoBinario, numeric(), 5, size = 4)
-      qht <- readBin(conexaoArquivoBinario, numeric(), 25, size = 4)
-      qhg <- readBin(conexaoArquivoBinario, numeric(), 25, size = 4)
-      PHmaq <- readBin(conexaoArquivoBinario, numeric(), 25, size = 4)
-      quedaEfetiva <- readBin(conexaoArquivoBinario, numeric(), 5, size = 4)
-      vazaoEfetiva <- readBin(conexaoArquivoBinario, integer(), 5)
-      produtibilidade <- readBin(conexaoArquivoBinario, numeric(), size = 4)
-      perda <- readBin(conexaoArquivoBinario, numeric(), size = 4) 
-      numPoliVazaoNivelJusante <- readBin(conexaoArquivoBinario, integer())
-      poliVazaoNivelJusante <- readBin(conexaoArquivoBinario, numeric(), 30, size = 4)
-      naref <- readBin(conexaoArquivoBinario, numeric(), 6, size = 4) 
-      canalFugaMedio <- readBin(conexaoArquivoBinario, numeric(), size = 4)
-      influenciaVertimentoCanalFuga <- readBin(conexaoArquivoBinario, integer())
-      fatorCargaMaximo <- readBin(conexaoArquivoBinario, numeric(), size = 4)
-      fatorCargaMinimo <- readBin(conexaoArquivoBinario, numeric(), size = 4)
-      vazaoMinimaHistorico <- readBin(conexaoArquivoBinario, integer())
-      numUnidadesBase <- readBin(conexaoArquivoBinario, integer())
-      tipoTurbina <- readBin(conexaoArquivoBinario, integer())
-      representacaoConjunto <- readBin(conexaoArquivoBinario, integer())
-      TEIF <- readBin(conexaoArquivoBinario, numeric(), size = 4) %>% round(3)
-      IP <- readBin(conexaoArquivoBinario, numeric(), size = 4) %>% round(3)
-      tipoPerda <- readBin(conexaoArquivoBinario, integer())
-      data <- readBin(conexaoArquivoBinario, raw(), 8) %>% rawToChar()
-      observacao <- readBin(conexaoArquivoBinario, raw(), 43) %>% rawToChar()
-      volumeReferencia <- readBin(conexaoArquivoBinario, numeric(), size = 4)
-      regulacao <- readBin(conexaoArquivoBinario, raw(), 1) %>% rawToChar()
   
-      # data frame auxiliar com dados de evaporacao mensal
-      df.evaporacaoMensalAux <- data.frame(
-        codUsina = andaUsina,
-        nomeUsina = stringr::str_trim(nomeUsina),
-        codSubsistema = codSubsistema,
-        mes = 1:12,
-        evaporacao = evaporacaoMensal,
-        stringsAsFactors = F
-      )
-  
-      # data frame auxiliar com dados de configuracao das usinas
-      df.dadosConfiguracaoAux <- data.frame(
-        codUsina = andaUsina,
-        nomeUsina = stringr::str_trim(nomeUsina),
-        codSubsistema = codSubsistema,
-        numeroConjuntos = numeroConjuntos,
-        conjunto = 1:5,
-        numeroMaquinas = numeroMaquinas,
-        potenciaUnitaria = potenciaUnitaria,
-        quedaEfetiva = quedaEfetiva,
-        vazaoEfetiva = vazaoEfetiva,
-        stringsAsFactors = F
-      )
-  
-      # data frame auxiliar com dados dos polinomios de vazao de nivel jusante
-      df.polinomiosVazaoNivelJusanteAux <- data.frame(
-        codUsina = andaUsina,
-        nomeUsina = stringr::str_trim(nomeUsina),
-        codSubsistema = codSubsistema,
-        numPoliVazaoNivelJusante = numPoliVazaoNivelJusante,
-        polinomio = 1:6,
-        coeficienteA0 = poliVazaoNivelJusante[seq(1, 30, 5)],
-        coeficienteA1 = poliVazaoNivelJusante[seq(2, 30, 5)],
-        coeficienteA2 = poliVazaoNivelJusante[seq(3, 30, 5)],
-        coeficienteA3 = poliVazaoNivelJusante[seq(4, 30, 5)],
-        coeficienteA4 = poliVazaoNivelJusante[seq(5, 30, 5)],
-        alturaReferencia = naref,
-        stringsAsFactors = F
-      )
-  
-      # data frame auxiliar com dados gerais das usinas hidroeletricas
-      df.dadosUsinasHidroeletricasAux <- data.frame(
-        codUsina = andaUsina,
-        nomeUsina = stringr::str_trim(nomeUsina),
-        posto = posto,
-        postoBDH = postoBDH,
-        codSubsistema = codSubsistema,
-        codEmpresa = codEmpresa,
-        codUsinaJusante = codUsinaJusante,
-        codUsinaDesvio = codUsinaDesvio,
-        volumeMinimo = volumeMinimo,
-        volumeMaximo = volumeMaximo,
-        volumeVertedouro = volumeVertedouro,
-        volumeDesvio = volumeDesvio,
-        volumeReferencia = volumeReferencia,
-        cotaMinima = cotaMinima,
-        cotaMaxima = cotaMaxima,
-        poliCotaVolumeA0 = poliCotaVolume[1],
-        poliCotaVolumeA1 = poliCotaVolume[2],
-        poliCotaVolumeA2 = poliCotaVolume[3],
-        poliCotaVolumeA3 = poliCotaVolume[4],
-        poliCotaVolumeA4 = poliCotaVolume[5],
-        poliAreaCotaA0 = poliAreaCota[1],
-        poliAreaCotaA1 = poliAreaCota[2],
-        poliAreaCotaA2 = poliAreaCota[3],
-        poliAreaCotaA3 = poliAreaCota[4],
-        poliAreaCotaA4 = poliAreaCota[5],
-        numeroConjuntos = numeroConjuntos,
-        produtibilidade = produtibilidade,
-        perda = perda,
-        numPoliVazaoNivelJusante = numPoliVazaoNivelJusante,
-        canalFugaMedio = canalFugaMedio,
-        influenciaVertimentoCanalFuga = influenciaVertimentoCanalFuga,
-        vazaoMinimaHistorico = vazaoMinimaHistorico,
-        numUnidadesBase = numUnidadesBase,
-        tipoTurbina = tipoTurbina,
-        representacaoConjunto = representacaoConjunto,
-        TEIF = TEIF,
-        IP = IP,
-        tipoPerda = tipoPerda,
-        data = data,
-        observacao = observacao,
-        regulacao = regulacao,
-        stringsAsFactors = F
-      )
-  
-      # junta data frames
-      df.dadosUsinasHidroeletricas <- rbind(df.dadosUsinasHidroeletricas, df.dadosUsinasHidroeletricasAux)
-      df.evaporacaoMensal <- rbind(df.evaporacaoMensal, df.evaporacaoMensalAux)
-      df.dadosConfiguracao <- rbind(df.dadosConfiguracao, df.dadosConfiguracaoAux)
-      df.polinomiosVazaoNivelJusante <- rbind(df.polinomiosVazaoNivelJusante, df.polinomiosVazaoNivelJusanteAux)
-    }, silent = TRUE)
-  }
-
-  # fecha conexao com arquivo binario
-  close(conexaoArquivoBinario)
-
-  # limpa cadastros inexistentes
-  df.dadosUsinasHidroeletricas <- dplyr::filter(df.dadosUsinasHidroeletricas, nomeUsina != "")
-  df.evaporacaoMensal <- dplyr::filter(df.evaporacaoMensal, nomeUsina != "")
-  df.dadosConfiguracao <- dplyr::filter(df.dadosConfiguracao, nomeUsina != "", conjunto <= numeroConjuntos) %>%
-    dplyr::select(-numeroConjuntos)
-  df.polinomiosVazaoNivelJusante <- dplyr::filter(df.polinomiosVazaoNivelJusante, nomeUsina != "", polinomio <= numPoliVazaoNivelJusante) %>%
-    dplyr::select(-numPoliVazaoNivelJusante)
-
   # cria lista com todos os data frames criados
   lt.dadosUsinasHidroeletricas <- list(
     df.dadosUsinasHidroeletricas = df.dadosUsinasHidroeletricas,
     df.evaporacaoMensal = df.evaporacaoMensal,
     df.dadosConfiguracao = df.dadosConfiguracao,
     df.polinomiosVazaoNivelJusante = df.polinomiosVazaoNivelJusante,
-    df.hidrInfo = df.hidrInfo
+    df.hidrInfo = data.frame(nRegistros = nRegistros, tamanhoRegistrosPoli = tamanhoRegistrosPoli)
   )
-
+  
   return(lt.dadosUsinasHidroeletricas)
 }

@@ -90,6 +90,12 @@ polinomios de vazao de nivel de jusante por usina
 \item coeficiente A4 do polinomio de vazao de nivel de jusante (\code{$coeficienteA4})
 \item altura de referencia (\code{$alturaReferencia})
 }
+\item \code{df.hidrInfo} data frame com informacoes sobre a estrutuura 
+do arquivo hidr.dat
+\itemize{
+\item numero de registros lidos (\code{$nRegistros})
+\item tamanho dos registros de polinomio (\code{$tamanhoRegistrosPoli})
+}
 }
 }
 \description{
