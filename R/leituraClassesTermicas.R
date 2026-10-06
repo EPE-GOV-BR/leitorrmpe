@@ -48,7 +48,7 @@ leituraClassesTermicas <- function(pastaCaso) {
 
   # se nao identificar o CVU conjuntural, define o "fimClast" como o final do arquivo
   if (identical(fimClast, integer(0))) {
-    fimClast <- end(clast_dados)[1] + 1
+    fimClast <- stats::end(clast_dados)[1] + 1
   }
 
   # seleciona o conteudo do texto contendo as informacoes do CVU estrutural
@@ -94,7 +94,7 @@ leituraClassesTermicas <- function(pastaCaso) {
   # deve alterar o valor do CVU das usinas para os dois primeiros meses de simulacao
   if (length(inicioClast) > 1) {
     # seleciona o conteudo do texto contendo as informacoes do CVU conjuntural
-    clast_conjuntural <- clast_dados[(inicioClast[2] + 2):(end(clast_dados)[1])]
+    clast_conjuntural <- clast_dados[(inicioClast[2] + 2):(stats::end(clast_dados)[1])]
 
     # cria a estrutura de dados contendo as infromacoes iniciais do CVU conjuntural
     df.ClassesTermicasConj <- data.frame(

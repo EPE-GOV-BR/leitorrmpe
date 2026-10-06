@@ -49,7 +49,7 @@ leituraDadosPatamarUsinasNaoSimuladas <- function(pastaCaso) {
 
   if (length(inicioPatamarUsina) != 0) {
     # encontra o fim da informacao
-    fimPatamarUsina <- if (tail(dadosPatamarUsinas, n = 1) == "9999") {
+    fimPatamarUsina <- if (utils::tail(dadosPatamarUsinas, n = 1) == "9999") {
       length(dadosPatamarUsinas) - 1
     } else {
       length(dadosPatamarUsinas)

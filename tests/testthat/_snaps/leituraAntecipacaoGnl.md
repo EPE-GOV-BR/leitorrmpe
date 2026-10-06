@@ -3,38 +3,23 @@
     {
       "type": "list",
       "attributes": {
-        "class": {
-          "type": "character",
-          "attributes": {},
-          "value": ["grouped_df", "tbl_df", "tbl", "data.frame"]
-        },
-        "row.names": {
-          "type": "integer",
-          "attributes": {},
-          "value": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        },
-        "names": {
-          "type": "character",
-          "attributes": {},
-          "value": ["codUsina", "lag", "patamar", "despacho"]
-        },
         "groups": {
           "type": "list",
           "attributes": {
-            "class": {
+            "names": {
               "type": "character",
               "attributes": {},
-              "value": ["tbl_df", "tbl", "data.frame"]
+              "value": ["codUsina", ".rows"]
             },
             "row.names": {
               "type": "integer",
               "attributes": {},
               "value": [1, 2, 3]
             },
-            "names": {
+            "class": {
               "type": "character",
               "attributes": {},
-              "value": ["codUsina", ".rows"]
+              "value": ["tbl_df", "tbl", "data.frame"]
             },
             ".drop": {
               "type": "logical",
@@ -81,6 +66,21 @@
               ]
             }
           ]
+        },
+        "names": {
+          "type": "character",
+          "attributes": {},
+          "value": ["codUsina", "lagGnl", "patamar", "despacho"]
+        },
+        "row.names": {
+          "type": "integer",
+          "attributes": {},
+          "value": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        },
+        "class": {
+          "type": "character",
+          "attributes": {},
+          "value": ["grouped_df", "tbl_df", "tbl", "data.frame"]
         }
       },
       "value": [

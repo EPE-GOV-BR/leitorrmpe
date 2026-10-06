@@ -47,7 +47,7 @@ leituraDeficitSistema <- function(pastaCaso) {
   # encontra o inicio da informacao
   inicioSistema <- which(stringr::str_detect(sistema, "CUSTO DO DEFICIT"))
   # encontra o fim da informacao
-  fimSistema <- which(stringr::str_detect(sistema, "999")) %>% head(1)
+  fimSistema <- which(stringr::str_detect(sistema, "999")) %>% utils::head(1)
 
   # filtra somente a parte do vetor que tem os dados de interesse
   sistemaTXT <- sistema[(inicioSistema + 3):(fimSistema - 1)]

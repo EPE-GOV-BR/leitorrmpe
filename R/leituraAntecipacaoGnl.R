@@ -68,8 +68,8 @@ leituraAntecipacaoGnl <- function(pastaCaso) {
   # se não existirem dados, retorna o df vazio
   if (nrow(df.antecipacaoDespachoGnl) > 0) {
     df.antecipacaoDespachoGnl <- df.antecipacaoDespachoGnl %>%
-      dplyr::mutate(lag = 1:dplyr::n()) %>%
-      dplyr::select(codUsina, lag, dplyr::everything()) %>%
+      dplyr::mutate(lagGnl = 1:dplyr::n()) %>%
+      dplyr::select(codUsina, lagGnl, dplyr::everything()) %>%
       tidyr::pivot_longer(3:(2 + nPat), 
                           names_to = "patamar", 
                           values_to = "despacho") %>%
