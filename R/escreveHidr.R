@@ -28,6 +28,32 @@ escreveHidr <- function(lt.dadosUsinasHidroeletricas, arquivo) {
   
   nBytesRegistro <- if(tamanhoRegistrosPoli == 4) 792 else 832
   
+  # garante que as colunas inteiras estejam no formato inteiro
+  lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]] <- 
+    lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]] %>%
+    dplyr::mutate(across(c(posto, 
+                           codSubsistema, 
+                           codEmpresa,
+                           codUsinaJusante,
+                           codUsinaDesvio,
+                           numeroConjuntos,
+                           numPoliVazaoNivelJusante,
+                           influenciaVertimentoCanalFuga,
+                           vazaoMinimaHistorico,
+                           numUnidadesBase,
+                           tipoTurbina,
+                           representacaoConjunto,
+                           tipoPerda), as.integer))
+  
+  lt.dadosUsinasHidroeletricas[["df.evaporacaoMensal"]]$evaporacao <- 
+    as.integer(lt.dadosUsinasHidroeletricas[["df.evaporacaoMensal"]]$evaporacao)
+  
+  lt.dadosUsinasHidroeletricas[["df.dadosConfiguracao"]] <- 
+    lt.dadosUsinasHidroeletricas[["df.dadosConfiguracao"]] %>%
+    dplyr::mutate(across(c(conjunto,
+                           numeroMaquinas,
+                           vazaoEfetiva), as.integer))
+  
   con <- file(arquivo, "wb", encoding = "UTF-8")
   i <- 1
   for(cod in 1:nRegistros){

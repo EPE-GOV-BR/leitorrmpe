@@ -103,20 +103,18 @@
 #'
 #' @export
 leituraDadosUsinasHidro <- function(pastaCaso) {
-  arquivos <- list.files(pastaCaso)
+  arquivos <- list.files(pastaCaso, pattern = "(?i)hidr.dat")
   
   # verifica existencia do arquivo hidr.dat
-  if (!any(stringr::str_detect(arquivos, "(?i)hidr.dat"))) {
+  if (length(arquivos) == 0) {
     stop(paste0("hidr.dat n\u00E3o encontrado em ", pastaCaso))
   } else {
-    if (sum(stringr::str_detect(arquivos, "(?i)hidr.dat")) > 1) {
+    if (length(arquivos) > 1) {
       stop(paste0("mais de um arquivo hidr.dat encontrado em ", pastaCaso))
     } else {
-      hidr <- arquivos[stringr::str_detect(arquivos, "(?i)hidr.dat")]
+      hidr <- arquivos
     }
   }
-  
-  leituraValida <- FALSE
   
   # tenta a leitura com tamanho de registro de polinomio 4 e 8 bytes
   # caso nao consiga ler com 4 bytes, tenta com 8 bytes
