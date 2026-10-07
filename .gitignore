@@ -4,4 +4,4 @@
 .Ruserdata
 .Rprofile
 .positai
-.Rmd
+*.Rmd
