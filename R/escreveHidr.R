@@ -128,7 +128,7 @@ escreveHidr <- function(lt.dadosUsinasHidroeletricas, arquivo) {
       writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$IP[i], con, size = 4)
       writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$tipoPerda[i], con, size = 4)
       writeChar(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$data[i], con, nchar = 8, eos = NULL)
-      writeChar(stringr::str_pad(iconv(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$observacao[i], from="latin1", to="ASCII//TRANSLIT"), width = 43, side = "right", pad = " "), con, eos = NULL)
+      writeChar(stringr::str_pad(iconv(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$observacao[i], from="UTF-8", to="ASCII//TRANSLIT"), width = 43, side = "right", pad = " "), con, eos = NULL)
       writeBin(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$volumeReferencia[i], con, size = 4)
       writeChar(lt.dadosUsinasHidroeletricas[["df.dadosUsinasHidroeletricas"]]$regulacao[i], con, eos = NULL)
       

@@ -274,7 +274,8 @@ leituraDadosUsinasHidro <- function(pastaCaso) {
         df.polinomiosVazaoNivelJusante <- rbind(df.polinomiosVazaoNivelJusante, df.polinomiosVazaoNivelJusanteAux)
         
         # captura saída para nRegistros = 320
-        if (andaUsina == 320){
+        # hidr antigos da EPE podem ter menos de 320 registros
+        if (andaUsina <= 320){
           df.dadosUsinasHidroeletricas320reg <- df.dadosUsinasHidroeletricas
         }
         
@@ -291,8 +292,12 @@ leituraDadosUsinasHidro <- function(pastaCaso) {
       dplyr::select(-numeroConjuntos)
     df.polinomiosVazaoNivelJusante <- dplyr::filter(df.polinomiosVazaoNivelJusante, nomeUsina != "", polinomio <= numPoliVazaoNivelJusante) %>%
       dplyr::select(-numPoliVazaoNivelJusante)
-
-    if(!any(stringr::str_detect(df.dadosUsinasHidroeletricas$nomeUsina, pattern = "[\\p{Cc}\\p{Cs}\uFFFD]"))){
+    
+    # verifica algumas condicoes para definir se a leitura foi bem sucedida
+    # se nao for, tenta ler com tamanho de registro de polinomio 8 bytes
+    if(!any(stringr::str_detect(df.dadosUsinasHidroeletricas$nomeUsina, pattern = "[\\p{Cc}\\p{Cs}\uFFFD]")) && 
+       all(stringr::str_length(df.dadosUsinasHidroeletricas$nomeUsina) <= 12) &&
+       all(stringr::str_detect(df.dadosUsinasHidroeletricas$nomeUsina, pattern = "(?:\\p{L}.*){3}"))){
       if(nrow(df.dadosUsinasHidroeletricas) == 
          nrow(dplyr::filter(df.dadosUsinasHidroeletricas320reg, nomeUsina != ""))){
         nRegistros <- 320
