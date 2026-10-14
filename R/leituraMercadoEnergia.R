@@ -143,69 +143,72 @@ leituraMercadoEnergia <- function(pastaCaso) {
       fimCAdic <- which(stringr::str_detect(dadosCAdic, "999"))
       # filtra somente a parte do vetor que tem os dados de interesse
       dadosCAdicTXT <- dadosCAdic[(3):(fimCAdic - 1)]
-
-      # filtra linhas de POS
-      filtro <- readr::read_fwf(I(dadosCAdicTXT),
-        col_positions = readr::fwf_positions(1, 4, "classe"),
-        col_types = "c", skip_empty_rows = F
-      ) %>%
-        tidyr::fill(everything()) %>%
-        dplyr::pull() %>%
-        stringr::str_detect("^[0-9]+")
-      dadosCAdicTXT <- dadosCAdicTXT[filtro]
-
-      # lendo codSubsistema
-      filtroSub <- readr::read_fwf(I(dadosCAdicTXT),
-        col_positions = readr::fwf_positions(1, 4, "classe"),
-        col_types = "c", skip_empty_rows = F
-      ) %>%
-        tidyr::fill(everything()) %>%
-        dplyr::pull() %>%
-        as.numeric()
-
-      anos <- filtroSub[!filtroSub %in% leituraSubsistema]
-      quantosAnos <- anos[anos %in% (anos[duplicated(anos)] %>% unique())] %>%
-        unique() %>%
-        length()
-      codSubsistema <- filtroSub[filtroSub %in% leituraSubsistema]
-      filtroSub <- filtroSub %in% leituraSubsistema
-      dadosCAdicTXT <- dadosCAdicTXT[!filtroSub]
-
-      # dataframe cAdic
-      df.cAdic <- readr::read_fwf(I(dadosCAdicTXT),
-        col_positions = readr::fwf_positions( 
-          # vetor com as posicoes iniciais de cada campo
-          c(1, 6, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96),
-          # vetor com as posicoes finais de cada campo
-          c(4, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86, 94, 102),
-          # nome colunas
-          c("ano", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
-        ),
-        col_types = "idddddddddddd"
-      )
-
-      # inclusao do codSubsistema
-      codSubsistema <- rep(codSubsistema, each = quantosAnos) %>% as.numeric()
-      df.cAdic <- df.cAdic %>%
-        dplyr::mutate(codSubsistema = codSubsistema)
-
-      # tranforma colunas em linhas, exceto as colunas "ano" e "codSubsistema".
-      # o objetivo  criar duas colunas com as informacoes do "mes" e "cAdic"
-      # cria o campo anoMes (AAAAMM)
-      # seleciona apenas os campos de interesse
-      df.cAdic <- tidyr::pivot_longer(df.cAdic, -c("ano", "codSubsistema"),
-        names_to = "mes",
-        values_to = "energiaMercado"
-      ) %>%
-        dplyr::mutate(anoMes = as.numeric(ano) * 100 + as.numeric(mes)) %>%
-        dplyr::select(codSubsistema, anoMes, energiaMercado) %>%
-        dplyr::filter(!is.na(energiaMercado))
-
-      # junta o mercado e a carga adicional
-      df.mercadoEnergia <- rbind(df.mercadoEnergia, df.cAdic) %>%
-        dplyr::group_by(codSubsistema, anoMes) %>%
-        dplyr::summarise(energiaMercado = sum(energiaMercado)) %>%
-        dplyr::ungroup()
+      
+      # verifica se tem mais linhas que o numero de anos de estudo
+      if (length(dadosCAdicTXT) > quantosAnos) {
+        # filtra linhas de POS
+        filtro <- readr::read_fwf(I(dadosCAdicTXT),
+          col_positions = readr::fwf_positions(1, 4, "classe"),
+          col_types = "c", skip_empty_rows = F
+        ) %>%
+          tidyr::fill(everything()) %>%
+          dplyr::pull() %>%
+          stringr::str_detect("^[0-9]+")
+        dadosCAdicTXT <- dadosCAdicTXT[filtro]
+  
+        # lendo codSubsistema
+        filtroSub <- readr::read_fwf(I(dadosCAdicTXT),
+          col_positions = readr::fwf_positions(1, 4, "classe"),
+          col_types = "c", skip_empty_rows = F
+        ) %>%
+          tidyr::fill(everything()) %>%
+          dplyr::pull() %>%
+          as.numeric()
+  
+        anos <- filtroSub[!filtroSub %in% leituraSubsistema]
+        quantosAnos <- anos[anos %in% (anos[duplicated(anos)] %>% unique())] %>%
+          unique() %>%
+          length()
+        codSubsistema <- filtroSub[filtroSub %in% leituraSubsistema]
+        filtroSub <- filtroSub %in% leituraSubsistema
+        dadosCAdicTXT <- dadosCAdicTXT[!filtroSub]
+  
+        # dataframe cAdic
+        df.cAdic <- readr::read_fwf(I(dadosCAdicTXT),
+          col_positions = readr::fwf_positions( 
+            # vetor com as posicoes iniciais de cada campo
+            c(1, 6, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96),
+            # vetor com as posicoes finais de cada campo
+            c(4, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86, 94, 102),
+            # nome colunas
+            c("ano", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
+          ),
+          col_types = "idddddddddddd"
+        )
+  
+        # inclusao do codSubsistema
+        codSubsistema <- rep(codSubsistema, each = quantosAnos) %>% as.numeric()
+        df.cAdic <- df.cAdic %>%
+          dplyr::mutate(codSubsistema = codSubsistema)
+  
+        # tranforma colunas em linhas, exceto as colunas "ano" e "codSubsistema".
+        # o objetivo  criar duas colunas com as informacoes do "mes" e "cAdic"
+        # cria o campo anoMes (AAAAMM)
+        # seleciona apenas os campos de interesse
+        df.cAdic <- tidyr::pivot_longer(df.cAdic, -c("ano", "codSubsistema"),
+          names_to = "mes",
+          values_to = "energiaMercado"
+        ) %>%
+          dplyr::mutate(anoMes = as.numeric(ano) * 100 + as.numeric(mes)) %>%
+          dplyr::select(codSubsistema, anoMes, energiaMercado) %>%
+          dplyr::filter(!is.na(energiaMercado))
+  
+        # junta o mercado e a carga adicional
+        df.mercadoEnergia <- rbind(df.mercadoEnergia, df.cAdic) %>%
+          dplyr::group_by(codSubsistema, anoMes) %>%
+          dplyr::summarise(energiaMercado = sum(energiaMercado)) %>%
+          dplyr::ungroup()
+      }
     }
   }
   return(df.mercadoEnergia)
