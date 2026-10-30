@@ -136,7 +136,8 @@ leituraDadosUsinasHidro <- function(pastaCaso) {
       try({
         # a cada leitura feita no arquivo binario, o ponteiro com a posicao sera 
         # atualizado para posicao logo apos o fim dos dados lidos
-        nomeUsina <- readBin(conexaoArquivoBinario, raw(), 12) %>% rawToChar()
+        nomeUsina <- readBin(conexaoArquivoBinario, raw(), 12) %>% rawToChar() %>% 
+          iconv(from = "latin1", to = "ASCII//TRANSLIT")
         posto <- readBin(conexaoArquivoBinario, integer())
         postoBDH <- readBin(conexaoArquivoBinario, raw(), 8) %>% rawToChar()
         codSubsistema <- readBin(conexaoArquivoBinario, integer())
@@ -177,7 +178,8 @@ leituraDadosUsinasHidro <- function(pastaCaso) {
         IP <- readBin(conexaoArquivoBinario, numeric(), size = 4) %>% round(3)
         tipoPerda <- readBin(conexaoArquivoBinario, integer())
         data <- readBin(conexaoArquivoBinario, raw(), 8) %>% rawToChar()
-        observacao <- readBin(conexaoArquivoBinario, raw(), 43) %>% rawToChar() %>% iconv(from = "latin1", to = "UTF-8")
+        observacao <- readBin(conexaoArquivoBinario, raw(), 43) %>% rawToChar() %>% 
+          iconv(from = "latin1", to = "UTF-8")
         volumeReferencia <- readBin(conexaoArquivoBinario, numeric(), size = 4)
         regulacao <- readBin(conexaoArquivoBinario, raw(), 1) %>% rawToChar()
         
@@ -286,7 +288,7 @@ leituraDadosUsinasHidro <- function(pastaCaso) {
     close(conexaoArquivoBinario)
     
     # limpa cadastros inexistentes
-    df.dadosUsinasHidroeletricas <- dplyr::filter(df.dadosUsinasHidroeletricas, nomeUsina != "")
+    df.dadosUsinasHidroeletricas <- dplyr::filter(df.dadosUsinasHidroeletricas, nomeUsina != "", nomeUsina != "0")
     df.evaporacaoMensal <- dplyr::filter(df.evaporacaoMensal, nomeUsina != "")
     df.dadosConfiguracao <- dplyr::filter(df.dadosConfiguracao, nomeUsina != "", conjunto <= numeroConjuntos) %>%
       dplyr::select(-numeroConjuntos)
